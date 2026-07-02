@@ -31,8 +31,8 @@ test('products route loads product center without inventing release status', asy
   await expect(page.getByRole('heading', { level: 1 })).toHaveText('产品中心')
   await expect(page.getByRole('heading', { name: '当前产品方向' })).toBeVisible()
   await expect(page.getByRole('heading', { name: '知宠智能项圈' })).toBeVisible()
-  await expect(page.getByText('详情待项目方确认').first()).toBeVisible()
   await expect(page.getByText('AI 概念图，仅供参考').first()).toBeVisible()
+  await expect(page.getByRole('link', { name: '查看产品详情' })).toHaveCount(3)
 
   const hasOverflow = await page.evaluate(
     () => document.documentElement.scrollWidth > window.innerWidth,
@@ -115,6 +115,37 @@ test('demo route shows appointment form without pretending backend is live', asy
   await expect(page.getByLabel('联系人')).toBeVisible()
   await expect(page.getByLabel('关注场景')).toBeVisible()
   await expect(page.getByRole('button', { name: '提交接口待项目方确认' })).toBeDisabled()
+
+  const hasOverflow = await page.evaluate(
+    () => document.documentElement.scrollWidth > window.innerWidth,
+  )
+  expect(hasOverflow).toBe(false)
+})
+test('app product page shows planning-stage app details', async ({ page }) => {
+  await page.goto('/products/app')
+
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('知宠 App')
+  await expect(page.getByText('体验流程规划中').first()).toBeVisible()
+  await expect(page.locator('#values').getByRole('heading', { name: '三项核心价值' })).toBeVisible()
+  await expect(page.locator('#specifications caption')).toContainText('规划参数，仅供展示')
+  await expect(page.getByText('待项目方确认').first()).toBeVisible()
+  await expect(page.getByText('AI 概念图，仅供参考').first()).toBeVisible()
+
+  const hasOverflow = await page.evaluate(
+    () => document.documentElement.scrollWidth > window.innerWidth,
+  )
+  expect(hasOverflow).toBe(false)
+})
+
+test('health platform product page shows validation-stage platform details', async ({ page }) => {
+  await page.goto('/products/health-platform')
+
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('健康管理平台')
+  await expect(page.getByText('场景验证阶段').first()).toBeVisible()
+  await expect(page.locator('#ecosystem').getByRole('heading', { name: '设备、App 与平台协同' })).toBeVisible()
+  await expect(page.locator('#specifications caption')).toContainText('规划参数，仅供展示')
+  await expect(page.getByText('待项目方确认').first()).toBeVisible()
+  await expect(page.getByText('AI 概念图，仅供参考').first()).toBeVisible()
 
   const hasOverflow = await page.evaluate(
     () => document.documentElement.scrollWidth > window.innerWidth,

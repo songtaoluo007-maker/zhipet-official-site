@@ -10,6 +10,14 @@ import { homeProducts } from '~/data/home'
 
 const { register } = useScrollReveal()
 
+const productDetailPath = (id: string) => {
+  if (id === 'zhipet-app') {
+    return '/products/app'
+  }
+
+  return `/products/${id}`
+}
+
 useSeoMeta({
   title: '产品中心 | 知宠 ZHIPET',
   description:
@@ -74,17 +82,12 @@ useSeoMeta({
             <ul>
               <li v-for="feature in product.features" :key="feature">{{ feature }}</li>
             </ul>
-            <BaseButton
-              v-if="product.id === 'smart-collar'"
-              to="/products/smart-collar"
-              variant="text"
-            >
+            <BaseButton :to="productDetailPath(product.id)" variant="text">
               查看产品详情
               <template #iconRight>
                 <BaseIcon name="arrow-right" />
               </template>
             </BaseButton>
-            <BaseButton v-else disabled variant="text">详情待项目方确认</BaseButton>
           </div>
         </article>
       </div>

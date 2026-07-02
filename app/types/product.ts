@@ -46,5 +46,6 @@ export interface ProductDetail {
   ecosystem: ProductEcosystemStep[]
   scenarios: ProductScenario[]
   specifications: ProductSpecification[]
+  specificationsCaption: string
   process: ProductProcessStep[]
 }
