@@ -89,3 +89,35 @@ test('family solution page shows household-safe scenario details', async ({ page
   )
   expect(hasOverflow).toBe(false)
 })
+test('contact route shows safe contact placeholders and disabled submission', async ({ page }) => {
+  await page.goto('/contact')
+
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('联系我们')
+  await expect(page.getByRole('heading', { name: '联系信息' })).toBeVisible()
+  await expect(page.getByText('联系方式待项目方确认')).toBeVisible()
+  await expect(page.getByRole('heading', { name: '留下合作需求' })).toBeVisible()
+  await expect(page.getByLabel('姓名')).toBeVisible()
+  await expect(page.getByRole('button', { name: '提交接口待项目方确认' })).toBeDisabled()
+
+  const hasOverflow = await page.evaluate(
+    () => document.documentElement.scrollWidth > window.innerWidth,
+  )
+  expect(hasOverflow).toBe(false)
+})
+
+test('demo route shows appointment form without pretending backend is live', async ({ page }) => {
+  await page.goto('/demo')
+
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('预约演示')
+  await expect(page.getByText('演示排期待项目方确认')).toBeVisible()
+  await expect(page.getByRole('heading', { name: '选择演示重点' })).toBeVisible()
+  await expect(page.getByRole('heading', { name: '预约信息' })).toBeVisible()
+  await expect(page.getByLabel('联系人')).toBeVisible()
+  await expect(page.getByLabel('关注场景')).toBeVisible()
+  await expect(page.getByRole('button', { name: '提交接口待项目方确认' })).toBeDisabled()
+
+  const hasOverflow = await page.evaluate(
+    () => document.documentElement.scrollWidth > window.innerWidth,
+  )
+  expect(hasOverflow).toBe(false)
+})
