@@ -1,24 +1,5 @@
 import { expect, test } from '@playwright/test'
-
-const canonicalRoutes = [
-  '/',
-  '/products',
-  '/products/smart-collar',
-  '/products/app',
-  '/products/health-platform',
-  '/solutions',
-  '/solutions/family',
-  '/solutions/hospital',
-  '/solutions/store',
-  '/about',
-  '/partners',
-  '/cases',
-  '/news',
-  '/contact',
-  '/demo',
-  '/privacy',
-  '/terms',
-] as const
+import { canonicalRoutes } from '../../app/data/site-pages'
 
 test('robots route exposes crawl directives and the current sitemap URL', async ({ request }) => {
   const response = await request.get('/robots.txt')

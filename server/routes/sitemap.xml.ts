@@ -1,8 +1,9 @@
-import { defineEventHandler, getRequestURL, setHeader } from 'h3'
+import { defineEventHandler, setHeader } from 'h3'
+import { getSiteOrigin } from '../utils/site-origin'
 import { siteRoutes } from '../utils/site-routes'
 
 export default defineEventHandler((event) => {
-  const origin = getRequestURL(event).origin
+  const origin = getSiteOrigin(event)
   const urls = siteRoutes
     .map(
       (route) => `  <url>

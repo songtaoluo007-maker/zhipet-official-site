@@ -11,6 +11,7 @@
 - 已实现企业内容页：关于知宠、合作伙伴、客户案例、资讯中心。
 - 已实现转化与合规占位页：联系我们、预约演示、隐私政策、服务条款。
 - 已补充上线基础能力：动态 `robots.txt`、动态 `sitemap.xml`、品牌化 404/错误页。
+- 已补充安全与组件工程加固：基础安全响应头、Canonical 域名配置、链接 URL 防护、移动端菜单焦点管理。
 - 已将启动实施方案归档到 `docs/STARTUP_IMPLEMENTATION_PLAN.md`。
 - 当前使用概念视觉资产，页面均标注“AI 概念图，仅供参考”。真实产品图、Logo、团队、资质、联系方式和备案信息仍需项目方确认。
 
@@ -59,4 +60,4 @@ app/
 
 ## 部署
 
-第一阶段推荐部署到 Vercel、Cloudflare Pages 或国内支持 Nuxt/Nitro 的平台。`robots.txt` 和 `sitemap.xml` 会根据访问请求自动生成当前域名，不在代码中写死未确认的正式域名。正式国内上线前需要确认域名备案和合规信息。
+第一阶段推荐部署到 Vercel、Cloudflare Pages 或国内支持 Nuxt/Nitro 的平台。正式域名确认后填写 `NUXT_PUBLIC_SITE_URL`，`robots.txt` 和 `sitemap.xml` 会优先使用该配置生成 Canonical URL；未配置时回退到当前请求域名。正式国内上线前需要确认域名备案和合规信息。

@@ -67,4 +67,55 @@ describe('BaseButton', () => {
 
     expect(wrapper.find('a').attributes('href')).toBe('/demo')
   })
+  it('removes external hrefs with unsafe URL schemes', async () => {
+    const wrapper = mount(BaseButton, {
+      props: {
+        href: 'javascript:alert(1)',
+        external: true,
+      },
+      slots: {
+        default: '危险链接',
+      },
+      global: {
+        stubs: {
+          NuxtLink: NuxtLinkStub,
+        },
+      },
+    })
+
+    const link = wrapper.find('a')
+
+    await link.trigger('click')
+
+    expect(link.attributes('href')).toBeUndefined()
+    expect(link.attributes('aria-disabled')).toBe('true')
+    expect(link.attributes('tabindex')).toBe('-1')
+    expect(wrapper.emitted('click')).toBeUndefined()
+  })
+
+  it('removes disabled route links from keyboard navigation', async () => {
+    const wrapper = mount(BaseButton, {
+      props: {
+        to: '/demo',
+        disabled: true,
+      },
+      slots: {
+        default: '预约演示',
+      },
+      global: {
+        stubs: {
+          NuxtLink: NuxtLinkStub,
+        },
+      },
+    })
+
+    const link = wrapper.find('a')
+
+    await link.trigger('click')
+
+    expect(link.attributes('href')).toBeUndefined()
+    expect(link.attributes('aria-disabled')).toBe('true')
+    expect(link.attributes('tabindex')).toBe('-1')
+    expect(wrapper.emitted('click')).toBeUndefined()
+  })
 })

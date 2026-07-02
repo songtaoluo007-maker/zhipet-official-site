@@ -1,20 +1,38 @@
 <template>
-  <NuxtLink v-if="isInternal" :to="href" class="base-link">
+  <NuxtLink v-if="safeHref && isInternal" :to="safeHref" class="base-link">
     <slot />
   </NuxtLink>
-  <a v-else :href="href" class="base-link" target="_blank" rel="noopener noreferrer">
+  <a
+    v-else
+    :href="safeHref"
+    class="base-link"
+    :target="safeHref ? '_blank' : undefined"
+    :rel="safeHref ? 'noopener noreferrer' : undefined"
+    :aria-disabled="safeHref ? undefined : 'true'"
+    :tabindex="safeHref ? undefined : -1"
+    @click="handleClick"
+  >
     <slot />
   </a>
 </template>
 
 <script setup lang="ts">
 import { computed } from 'vue'
+import { isInternalHref, toSafeHref } from '~/utils/safe-href'
 
 const props = defineProps<{
   href: string
 }>()
 
-const isInternal = computed(() => props.href.startsWith('/'))
+const safeHref = computed(() => toSafeHref(props.href))
+const isInternal = computed(() => isInternalHref(safeHref.value))
+
+const handleClick = (event: MouseEvent) => {
+  if (!safeHref.value) {
+    event.preventDefault()
+    event.stopPropagation()
+  }
+}
 </script>
 
 <style scoped lang="scss">
@@ -30,6 +48,13 @@ const isInternal = computed(() => props.href.startsWith('/'))
   &:hover {
     color: var(--color-brand-900);
     text-decoration: underline;
+  }
+
+  &[aria-disabled='true'] {
+    color: var(--color-text-secondary);
+    cursor: not-allowed;
+    opacity: 0.64;
+    pointer-events: none;
   }
 }
 </style>

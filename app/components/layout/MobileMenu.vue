@@ -1,10 +1,11 @@
 <template>
   <Transition name="mobile-menu">
-    <div v-if="open" class="mobile-menu" role="dialog" aria-modal="true" aria-label="移动端导航">
+    <div v-if="open" ref="dialogElement" class="mobile-menu" role="dialog" aria-modal="true" aria-label="移动端导航">
       <button
         class="mobile-menu__backdrop"
         type="button"
         aria-label="关闭导航"
+        tabindex="-1"
         @click="$emit('close')"
       />
       <nav class="mobile-menu__panel" aria-label="移动端主导航">
@@ -13,7 +14,7 @@
             <span>知宠</span>
             <strong>ZHIPET</strong>
           </NuxtLink>
-          <BaseIconButton label="关闭导航" variant="bordered" @click="$emit('close')">
+          <BaseIconButton label="关闭菜单" variant="bordered" data-menu-close @click="$emit('close')">
             <BaseIcon name="x" />
           </BaseIconButton>
         </div>
@@ -31,7 +32,7 @@
 </template>
 
 <script setup lang="ts">
-import { onBeforeUnmount, onMounted } from 'vue'
+import { nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import BaseButton from '~/components/base/BaseButton.vue'
 import BaseIcon from '~/components/base/BaseIcon.vue'
 import BaseIconButton from '~/components/base/BaseIconButton.vue'
@@ -46,18 +47,119 @@ const emit = defineEmits<{
   close: []
 }>()
 
-const handleKeydown = (event: KeyboardEvent) => {
-  if (event.key === 'Escape' && props.open) {
-    emit('close')
+const dialogElement = ref<HTMLElement | null>(null)
+let previousActiveElement: HTMLElement | null = null
+let previousBodyOverflow = ''
+
+const focusableSelector = [
+  'a[href]',
+  'button:not([disabled]):not([tabindex="-1"])',
+  'input:not([disabled])',
+  'select:not([disabled])',
+  'textarea:not([disabled])',
+  '[tabindex]:not([tabindex="-1"])',
+].join(', ')
+
+const getFocusableElements = () => {
+  if (!dialogElement.value) {
+    return []
+  }
+
+  return Array.from(dialogElement.value.querySelectorAll<HTMLElement>(focusableSelector)).filter(
+    (element) => element.tabIndex >= 0 && !element.hasAttribute('aria-hidden'),
+  )
+}
+
+const focusCloseButton = async () => {
+  await nextTick()
+  dialogElement.value?.querySelector<HTMLElement>('[data-menu-close]')?.focus()
+}
+
+const lockPageScroll = () => {
+  previousBodyOverflow = document.body.style.overflow
+  document.body.style.overflow = 'hidden'
+}
+
+const restorePageScroll = () => {
+  document.body.style.overflow = previousBodyOverflow
+}
+
+const openMenu = async () => {
+  previousActiveElement = document.activeElement instanceof HTMLElement ? document.activeElement : null
+  lockPageScroll()
+  await focusCloseButton()
+}
+
+const closeMenu = () => {
+  restorePageScroll()
+  previousActiveElement?.focus()
+  previousActiveElement = null
+}
+
+const trapFocus = (event: KeyboardEvent) => {
+  if (event.key !== 'Tab' || !props.open) {
+    return
+  }
+
+  const focusableElements = getFocusableElements()
+  const firstElement = focusableElements[0]
+  const lastElement = focusableElements.at(-1)
+
+  if (!firstElement || !lastElement) {
+    return
+  }
+
+  if (event.shiftKey && document.activeElement === firstElement) {
+    event.preventDefault()
+    lastElement.focus()
+    return
+  }
+
+  if (!event.shiftKey && document.activeElement === lastElement) {
+    event.preventDefault()
+    firstElement.focus()
   }
 }
 
+const handleKeydown = (event: KeyboardEvent) => {
+  if (!props.open) {
+    return
+  }
+
+  if (event.key === 'Escape') {
+    emit('close')
+    return
+  }
+
+  trapFocus(event)
+}
+
+watch(
+  () => props.open,
+  (isOpen) => {
+    if (isOpen) {
+      void openMenu()
+      return
+    }
+
+    closeMenu()
+  },
+)
+
 onMounted(() => {
   window.addEventListener('keydown', handleKeydown)
+
+  if (props.open) {
+    void openMenu()
+  }
 })
 
 onBeforeUnmount(() => {
   window.removeEventListener('keydown', handleKeydown)
+
+  if (props.open) {
+    restorePageScroll()
+  }
 })
 </script>
 

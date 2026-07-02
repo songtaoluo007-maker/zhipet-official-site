@@ -1,10 +1,11 @@
 <template>
   <NuxtLink
     v-if="to"
-    :to="to"
+    :to="resolvedRouteTarget"
     class="base-button"
     :class="buttonClasses"
-    :aria-disabled="isUnavailable"
+    :aria-disabled="isLinkUnavailable ? 'true' : undefined"
+    :tabindex="isLinkUnavailable ? -1 : undefined"
     @click="handleClick"
   >
     <span v-if="$slots.iconLeft" class="base-button__icon" aria-hidden="true">
@@ -19,12 +20,13 @@
   </NuxtLink>
   <a
     v-else-if="href"
-    :href="isUnavailable ? undefined : href"
+    :href="safeHref"
     class="base-button"
     :class="buttonClasses"
-    :target="external ? '_blank' : undefined"
-    :rel="external ? 'noopener noreferrer' : undefined"
-    :aria-disabled="isUnavailable"
+    :target="safeHref && external ? '_blank' : undefined"
+    :rel="safeHref && external ? 'noopener noreferrer' : undefined"
+    :aria-disabled="isLinkUnavailable ? 'true' : undefined"
+    :tabindex="isLinkUnavailable ? -1 : undefined"
     @click="handleClick"
   >
     <span v-if="$slots.iconLeft" class="base-button__icon" aria-hidden="true">
@@ -61,6 +63,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import type { ButtonSize, ButtonVariant } from '~/types/ui'
+import { toSafeHref } from '~/utils/safe-href'
 
 const props = withDefaults(
   defineProps<{
@@ -92,6 +95,10 @@ const emit = defineEmits<{
 }>()
 
 const isUnavailable = computed(() => props.disabled || props.loading)
+const safeHref = computed(() => toSafeHref(props.href))
+const hasUnsafeHref = computed(() => Boolean(props.href && !safeHref.value))
+const isLinkUnavailable = computed(() => isUnavailable.value || hasUnsafeHref.value)
+const resolvedRouteTarget = computed(() => (isLinkUnavailable.value ? undefined : props.to))
 
 const buttonClasses = computed(() => [
   `base-button--${props.variant}`,
@@ -99,12 +106,12 @@ const buttonClasses = computed(() => [
   {
     'base-button--block': props.block,
     'is-loading': props.loading,
-    'is-disabled': isUnavailable.value,
+    'is-disabled': isLinkUnavailable.value,
   },
 ])
 
 const handleClick = (event: MouseEvent) => {
-  if (isUnavailable.value) {
+  if (isLinkUnavailable.value) {
     event.preventDefault()
     event.stopPropagation()
     return

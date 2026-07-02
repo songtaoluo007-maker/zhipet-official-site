@@ -4,6 +4,11 @@ export default defineNuxtConfig({
   modules: ['@nuxt/content', '@nuxt/image', '@nuxt/fonts', '@nuxt/eslint'],
   components: [{ path: './app/components', pathPrefix: false }],
   css: ['~/assets/styles/main.scss'],
+  runtimeConfig: {
+    public: {
+      siteUrl: '',
+    },
+  },
   app: {
     head: {
       htmlAttrs: {
