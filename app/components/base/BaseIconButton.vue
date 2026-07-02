@@ -4,6 +4,7 @@
     :class="[`base-icon-button--${variant}`, `base-icon-button--${size}`]"
     :type="type"
     :aria-label="label"
+    :title="label"
     :disabled="disabled"
     @click="$emit('click', $event)"
   >

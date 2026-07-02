@@ -1,7 +1,12 @@
 <template>
   <Transition name="mobile-menu">
     <div v-if="open" class="mobile-menu" role="dialog" aria-modal="true" aria-label="移动端导航">
-      <button class="mobile-menu__backdrop" type="button" aria-label="关闭导航" @click="$emit('close')" />
+      <button
+        class="mobile-menu__backdrop"
+        type="button"
+        aria-label="关闭导航"
+        @click="$emit('close')"
+      />
       <nav class="mobile-menu__panel" aria-label="移动端主导航">
         <div class="mobile-menu__head">
           <NuxtLink class="mobile-menu__brand" to="/" @click="$emit('close')">
@@ -9,7 +14,7 @@
             <strong>ZHIPET</strong>
           </NuxtLink>
           <BaseIconButton label="关闭导航" variant="bordered" @click="$emit('close')">
-            <span aria-hidden="true">×</span>
+            <BaseIcon name="x" />
           </BaseIconButton>
         </div>
         <ul class="mobile-menu__list">
@@ -28,6 +33,7 @@
 <script setup lang="ts">
 import { onBeforeUnmount, onMounted } from 'vue'
 import BaseButton from '~/components/base/BaseButton.vue'
+import BaseIcon from '~/components/base/BaseIcon.vue'
 import BaseIconButton from '~/components/base/BaseIconButton.vue'
 import type { NavigationItem } from '~/types/site'
 

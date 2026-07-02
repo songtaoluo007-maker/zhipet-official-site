@@ -10,3 +10,4 @@ playwright-report
 test-results
 *.log
 .nuxt-dev-check.*
+output

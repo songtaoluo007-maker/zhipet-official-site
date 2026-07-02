@@ -32,7 +32,7 @@
         variant="bordered"
         @click="menuOpen = true"
       >
-        <span aria-hidden="true">☰</span>
+        <BaseIcon name="menu" />
       </BaseIconButton>
     </BaseContainer>
 
@@ -44,6 +44,7 @@
 import { onBeforeUnmount, onMounted, ref } from 'vue'
 import BaseButton from '~/components/base/BaseButton.vue'
 import BaseContainer from '~/components/base/BaseContainer.vue'
+import BaseIcon from '~/components/base/BaseIcon.vue'
 import BaseIconButton from '~/components/base/BaseIconButton.vue'
 import MobileMenu from '~/components/layout/MobileMenu.vue'
 

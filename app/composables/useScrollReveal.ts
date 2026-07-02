@@ -6,12 +6,26 @@ export const useScrollReveal = () => {
   const isReducedMotion = ref(false)
   let observer: IntersectionObserver | undefined
 
+  const resolveElement = (element: Element | ComponentPublicInstance | null) => {
+    if (!element) {
+      return undefined
+    }
+
+    if ('classList' in element) {
+      return element as HTMLElement
+    }
+
+    const componentElement = element.$el
+    return componentElement instanceof HTMLElement ? componentElement : undefined
+  }
+
   const register = (element: Element | ComponentPublicInstance | null) => {
-    if (!element || !('classList' in element)) {
+    const htmlElement = resolveElement(element)
+
+    if (!htmlElement || elements.value.includes(htmlElement)) {
       return
     }
 
-    const htmlElement = element as HTMLElement
     htmlElement.classList.add('reveal')
     elements.value.push(htmlElement)
 
