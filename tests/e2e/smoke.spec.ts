@@ -58,3 +58,34 @@ test('smart collar product page shows prototype-safe product details', async ({ 
   )
   expect(hasOverflow).toBe(false)
 })
+
+test('solutions route loads solution center without fake proof', async ({ page }) => {
+  await page.goto('/solutions')
+
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('解决方案')
+  await expect(page.getByRole('heading', { name: '按场景选择知宠方案' })).toBeVisible()
+  await expect(page.getByRole('heading', { name: '家庭养宠' })).toBeVisible()
+  await expect(page.getByText('方案细节待项目方确认').first()).toBeVisible()
+  await expect(page.getByText('AI 概念图，仅供参考').first()).toBeVisible()
+
+  const hasOverflow = await page.evaluate(
+    () => document.documentElement.scrollWidth > window.innerWidth,
+  )
+  expect(hasOverflow).toBe(false)
+})
+
+test('family solution page shows household-safe scenario details', async ({ page }) => {
+  await page.goto('/solutions/family')
+
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('家庭养宠解决方案')
+  await expect(page.getByText('把日常健康变化看得更清楚')).toBeVisible()
+  await expect(page.locator('#pain-points').getByRole('heading', { name: '家庭养宠常见难点' })).toBeVisible()
+  await expect(page.locator('#workflow').getByRole('heading', { name: '家庭健康管理流程' })).toBeVisible()
+  await expect(page.getByText('待项目方确认').first()).toBeVisible()
+  await expect(page.getByText('AI 概念图，仅供参考').first()).toBeVisible()
+
+  const hasOverflow = await page.evaluate(
+    () => document.documentElement.scrollWidth > window.innerWidth,
+  )
+  expect(hasOverflow).toBe(false)
+})
