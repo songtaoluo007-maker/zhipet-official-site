@@ -65,7 +65,7 @@ test('solutions route loads solution center without fake proof', async ({ page }
   await expect(page.getByRole('heading', { level: 1 })).toHaveText('解决方案')
   await expect(page.getByRole('heading', { name: '按场景选择知宠方案' })).toBeVisible()
   await expect(page.getByRole('heading', { name: '家庭养宠' })).toBeVisible()
-  await expect(page.getByText('方案细节待项目方确认').first()).toBeVisible()
+  await expect(page.getByRole('link', { name: '查看方案详情' })).toHaveCount(3)
   await expect(page.getByText('AI 概念图，仅供参考').first()).toBeVisible()
 
   const hasOverflow = await page.evaluate(
@@ -81,6 +81,37 @@ test('family solution page shows household-safe scenario details', async ({ page
   await expect(page.getByText('把日常健康变化看得更清楚')).toBeVisible()
   await expect(page.locator('#pain-points').getByRole('heading', { name: '家庭养宠常见难点' })).toBeVisible()
   await expect(page.locator('#workflow').getByRole('heading', { name: '家庭健康管理流程' })).toBeVisible()
+  await expect(page.getByText('待项目方确认').first()).toBeVisible()
+  await expect(page.getByText('AI 概念图，仅供参考').first()).toBeVisible()
+
+  const hasOverflow = await page.evaluate(
+    () => document.documentElement.scrollWidth > window.innerWidth,
+  )
+  expect(hasOverflow).toBe(false)
+})
+test('hospital solution page shows clinic-safe scenario details', async ({ page }) => {
+  await page.goto('/solutions/hospital')
+
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('宠物医院解决方案')
+  await expect(page.getByText('场景验证阶段').first()).toBeVisible()
+  await expect(page.locator('#pain-points').getByRole('heading', { name: '医院场景常见难点' })).toBeVisible()
+  await expect(page.locator('#workflow').getByRole('heading', { name: '院外健康协同流程' })).toBeVisible()
+  await expect(page.getByText('待项目方确认').first()).toBeVisible()
+  await expect(page.getByText('AI 概念图，仅供参考').first()).toBeVisible()
+
+  const hasOverflow = await page.evaluate(
+    () => document.documentElement.scrollWidth > window.innerWidth,
+  )
+  expect(hasOverflow).toBe(false)
+})
+
+test('store solution page shows service-safe scenario details', async ({ page }) => {
+  await page.goto('/solutions/store')
+
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('宠物门店解决方案')
+  await expect(page.getByText('服务流程规划中').first()).toBeVisible()
+  await expect(page.locator('#pain-points').getByRole('heading', { name: '门店服务常见难点' })).toBeVisible()
+  await expect(page.locator('#workflow').getByRole('heading', { name: '会员健康服务流程' })).toBeVisible()
   await expect(page.getByText('待项目方确认').first()).toBeVisible()
   await expect(page.getByText('AI 概念图，仅供参考').first()).toBeVisible()
 

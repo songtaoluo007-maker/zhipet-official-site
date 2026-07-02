@@ -46,9 +46,25 @@ export interface SolutionConfirmationItem {
   note?: string
 }
 
+export interface SolutionDetailSections {
+  painTitle: string
+  painDescription: string
+  workflowTitle: string
+  workflowDescription: string
+  workflowImage: string
+  workflowImageAlt: string
+  modulesTitle: string
+  modulesDescription: string
+  boundaryTitle: string
+  boundaryDescription: string
+  ctaTitle: string
+  ctaDescription: string
+}
+
 export interface SolutionDetail {
   slug: string
   title: string
+  breadcrumbLabel: string
   headline: string
   summary: string
   status: string
@@ -59,4 +75,5 @@ export interface SolutionDetail {
   modules: SolutionModule[]
   guardrails: SolutionGuardrail[]
   confirmationItems: SolutionConfirmationItem[]
+  sections: SolutionDetailSections
 }
