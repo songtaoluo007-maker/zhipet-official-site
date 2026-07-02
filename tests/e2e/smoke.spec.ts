@@ -152,6 +152,91 @@ test('demo route shows appointment form without pretending backend is live', asy
   )
   expect(hasOverflow).toBe(false)
 })
+
+test('about route shows brand-safe company placeholders', async ({ page }) => {
+  await page.goto('/about')
+
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('关于知宠')
+  await expect(page.getByRole('heading', { name: '我们坚持的方向' })).toBeVisible()
+  await expect(page.getByRole('heading', { name: '团队与资质信息' })).toBeVisible()
+  await expect(page.getByText('待项目方确认').first()).toBeVisible()
+  await expect(page.getByText('AI 概念图，仅供参考').first()).toBeVisible()
+
+  const hasOverflow = await page.evaluate(
+    () => document.documentElement.scrollWidth > window.innerWidth,
+  )
+  expect(hasOverflow).toBe(false)
+})
+
+test('partners route shows partnership scenarios without fake logos', async ({ page }) => {
+  await page.goto('/partners')
+
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('合作伙伴')
+  await expect(page.getByRole('heading', { name: '适合合作的场景' })).toBeVisible()
+  await expect(page.getByRole('heading', { name: '合作资料状态' })).toBeVisible()
+  await expect(page.getByText('合作机构名单').first()).toBeVisible()
+  await expect(page.getByText('待项目方确认').first()).toBeVisible()
+
+  const hasOverflow = await page.evaluate(
+    () => document.documentElement.scrollWidth > window.innerWidth,
+  )
+  expect(hasOverflow).toBe(false)
+})
+
+test('cases route shows concept cases without pretending proof', async ({ page }) => {
+  await page.goto('/cases')
+
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('客户案例')
+  await expect(page.getByRole('heading', { name: '示范案例与概念验证' })).toBeVisible()
+  await expect(page.getByText('不代表真实客户案例').first()).toBeVisible()
+  await expect(page.getByText('待项目方确认').first()).toBeVisible()
+
+  const hasOverflow = await page.evaluate(
+    () => document.documentElement.scrollWidth > window.innerWidth,
+  )
+  expect(hasOverflow).toBe(false)
+})
+
+test('news route shows placeholder news center safely', async ({ page }) => {
+  await page.goto('/news')
+
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('资讯中心')
+  await expect(page.getByRole('heading', { name: '当前内容规划' })).toBeVisible()
+  await expect(page.getByText('发布日期待项目方确认').first()).toBeVisible()
+  await expect(page.getByText('待项目方确认').first()).toBeVisible()
+
+  const hasOverflow = await page.evaluate(
+    () => document.documentElement.scrollWidth > window.innerWidth,
+  )
+  expect(hasOverflow).toBe(false)
+})
+
+test('privacy route shows draft legal placeholders', async ({ page }) => {
+  await page.goto('/privacy')
+
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('隐私政策')
+  await expect(page.getByRole('heading', { name: '政策状态' })).toBeVisible()
+  await expect(page.getByText('法务与项目方确认后生效').first()).toBeVisible()
+
+  const hasOverflow = await page.evaluate(
+    () => document.documentElement.scrollWidth > window.innerWidth,
+  )
+  expect(hasOverflow).toBe(false)
+})
+
+test('terms route shows draft service terms placeholders', async ({ page }) => {
+  await page.goto('/terms')
+
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('服务条款')
+  await expect(page.getByRole('heading', { name: '条款状态' })).toBeVisible()
+  await expect(page.getByText('法务与项目方确认后生效').first()).toBeVisible()
+
+  const hasOverflow = await page.evaluate(
+    () => document.documentElement.scrollWidth > window.innerWidth,
+  )
+  expect(hasOverflow).toBe(false)
+})
+
 test('app product page shows planning-stage app details', async ({ page }) => {
   await page.goto('/products/app')
 
