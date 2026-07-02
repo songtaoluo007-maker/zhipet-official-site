@@ -3,7 +3,8 @@ import type { FooterGroup, NavigationItem } from '../types/site'
 export const sitePages = [
   { path: '/', label: '首页' },
   { path: '/products', label: '产品中心' },
-  { path: '/products/smart-collar', label: '智能项圈' },
+  { path: '/ai-pet-understanding', label: 'AI 宠物理解' },
+  { path: '/products/smart-collar', label: '智能挂件' },
   { path: '/products/app', label: '知宠 App' },
   { path: '/products/health-platform', label: '健康管理平台' },
   { path: '/solutions', label: '解决方案' },
@@ -28,8 +29,9 @@ export const mainNavigation: NavigationItem[] = [
     label: '产品',
     href: '/products',
     children: [
-      { label: '智能项圈', href: '/products/smart-collar' },
+      { label: '智能挂件', href: '/products/smart-collar' },
       { label: '知宠 App', href: '/products/app' },
+      { label: 'AI 宠物理解', href: '/ai-pet-understanding' },
       { label: '健康管理平台', href: '/products/health-platform' },
     ],
   },
@@ -51,8 +53,9 @@ export const footerGroups: FooterGroup[] = [
   {
     title: '产品',
     links: [
-      { label: '智能项圈', href: '/products/smart-collar' },
+      { label: '智能挂件', href: '/products/smart-collar' },
       { label: '知宠 App', href: '/products/app' },
+      { label: 'AI 宠物理解', href: '/ai-pet-understanding' },
       { label: '健康管理平台', href: '/products/health-platform' },
     ],
   },

@@ -21,9 +21,9 @@ const productDetailPath = (id: string) => {
 useSeoMeta({
   title: '产品中心 | 知宠 ZHIPET',
   description:
-    '知宠 ZHIPET 产品中心，展示智能项圈、知宠 App 与健康管理平台的当前产品方向。真实参数和上线状态以项目方确认为准。',
+    '知宠 ZHIPET 产品中心，展示智能挂件、知宠 App 与健康管理平台的当前产品方向。真实参数和上线状态以项目方确认为准。',
   ogTitle: '产品中心 | 知宠 ZHIPET',
-  ogDescription: '展示智能硬件、用户端 App 与健康管理平台的当前产品方向。',
+  ogDescription: '展示智能挂件、用户端 App 与健康管理平台的当前产品方向。',
   ogType: 'website',
 })
 </script>
@@ -40,7 +40,7 @@ useSeoMeta({
           </nav>
           <h1 id="products-title">产品中心</h1>
           <p>
-            知宠第一阶段围绕智能项圈、知宠 App
+            知宠第一阶段围绕智能挂件、知宠 App
             和健康管理平台展开产品定义与场景验证。未确认产品参数和上线状态均以项目方资料为准。
           </p>
         </div>

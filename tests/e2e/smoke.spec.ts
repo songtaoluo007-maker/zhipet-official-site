@@ -3,21 +3,52 @@ import { expect, test } from '@playwright/test'
 test('home route loads formal homepage content with no horizontal overflow', async ({ page }) => {
   await page.goto('/')
 
+  await expect(page).toHaveTitle(/用 AI 读懂每一次陪伴/)
+  await expect(page.locator('meta[name="description"]')).toHaveAttribute(
+    'content',
+    /AI.*宠物.*理解|声音.*动作.*长期成长数据/,
+  )
   await expect(page.getByRole('banner')).toBeVisible()
   await expect(page.getByRole('contentinfo')).toBeVisible()
-  await expect(page.getByRole('heading', { level: 1 })).toContainText(
-    '用科技读懂陪伴，让养宠更简单、更智慧',
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('用 AI 读懂每一次陪伴')
+  await expect(
+    page.getByText('融合宠物声音、动作、活动与长期成长数据，帮助主人更好地理解宠物的情绪、需求、健康与安全状态。'),
+  ).toBeVisible()
+  await expect(
+    page.getByLabel('首页主要操作').getByRole('link', { name: '探索 AI 宠物理解' }),
+  ).toHaveAttribute(
+    'href',
+    '/ai-pet-understanding',
   )
   await expect(
     page.locator('#what-we-do').getByRole('heading', { name: '知宠在做什么' }),
   ).toBeVisible()
+  const aiSection = page.locator('#ai-understanding')
+  await expect(aiSection.getByRole('heading', { name: '不只是听见，更要理解' })).toBeVisible()
+  await expect(aiSection.getByText('声音理解')).toBeVisible()
+  await expect(aiSection.getByText('行为识别')).toBeVisible()
+  await expect(aiSection.getByText('情绪推测')).toBeVisible()
+  await expect(aiSection.getByText('个体画像')).toBeVisible()
+  await expect(
+    aiSection.getByRole('link', { name: '了解 PetSense 多模态理解引擎' }),
+  ).toHaveAttribute('href', '/ai-pet-understanding')
   await expect(page.locator('#products').getByRole('heading', { name: '核心产品' })).toBeVisible()
+  await expect(page.getByRole('heading', { name: '知宠智能挂件 / 感知设备' })).toBeVisible()
+  await expect(page.getByRole('heading', { name: '知宠 App' }).first()).toBeVisible()
+  await expect(page.getByRole('heading', { name: 'AI 宠物理解引擎' })).toBeVisible()
   await expect(
     page.locator('#solutions').getByRole('heading', { name: '解决方案', exact: true }),
   ).toBeVisible()
+  await expect(page.getByText('宠物持续叫唤时的状态分析')).toBeVisible()
+  await expect(page.getByText('主人不在家时的行为变化')).toBeVisible()
+  await expect(page.getByText('夜间或日常活动突然异常')).toBeVisible()
+  await expect(page.getByText('长期个体习惯变化')).toBeVisible()
   await expect(page.locator('#cases').getByRole('heading', { name: '客户案例' })).toBeVisible()
   await expect(page.getByText('AI 概念图，仅供参考').first()).toBeVisible()
   await expect(page.getByText('真实信息待确认')).toBeVisible()
+  await expect(page.getByText('宠物语言翻译器')).toHaveCount(0)
+  await expect(page.getByText('百分百听懂')).toHaveCount(0)
+  await expect(page.getByText('人宠无障碍交流')).toHaveCount(0)
 
   const hasOverflow = await page.evaluate(
     () => document.documentElement.scrollWidth > window.innerWidth,
@@ -30,9 +61,11 @@ test('products route loads product center without inventing release status', asy
 
   await expect(page.getByRole('heading', { level: 1 })).toHaveText('产品中心')
   await expect(page.getByRole('heading', { name: '当前产品方向' })).toBeVisible()
-  await expect(page.getByRole('heading', { name: '知宠智能项圈' })).toBeVisible()
+  await expect(page.getByRole('heading', { name: '知宠智能挂件' })).toBeVisible()
+  await expect(page.getByText('宠物声音采集', { exact: true })).toBeVisible()
   await expect(page.getByText('AI 概念图，仅供参考').first()).toBeVisible()
   await expect(page.getByRole('link', { name: '查看产品详情' })).toHaveCount(3)
+  await expect(page.locator('body')).not.toContainText(/逐字翻译|宠物语言翻译器|医疗级|生命体征监测|疾病诊断/)
 
   const hasOverflow = await page.evaluate(
     () => document.documentElement.scrollWidth > window.innerWidth,
@@ -43,15 +76,21 @@ test('products route loads product center without inventing release status', asy
 test('smart collar product page shows prototype-safe product details', async ({ page }) => {
   await page.goto('/products/smart-collar')
 
-  await expect(page.getByRole('heading', { level: 1 })).toHaveText('知宠智能项圈')
-  await expect(page.getByText('24 小时健康守护，让爱更安心')).toBeVisible()
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('知宠智能挂件')
+  await expect(page.getByText('记录声音、动作和安全变化，让陪伴更有依据')).toBeVisible()
   await expect(page.locator('#values').getByRole('heading', { name: '三项核心价值' })).toBeVisible()
   await expect(
-    page.locator('#ecosystem').getByRole('heading', { name: '设备、App 与平台协同' }),
+    page.locator('#ecosystem').getByRole('heading', { name: '设备、App 与 AI 引擎协同' }),
   ).toBeVisible()
+  await expect(page.getByText('智能设备负责感知，App 负责呈现和交互')).toBeVisible()
+  await expect(page.getByRole('link', { name: '了解 AI 宠物理解' })).toHaveAttribute(
+    'href',
+    '/ai-pet-understanding',
+  )
   await expect(page.locator('#specifications caption')).toContainText('样机参数，仅供展示')
   await expect(page.getByText('待项目方确认').first()).toBeVisible()
   await expect(page.getByText('AI 概念图，仅供参考').first()).toBeVisible()
+  await expect(page.locator('body')).not.toContainText(/逐字翻译|宠物语言翻译器|医疗级|生命体征监测|疾病诊断|心率监测|体温监测|呼吸监测/)
 
   const hasOverflow = await page.evaluate(
     () => document.documentElement.scrollWidth > window.innerWidth,
@@ -78,11 +117,19 @@ test('family solution page shows household-safe scenario details', async ({ page
   await page.goto('/solutions/family')
 
   await expect(page.getByRole('heading', { level: 1 })).toHaveText('家庭养宠解决方案')
-  await expect(page.getByText('把日常健康变化看得更清楚')).toBeVisible()
+  await expect(page.getByText('把日常行为和陪伴状态看得更清楚')).toBeVisible()
   await expect(page.locator('#pain-points').getByRole('heading', { name: '家庭养宠常见难点' })).toBeVisible()
-  await expect(page.locator('#workflow').getByRole('heading', { name: '家庭健康管理流程' })).toBeVisible()
+  await expect(page.locator('#workflow').getByRole('heading', { name: '家庭宠物理解流程' })).toBeVisible()
+  await expect(page.getByText('宠物叫声和状态理解')).toBeVisible()
+  await expect(page.getByRole('heading', { name: '主人自然语言询问' })).toBeVisible()
+  await expect(page.getByText('个体画像持续更新')).toBeVisible()
+  await expect(page.getByRole('link', { name: '了解 AI 宠物理解' })).toHaveAttribute(
+    'href',
+    '/ai-pet-understanding',
+  )
   await expect(page.getByText('待项目方确认').first()).toBeVisible()
   await expect(page.getByText('AI 概念图，仅供参考').first()).toBeVisible()
+  await expect(page.locator('body')).not.toContainText(/逐字翻译|准确翻译宠物语言|宠物在说它想吃饭|医疗级/)
 
   const hasOverflow = await page.evaluate(
     () => document.documentElement.scrollWidth > window.innerWidth,

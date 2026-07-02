@@ -33,12 +33,12 @@ const focusOptions: Array<{
     id: 'family',
     icon: 'home',
     title: '家庭养宠方案',
-    description: '了解智能项圈、App 记录和家庭协作如何组合成日常健康管理路径。',
+    description: '了解智能挂件、App 记录和家庭协作如何组合成日常观察与照护路径。',
   },
   {
     id: 'product',
     icon: 'collar',
-    title: '智能项圈产品',
+    title: '智能挂件产品',
     description: '聚焦样机能力、设备与 App 协同方式，以及后续需要确认的硬件参数。',
   },
   {

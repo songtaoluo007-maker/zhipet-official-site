@@ -61,6 +61,11 @@ export interface SolutionDetailSections {
   ctaDescription: string
 }
 
+export interface SolutionDetailAction {
+  label: string
+  to: string
+}
+
 export interface SolutionDetail {
   slug: string
   title: string
@@ -73,6 +78,7 @@ export interface SolutionDetail {
   painPoints: SolutionPainPoint[]
   workflow: SolutionWorkflowStep[]
   modules: SolutionModule[]
+  secondaryAction?: SolutionDetailAction
   guardrails: SolutionGuardrail[]
   confirmationItems: SolutionConfirmationItem[]
   sections: SolutionDetailSections

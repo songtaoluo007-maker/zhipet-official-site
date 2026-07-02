@@ -116,7 +116,7 @@ export const newsItems: NewsItem[] = [
     category: '产品动态',
     title: '知宠产品方向规划',
     date: '发布日期待项目方确认',
-    summary: '围绕智能项圈、知宠 App 和健康管理平台梳理第一阶段产品定义，具体发布时间待项目方确认。',
+    summary: '围绕智能挂件、知宠 App 和健康管理平台梳理第一阶段产品定义，具体发布时间待项目方确认。',
   },
   {
     id: 'scenario-research',

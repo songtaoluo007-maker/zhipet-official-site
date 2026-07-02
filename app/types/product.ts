@@ -34,6 +34,11 @@ export interface ProductProcessStep {
   description: string
 }
 
+export interface ProductDetailAction {
+  label: string
+  to: string
+}
+
 export interface ProductDetail {
   slug: string
   name: string
@@ -44,6 +49,9 @@ export interface ProductDetail {
   coverAlt: string
   values: ProductValue[]
   ecosystem: ProductEcosystemStep[]
+  ecosystemTitle?: string
+  ecosystemDescription?: string
+  secondaryAction?: ProductDetailAction
   scenarios: ProductScenario[]
   specifications: ProductSpecification[]
   specificationsCaption: string

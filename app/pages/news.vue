@@ -13,7 +13,7 @@ const { register } = useScrollReveal()
 const contentPlans = [
   {
     title: '产品动态',
-    description: '用于发布智能项圈、知宠 App 和健康管理平台的真实进展。',
+    description: '用于发布智能挂件、知宠 App 和健康管理平台的真实进展。',
   },
   {
     title: '场景研究',

@@ -13,6 +13,25 @@ export interface HomePillar {
   description: string
 }
 
+export interface HomeAiAbility {
+  title: string
+  description: string
+}
+
+export interface HomeAiUnderstanding {
+  title: string
+  description: string
+  linkLabel: string
+  linkTo: string
+  image: string
+  alt: string
+  statusLabel: string
+  statusValue: string
+  confidenceLabel: string
+  analysisBasis: string[]
+  abilities: HomeAiAbility[]
+}
+
 export interface HomeProduct {
   id: string
   icon: IconName
@@ -22,7 +41,11 @@ export interface HomeProduct {
   image: string
   alt: string
   features: string[]
+  detailTo?: string
+  detailLabel?: string
 }
+
+export type HomeFeaturedProduct = HomeProduct
 
 export interface HomeSolution {
   id: string
@@ -30,6 +53,7 @@ export interface HomeSolution {
   title: string
   audience: string
   description: string
+  scenarios?: string[]
 }
 
 export interface HomeCase {

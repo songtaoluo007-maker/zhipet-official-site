@@ -40,7 +40,13 @@ const solution = props.solution
                 <BaseIcon name="arrow-right" />
               </template>
             </BaseButton>
-            <BaseButton to="#workflow" variant="secondary" size="lg">查看流程</BaseButton>
+            <BaseButton
+              :to="solution.secondaryAction?.to ?? '#workflow'"
+              variant="secondary"
+              size="lg"
+            >
+              {{ solution.secondaryAction?.label ?? '查看流程' }}
+            </BaseButton>
           </div>
           <div class="solution-hero__tags" aria-label="方案模块">
             <BaseTag v-for="module in solution.modules" :key="module.id">{{ module.title }}</BaseTag>

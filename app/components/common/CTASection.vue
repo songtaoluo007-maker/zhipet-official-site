@@ -6,8 +6,10 @@
         <p>{{ description }}</p>
       </div>
       <div class="cta-section__actions">
-        <BaseButton to="/demo">预约演示</BaseButton>
-        <BaseButton to="/contact" variant="secondary">联系我们</BaseButton>
+        <BaseButton :to="primaryTo">{{ primaryLabel }}</BaseButton>
+        <BaseButton v-if="showSecondary" :to="secondaryTo" variant="secondary">
+          {{ secondaryLabel }}
+        </BaseButton>
       </div>
     </BaseContainer>
   </section>
@@ -21,10 +23,20 @@ withDefaults(
   defineProps<{
     title?: string
     description?: string
+    primaryLabel?: string
+    primaryTo?: string
+    secondaryLabel?: string
+    secondaryTo?: string
+    showSecondary?: boolean
   }>(),
   {
     title: '携手知宠，为更多宠物带来健康守护',
     description: '预约产品演示，了解适合您的合作方案。',
+    primaryLabel: '预约演示',
+    primaryTo: '/demo',
+    secondaryLabel: '联系我们',
+    secondaryTo: '/contact',
+    showSecondary: true,
   },
 )
 </script>

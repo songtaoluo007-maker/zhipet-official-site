@@ -40,7 +40,13 @@ const product = props.product
                 <BaseIcon name="arrow-right" />
               </template>
             </BaseButton>
-            <BaseButton to="#specifications" variant="secondary" size="lg">查看规划参数</BaseButton>
+            <BaseButton
+              :to="product.secondaryAction?.to ?? '#specifications'"
+              variant="secondary"
+              size="lg"
+            >
+              {{ product.secondaryAction?.label ?? '查看规划参数' }}
+            </BaseButton>
           </div>
           <div class="product-hero__tags" aria-label="产品核心能力">
             <BaseTag v-for="value in product.values" :key="value.id">{{ value.title }}</BaseTag>
@@ -94,8 +100,11 @@ const product = props.product
           <div class="ecosystem-layout__copy">
             <SectionHeading
               id="ecosystem-title"
-              title="设备、App 与平台协同"
-              description="知宠产品不独立包装结果承诺，而是与设备、App 和健康管理平台共同形成记录、提醒与服务连接。"
+              :title="product.ecosystemTitle ?? '设备、App 与平台协同'"
+              :description="
+                product.ecosystemDescription ??
+                '知宠产品不独立包装结果承诺，而是与设备、App 和健康管理平台共同形成记录、提醒与服务连接。'
+              "
             />
             <ol class="ecosystem-steps">
               <li v-for="item in product.ecosystem" :key="item.id">
