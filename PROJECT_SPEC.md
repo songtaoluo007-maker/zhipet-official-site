@@ -1,0 +1,85 @@
+# 知宠 ZHIPET 企业官网项目规范
+
+## 项目定位
+
+知宠 ZHIPET 企业官网用于对外展示项目定位、产品能力、解决方案、案例、团队和合作入口。它不是电商商城，也不是 SaaS 管理后台。
+
+核心目标：
+
+1. 清楚解释知宠是什么。
+2. 展示产品、解决方案和技术能力。
+3. 服务家庭用户、宠物医院、宠物门店和合作机构。
+4. 通过案例、团队、资质和真实数据建立可信度。
+5. 引导用户预约演示、商务合作或联系我们。
+
+## 技术栈
+
+- Nuxt 4
+- Vue 3
+- TypeScript
+- Vite
+- SCSS
+- Nuxt Content
+- Nuxt Image
+- Nuxt Fonts
+- SEO/Sitemap
+- ESLint
+- Prettier
+- Vitest
+- Playwright
+- pnpm
+
+## 内容原则
+
+- 禁止编造产品、公司、客户、团队、地址、电话、备案、资质和数据。
+- 缺失内容统一使用“待项目方确认”。
+- AI 生成图片必须标注“AI 概念图，仅供参考”。
+- 团队人像、证书、二维码、电话、地址、备案号不得生成为看似真实的凭证。
+
+## 视觉原则
+
+关键词：温暖、专业、可信、克制、科技感、宠物友好、企业级。
+
+禁止：满屏科技蓝、霓虹渐变、过量玻璃拟态、大量悬浮小卡片、无意义粒子动画、AI 后台感组件、虚假夸张数据。
+
+## 色彩 Token
+
+```css
+:root {
+  --color-brand-900: #2f241b;
+  --color-brand-800: #443326;
+  --color-brand-700: #66503c;
+  --color-accent-600: #b7792b;
+  --color-accent-500: #c88a38;
+  --color-accent-300: #e8c894;
+  --color-accent-100: #f6ead8;
+  --color-bg: #faf8f4;
+  --color-surface: #ffffff;
+  --color-surface-soft: #f6f1e9;
+  --color-text: #241d18;
+  --color-text-secondary: #6d655e;
+  --color-border: #e8e0d5;
+  --color-success: #568267;
+  --color-danger: #b85f55;
+}
+```
+
+## 组件原则
+
+第一阶段建立轻量官网 UI Kit：按钮、链接、标签、图片、容器、表单输入、导航、页脚、页面 Hero、Section Heading 和 CTA。
+
+## 动效原则
+
+允许轻微动效：导航吸顶、按钮反馈、图片淡入、模块 reveal、移动菜单过渡。禁止 Three.js、粒子、强制平滑滚动、大范围视差和长加载动画。必须支持 `prefers-reduced-motion`。
+
+## 测试和验收
+
+每次阶段性完成后运行：
+
+```bash
+pnpm lint
+pnpm typecheck
+pnpm test
+pnpm build
+pnpm test:e2e
+```

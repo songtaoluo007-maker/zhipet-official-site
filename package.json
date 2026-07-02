@@ -1,0 +1,38 @@
+{
+  "name": "zhipet-official-site",
+  "type": "module",
+  "private": true,
+  "packageManager": "pnpm@11.7.0",
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev --host 127.0.0.1",
+    "generate": "nuxt generate",
+    "lint": "eslint .",
+    "postinstall": "nuxt prepare",
+    "preview": "nuxt preview",
+    "test": "vitest run",
+    "test:e2e": "playwright test",
+    "typecheck": "nuxt typecheck"
+  },
+  "dependencies": {
+    "@nuxt/content": "^3.6.3",
+    "@nuxt/fonts": "^0.11.4",
+    "@nuxt/image": "^1.11.0",
+    "nuxt": "^4.0.0",
+    "sass": "^1.89.2",
+    "vue": "^3.5.17"
+  },
+  "devDependencies": {
+    "@nuxt/eslint": "^1.7.0",
+    "@playwright/test": "^1.61.1",
+    "@vitejs/plugin-vue": "^6.0.0",
+    "@vue/test-utils": "^2.4.6",
+    "eslint": "^9.30.1",
+    "jsdom": "^26.1.0",
+    "playwright": "^1.53.1",
+    "prettier": "^3.6.2",
+    "typescript": "^5.8.3",
+    "vitest": "^3.2.4",
+    "vue-tsc": "^2.2.12"
+  }
+}

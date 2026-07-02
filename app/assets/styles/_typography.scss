@@ -1,0 +1,37 @@
+body {
+  color: var(--color-text);
+  font-size: 16px;
+  line-height: 1.7;
+}
+
+h1,
+h2,
+h3,
+p {
+  margin-block: 0;
+}
+
+h1,
+h2,
+h3 {
+  color: var(--color-brand-900);
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: 1.16;
+}
+
+h1 {
+  font-size: clamp(36px, 6vw, 56px);
+}
+
+h2 {
+  font-size: clamp(28px, 4vw, 36px);
+}
+
+h3 {
+  font-size: 24px;
+}
+
+p {
+  color: var(--color-text-secondary);
+}
