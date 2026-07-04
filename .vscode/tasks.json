@@ -1,0 +1,65 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "nuxt: dev",
+      "type": "shell",
+      "command": "pnpm",
+      "args": ["dev", "--port", "3000"],
+      "options": {
+        "cwd": "${workspaceFolder}",
+        "env": {
+          "NO_COLOR": "1",
+          "FORCE_COLOR": "0"
+        }
+      },
+      "isBackground": true,
+      "problemMatcher": {
+        "owner": "nuxt",
+        "pattern": {
+          "regexp": "^\\s*$"
+        },
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": "^.*Nuxt.*$",
+          "endsPattern": "^.*Local:.*http://127\\.0\\.0\\.1:3000/.*$"
+        }
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "clear": true
+      }
+    },
+    {
+      "label": "nuxt: lint",
+      "type": "shell",
+      "command": "pnpm",
+      "args": ["lint"],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": "$eslint-stylish"
+    },
+    {
+      "label": "nuxt: typecheck",
+      "type": "shell",
+      "command": "pnpm",
+      "args": ["typecheck"],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": "$tsc"
+    },
+    {
+      "label": "nuxt: test",
+      "type": "shell",
+      "command": "pnpm",
+      "args": ["test"],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": []
+    }
+  ]
+}

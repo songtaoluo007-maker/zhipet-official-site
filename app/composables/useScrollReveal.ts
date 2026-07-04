@@ -4,6 +4,7 @@ import type { ComponentPublicInstance, Ref } from 'vue'
 export const useScrollReveal = () => {
   const elements: Ref<HTMLElement[]> = ref([])
   const isReducedMotion = ref(false)
+  let revealFallbackTimer: ReturnType<typeof window.setTimeout> | undefined
   let observer: IntersectionObserver | undefined
 
   const resolveElement = (element: Element | ComponentPublicInstance | null) => {
@@ -27,9 +28,10 @@ export const useScrollReveal = () => {
     }
 
     htmlElement.classList.add('reveal')
+    htmlElement.style.setProperty('--reveal-delay', `${Math.min(elements.value.length * 60, 180)}ms`)
     elements.value.push(htmlElement)
 
-    if (isReducedMotion.value) {
+    if (isReducedMotion.value || typeof IntersectionObserver === 'undefined') {
       htmlElement.classList.add('is-visible')
       return
     }
@@ -58,10 +60,17 @@ export const useScrollReveal = () => {
     )
 
     elements.value.forEach((element) => observer?.observe(element))
+
+    revealFallbackTimer = window.setTimeout(() => {
+      elements.value.forEach((element) => element.classList.add('is-visible'))
+    }, 1400)
   })
 
   onBeforeUnmount(() => {
     observer?.disconnect()
+    if (revealFallbackTimer) {
+      window.clearTimeout(revealFallbackTimer)
+    }
   })
 
   return {

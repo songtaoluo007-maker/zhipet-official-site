@@ -42,7 +42,7 @@ const solution = props.solution
             </BaseButton>
             <BaseButton
               :to="solution.secondaryAction?.to ?? '#workflow'"
-              variant="secondary"
+              variant="text"
               size="lg"
             >
               {{ solution.secondaryAction?.label ?? '查看流程' }}
@@ -60,7 +60,13 @@ const solution = props.solution
             radius="lg"
             priority
             concept
+            label-placement="below"
           />
+          <div class="solution-hero__route-panel" aria-label="方案推进路径">
+            <span>方案路径</span>
+            <strong>问题识别 -> 流程协同 -> 边界确认</strong>
+            <p>真实合作、数据接入和上线节奏均以项目方确认资料为准。</p>
+          </div>
         </div>
       </BaseContainer>
     </section>
@@ -103,7 +109,7 @@ const solution = props.solution
               :title="solution.sections.workflowTitle"
               :description="solution.sections.workflowDescription"
             />
-            <ol class="workflow-list">
+            <ol class="workflow-list" aria-label="方案流程地图">
               <li v-for="step in solution.workflow" :key="step.id">
                 <span>{{ step.order }}</span>
                 <div>
@@ -119,6 +125,7 @@ const solution = props.solution
             aspect-ratio="16 / 10"
             radius="lg"
             concept
+            label-placement="below"
           />
         </div>
       </BaseContainer>
@@ -184,6 +191,8 @@ const solution = props.solution
     <CTASection
       :title="solution.sections.ctaTitle"
       :description="solution.sections.ctaDescription"
+      secondary-label="返回解决方案"
+      secondary-to="/solutions"
     />
   </div>
 </template>
@@ -267,8 +276,37 @@ const solution = props.solution
   content: '';
 }
 
-.solution-hero__visual :deep(.base-image) {
+.solution-hero__visual :deep(.base-image__frame) {
   box-shadow: 0 24px 64px rgb(47 36 27 / 10%);
+}
+
+.solution-hero__route-panel {
+  position: absolute;
+  right: var(--space-5);
+  bottom: var(--space-7);
+  display: grid;
+  max-width: 300px;
+  gap: var(--space-2);
+  padding: var(--space-4);
+  border: 1px solid rgb(200 138 56 / 24%);
+  border-radius: var(--radius-button);
+  background: rgb(255 255 255 / 90%);
+}
+
+.solution-hero__route-panel span {
+  color: var(--color-text-secondary);
+  font-size: 13px;
+  font-weight: 750;
+}
+
+.solution-hero__route-panel strong {
+  color: var(--color-brand-900);
+  line-height: 1.35;
+}
+
+.solution-hero__route-panel p {
+  color: var(--color-text-secondary);
+  font-size: 13px;
 }
 
 .solution-section {
@@ -324,6 +362,7 @@ const solution = props.solution
 }
 
 .workflow-list {
+  position: relative;
   display: grid;
   gap: var(--space-4);
   padding: 0;
@@ -331,13 +370,23 @@ const solution = props.solution
   list-style: none;
 }
 
+.workflow-list::before {
+  position: absolute;
+  top: var(--space-2);
+  bottom: var(--space-2);
+  left: 26px;
+  width: 1px;
+  background: var(--color-border);
+  content: '';
+}
+
 .workflow-list li {
+  position: relative;
   display: grid;
   grid-template-columns: 54px minmax(0, 1fr);
   gap: var(--space-4);
   align-items: start;
   padding-block: var(--space-4);
-  border-bottom: 1px solid var(--color-border);
 }
 
 .workflow-list li:first-child {
@@ -345,7 +394,16 @@ const solution = props.solution
 }
 
 .workflow-list span {
+  z-index: 1;
+  display: inline-flex;
+  width: 54px;
+  height: 54px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgb(200 138 56 / 24%);
+  border-radius: var(--radius-pill);
   color: var(--color-accent-600);
+  background: var(--color-surface);
   font-size: 15px;
   font-weight: 800;
 }
@@ -481,7 +539,6 @@ const solution = props.solution
   }
 
   .solution-hero__visual {
-    width: min(100%, 280px);
     margin-inline: auto;
   }
 
@@ -489,10 +546,19 @@ const solution = props.solution
     inset: -12px 16px 16px -12px;
   }
 
+  .solution-hero__route-panel {
+    position: static;
+    margin-top: var(--space-3);
+  }
+
   .workflow-list li,
   .module-item,
   .guardrail-item {
     grid-template-columns: 1fr;
+  }
+
+  .workflow-list::before {
+    display: none;
   }
 }
 </style>

@@ -18,6 +18,12 @@ export interface HomeAiAbility {
   description: string
 }
 
+export interface HomeAnalysisStep {
+  label: string
+  title: string
+  description: string
+}
+
 export interface HomeAiUnderstanding {
   title: string
   description: string
@@ -29,6 +35,7 @@ export interface HomeAiUnderstanding {
   statusValue: string
   confidenceLabel: string
   analysisBasis: string[]
+  analysisSteps: HomeAnalysisStep[]
   abilities: HomeAiAbility[]
 }
 
@@ -66,6 +73,11 @@ export interface HomeCase {
 }
 
 export interface HomeBrandNote {
+  title: string
+  description: string
+}
+
+export interface HomeTrustPrinciple {
   title: string
   description: string
 }

@@ -22,7 +22,6 @@
       </nav>
 
       <div class="app-header__actions">
-        <BaseButton to="/contact" variant="secondary" size="sm">联系我们</BaseButton>
         <BaseButton to="/demo" size="sm">预约演示</BaseButton>
       </div>
 

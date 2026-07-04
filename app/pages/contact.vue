@@ -61,7 +61,7 @@ useSeoMeta({
                 <BaseIcon name="arrow-right" />
               </template>
             </BaseButton>
-            <BaseButton to="#contact-form" variant="secondary" size="lg">填写需求</BaseButton>
+            <BaseButton to="#contact-form" variant="text" size="lg">填写需求</BaseButton>
           </div>
         </div>
         <BaseImage
@@ -71,6 +71,7 @@ useSeoMeta({
           radius="lg"
           priority
           concept
+          label-placement="below"
         />
       </BaseContainer>
     </section>
@@ -164,6 +165,13 @@ useSeoMeta({
                 :described-by="field.describedBy"
               />
             </FormField>
+            <div class="form-status-panel" role="note">
+              <BaseIcon name="shield-check" />
+              <div>
+                <strong>当前不会发送到后台</strong>
+                <p>提交接口和正式联系方式待项目方确认。本表单先用于整理沟通信息，避免制造已提交的错觉。</p>
+              </div>
+            </div>
             <BaseButton disabled type="submit">提交接口待项目方确认</BaseButton>
           </form>
         </div>
@@ -311,6 +319,31 @@ useSeoMeta({
   background: var(--color-surface);
 }
 
+.form-status-panel {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: var(--space-3);
+  padding: var(--space-4);
+  border: 1px solid rgb(86 130 103 / 22%);
+  border-radius: var(--radius-button);
+  background: rgb(86 130 103 / 8%);
+}
+
+.form-status-panel .base-icon {
+  color: var(--color-success);
+  font-size: 20px;
+}
+
+.form-status-panel strong {
+  color: var(--color-brand-900);
+}
+
+.form-status-panel p {
+  margin-top: var(--space-1);
+  color: var(--color-text-secondary);
+  font-size: 14px;
+}
+
 @media (max-width: 1100px) {
   .contact-hero__inner,
   .form-layout {
@@ -349,6 +382,10 @@ useSeoMeta({
 
   .contact-form {
     padding: var(--space-5);
+  }
+
+  .form-status-panel {
+    grid-template-columns: 1fr;
   }
 }
 </style>

@@ -253,4 +253,11 @@ const handleClick = (event: MouseEvent) => {
     width: 100%;
   }
 }
+
+@media (prefers-reduced-motion: reduce) {
+  .base-button:not(.is-disabled):hover,
+  .base-button--text:not(.is-disabled):hover .base-button__icon--right {
+    transform: none;
+  }
+}
 </style>

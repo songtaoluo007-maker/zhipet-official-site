@@ -15,6 +15,29 @@ const props = defineProps<{
 const { register } = useScrollReveal()
 
 const product = props.product
+
+const productSignalFlow = [
+  {
+    label: '输入',
+    title: '采集日常信号',
+    description: '围绕声音、活动、照护记录和主人反馈形成可回看的连续线索。',
+  },
+  {
+    label: '分析',
+    title: '综合多模态信息',
+    description: '结合设备、App 和 PetSense 引擎，推测可能状态并保留不确定性。',
+  },
+  {
+    label: '输出',
+    title: '呈现依据与建议',
+    description: '向用户展示可能状态、分析依据、趋势提示和下一步观察重点。',
+  },
+  {
+    label: '边界',
+    title: '等待真实确认',
+    description: '参数、上线版本、权限和数据规则以项目方后续确认资料为准。',
+  },
+]
 </script>
 
 <template>
@@ -42,7 +65,7 @@ const product = props.product
             </BaseButton>
             <BaseButton
               :to="product.secondaryAction?.to ?? '#specifications'"
-              variant="secondary"
+              variant="text"
               size="lg"
             >
               {{ product.secondaryAction?.label ?? '查看规划参数' }}
@@ -60,7 +83,13 @@ const product = props.product
             radius="lg"
             priority
             concept
+            label-placement="below"
           />
+          <div class="product-hero__status-panel" aria-label="产品确认状态">
+            <span>当前阶段</span>
+            <strong>{{ product.status }}</strong>
+            <p>真实参数、上线版本和能力边界以项目方确认资料为准。</p>
+          </div>
         </div>
       </BaseContainer>
     </section>
@@ -75,10 +104,17 @@ const product = props.product
     >
       <SectionHeading
         id="values-title"
-        title="三项核心价值"
-        :description="`当前阶段只呈现${product.name}最核心的产品方向，其他功能留待真实测试和项目方确认后再扩展。`"
+        title="产品如何形成参考"
+        :description="`${product.name}当前先讲清输入、分析、输出和边界，避免把规划能力包装成确定承诺。`"
       />
-      <div class="value-grid">
+      <div class="signal-flow-grid" aria-label="产品信号处理链路">
+        <article v-for="item in productSignalFlow" :key="item.label" class="signal-flow-card">
+          <span>{{ item.label }}</span>
+          <h3>{{ item.title }}</h3>
+          <p>{{ item.description }}</p>
+        </article>
+      </div>
+      <div class="value-grid" aria-label="产品核心价值">
         <article v-for="item in product.values" :key="item.id" class="value-card">
           <span class="icon-shell" aria-hidden="true">
             <BaseIcon :name="item.icon" />
@@ -124,6 +160,7 @@ const product = props.product
             aspect-ratio="16 / 10"
             radius="lg"
             concept
+            label-placement="below"
           />
         </div>
       </BaseContainer>
@@ -215,6 +252,8 @@ const product = props.product
     <CTASection
       :title="`了解${product.name}的演示与合作计划`"
       description="预约产品演示，确认当前能力、适用场景和下一步合作方式。"
+      secondary-label="返回产品中心"
+      secondary-to="/products"
     />
   </div>
 </template>
@@ -298,12 +337,65 @@ const product = props.product
   content: '';
 }
 
-.product-hero__visual :deep(.base-image) {
+.product-hero__visual :deep(.base-image__frame) {
   box-shadow: 0 24px 64px rgb(47 36 27 / 10%);
+}
+
+.product-hero__status-panel {
+  position: absolute;
+  right: var(--space-5);
+  bottom: var(--space-7);
+  display: grid;
+  max-width: 280px;
+  gap: var(--space-2);
+  padding: var(--space-4);
+  border: 1px solid rgb(200 138 56 / 24%);
+  border-radius: var(--radius-button);
+  background: rgb(255 255 255 / 90%);
+}
+
+.product-hero__status-panel span {
+  color: var(--color-text-secondary);
+  font-size: 13px;
+  font-weight: 750;
+}
+
+.product-hero__status-panel strong {
+  color: var(--color-brand-900);
+}
+
+.product-hero__status-panel p {
+  color: var(--color-text-secondary);
+  font-size: 13px;
 }
 
 .product-section {
   @include section-spacing;
+}
+
+.signal-flow-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--space-4);
+  margin-bottom: var(--space-6);
+}
+
+.signal-flow-card {
+  display: grid;
+  gap: var(--space-2);
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--color-border);
+}
+
+.signal-flow-card span {
+  color: var(--color-accent-600);
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.signal-flow-card p {
+  color: var(--color-text-secondary);
+  font-size: 14px;
 }
 
 .value-grid {
@@ -504,6 +596,7 @@ const product = props.product
   }
 
   .value-grid,
+  .signal-flow-grid,
   .scenario-list,
   .process-list {
     grid-template-columns: 1fr;
@@ -553,12 +646,16 @@ const product = props.product
   }
 
   .product-hero__visual {
-    width: min(100%, 232px);
     margin-inline: auto;
   }
 
   .product-hero__visual::before {
     inset: -12px 16px 16px -12px;
+  }
+
+  .product-hero__status-panel {
+    position: static;
+    margin-top: var(--space-3);
   }
 
   .ecosystem-steps li,

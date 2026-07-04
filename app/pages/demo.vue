@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { reactive, ref } from 'vue'
+import { computed, reactive, ref, watch } from 'vue'
 import BaseButton from '~/components/base/BaseButton.vue'
 import BaseContainer from '~/components/base/BaseContainer.vue'
 import BaseIcon from '~/components/base/BaseIcon.vue'
@@ -23,38 +23,63 @@ const demoForm = reactive({
 
 const selectedFocus = ref('family')
 
+const scenarioOptions = [
+  { value: 'family', label: '家庭养宠' },
+  { value: 'hospital', label: '宠物医院' },
+  { value: 'store', label: '宠物门店' },
+  { value: 'partner', label: '商务合作' },
+] as const
+
 const focusOptions: Array<{
   id: string
   icon: IconName
+  scenario: (typeof scenarioOptions)[number]['value']
   title: string
   description: string
 }> = [
   {
     id: 'family',
     icon: 'home',
+    scenario: 'family',
     title: '家庭养宠方案',
     description: '了解智能挂件、App 记录和家庭协作如何组合成日常观察与照护路径。',
   },
   {
     id: 'product',
     icon: 'collar',
+    scenario: 'family',
     title: '智能挂件产品',
     description: '聚焦样机能力、设备与 App 协同方式，以及后续需要确认的硬件参数。',
   },
   {
     id: 'institution',
     icon: 'building',
+    scenario: 'partner',
     title: '机构合作方向',
     description: '讨论医院、门店和合作机构的服务流程、数据接入与合作边界。',
   },
 ]
 
-const scenarioOptions = [
-  { value: 'family', label: '家庭养宠' },
-  { value: 'hospital', label: '宠物医院' },
-  { value: 'store', label: '宠物门店' },
-  { value: 'partner', label: '商务合作' },
-]
+const selectedFocusOption = computed(
+  () => focusOptions.find((option) => option.id === selectedFocus.value) ?? focusOptions[0],
+)
+const selectedFocusTitle = computed(() => selectedFocusOption.value?.title ?? '家庭养宠方案')
+
+const selectFocusOption = (option: (typeof focusOptions)[number]) => {
+  selectedFocus.value = option.id
+  demoForm.scenario = option.scenario
+}
+
+watch(
+  () => demoForm.scenario,
+  (scenario) => {
+    const matchingOption = focusOptions.find((option) => option.scenario === scenario)
+
+    if (matchingOption) {
+      selectedFocus.value = matchingOption.id
+    }
+  },
+)
 
 useSeoMeta({
   title: '预约演示 | 知宠 ZHIPET',
@@ -87,7 +112,7 @@ useSeoMeta({
                 <BaseIcon name="arrow-right" />
               </template>
             </BaseButton>
-            <BaseButton to="/contact" variant="secondary" size="lg">联系知宠</BaseButton>
+            <BaseButton to="/contact" variant="text" size="lg">联系知宠</BaseButton>
           </div>
         </div>
         <BaseImage
@@ -97,6 +122,7 @@ useSeoMeta({
           radius="lg"
           priority
           concept
+          label-placement="below"
         />
       </BaseContainer>
     </section>
@@ -121,7 +147,7 @@ useSeoMeta({
           :class="{ 'is-selected': selectedFocus === option.id }"
           type="button"
           :aria-pressed="selectedFocus === option.id"
-          @click="selectedFocus = option.id"
+          @click="selectFocusOption(option)"
         >
           <span class="icon-shell" aria-hidden="true">
             <BaseIcon :name="option.icon" />
@@ -130,6 +156,7 @@ useSeoMeta({
             <strong>{{ option.title }}</strong>
             <small>{{ option.description }}</small>
           </span>
+          <BaseIcon v-if="selectedFocus === option.id" name="check-circle" class="focus-option__check" />
         </button>
       </div>
     </BaseContainer>
@@ -150,7 +177,7 @@ useSeoMeta({
             />
             <div class="selected-summary" aria-live="polite">
               <BaseIcon name="check-circle" />
-              <span>当前关注：{{ focusOptions.find((option) => option.id === selectedFocus)?.title }}</span>
+              <span>当前关注：{{ selectedFocusTitle }}</span>
             </div>
           </div>
           <form class="demo-form" aria-label="预约演示表单" @submit.prevent>
@@ -213,6 +240,13 @@ useSeoMeta({
                 :described-by="field.describedBy"
               />
             </FormField>
+            <div class="form-status-panel" role="note">
+              <BaseIcon name="shield-check" />
+              <div>
+                <strong>当前是演示需求整理表</strong>
+                <p>正式排期、提交接口和通知方式待项目方确认。本页不会把预约伪装成已发送。</p>
+              </div>
+            </div>
             <BaseButton disabled type="submit">提交接口待项目方确认</BaseButton>
           </form>
         </div>
@@ -293,6 +327,7 @@ useSeoMeta({
 }
 
 .focus-option {
+  position: relative;
   display: grid;
   grid-template-columns: auto minmax(0, 1fr);
   gap: var(--space-4);
@@ -316,6 +351,12 @@ useSeoMeta({
   background: var(--color-accent-100);
 }
 
+.focus-option:focus-visible {
+  box-shadow: var(--focus-ring);
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+
 .focus-option:hover {
   transform: translateY(-1px);
 }
@@ -336,6 +377,14 @@ useSeoMeta({
   color: var(--color-text-secondary);
   font-size: 14px;
   line-height: 1.6;
+}
+
+.focus-option__check {
+  position: absolute;
+  top: var(--space-4);
+  right: var(--space-4);
+  color: var(--color-success);
+  font-size: 18px;
 }
 
 .icon-shell {
@@ -377,6 +426,31 @@ useSeoMeta({
   border: 1px solid var(--color-border);
   border-radius: var(--radius-media);
   background: var(--color-surface);
+}
+
+.form-status-panel {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: var(--space-3);
+  padding: var(--space-4);
+  border: 1px solid rgb(86 130 103 / 22%);
+  border-radius: var(--radius-button);
+  background: rgb(86 130 103 / 8%);
+}
+
+.form-status-panel .base-icon {
+  color: var(--color-success);
+  font-size: 20px;
+}
+
+.form-status-panel strong {
+  color: var(--color-brand-900);
+}
+
+.form-status-panel p {
+  margin-top: var(--space-1);
+  color: var(--color-text-secondary);
+  font-size: 14px;
 }
 
 .demo-select {
@@ -431,6 +505,16 @@ useSeoMeta({
 
   .demo-form {
     padding: var(--space-5);
+  }
+
+  .form-status-panel {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .focus-option:hover {
+    transform: none;
   }
 }
 </style>

@@ -7,7 +7,7 @@
       </div>
       <div class="cta-section__actions">
         <BaseButton :to="primaryTo">{{ primaryLabel }}</BaseButton>
-        <BaseButton v-if="showSecondary" :to="secondaryTo" variant="secondary">
+        <BaseButton v-if="showSecondary" :to="secondaryTo" variant="text">
           {{ secondaryLabel }}
         </BaseButton>
       </div>
@@ -64,9 +64,10 @@ withDefaults(
 }
 
 .cta-section__actions {
-  display: flex;
+  display: grid;
   flex-wrap: wrap;
   gap: var(--space-3);
+  justify-items: end;
 }
 
 @media (max-width: 820px) {
@@ -74,6 +75,10 @@ withDefaults(
     align-items: flex-start;
     flex-direction: column;
     padding: var(--space-5);
+  }
+
+  .cta-section__actions {
+    justify-items: start;
   }
 }
 </style>

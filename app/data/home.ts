@@ -8,18 +8,19 @@ import type {
   HomeProduct,
   HomeSolution,
   HomeTimelineItem,
+  HomeTrustPrinciple,
 } from '~/types/home'
 
 export const heroPoints: HomeHeroPoint[] = [
   {
-    label: 'AI 宠物理解',
-    value: '声音 / 动作 / 长期数据',
-    description: '综合分析宠物可能的情绪、需求、行为意图和异常状态。',
+    label: '产品链路',
+    value: '感知 / 理解 / 行动',
+    description: '从设备记录到 App 提示，再到家庭或服务流程中的下一步行动。',
   },
   {
-    label: '当前资料状态',
-    value: '真实信息待确认',
-    description: '客户、资质、团队、联系方式、备案信息和能力验证资料确认后再正式展示。',
+    label: 'AI 边界',
+    value: '依据 / 不确定性',
+    description: '所有判断均以可能性表达，不冒充宠物语言逐字翻译或医疗级结论。',
   },
 ]
 
@@ -45,17 +46,34 @@ export const homePillars: HomePillar[] = [
 ]
 
 export const homeAiUnderstanding: HomeAiUnderstanding = {
-  title: '不只是听见，更要理解',
+  title: '一次提示如何形成',
   description:
-    '知宠通过声音、动作、场景和长期个体数据进行综合分析，将复杂的宠物行为转化为主人能够理解的状态提示和陪伴建议。',
+    '知宠将声音、行为、活动和长期记录放在同一条分析链里，输出可能状态、依据、不确定性和建议动作。',
   linkLabel: '了解 PetSense 多模态理解引擎',
   linkTo: '/ai-pet-understanding',
   image: '/images/concepts/family-solution.svg',
   alt: '知宠 AI 宠物理解家庭陪伴场景概念视觉',
   statusLabel: '当前可能状态',
-  statusValue: '可能焦虑或寻求关注',
-  confidenceLabel: '置信度示例 74%，需结合持续观察',
-  analysisBasis: ['连续短促叫声增多', '门口区域反复移动', '与独处历史模式相似'],
+  statusValue: '可能处于轻度不安',
+  confidenceLabel: '置信度示例 74%，仍需结合家庭环境与持续观察',
+  analysisBasis: ['短促叫声较平时增多', '门口区域往返活动增加', '夜间休息片段变短'],
+  analysisSteps: [
+    {
+      label: '01',
+      title: '采集信号',
+      description: '记录声音、活动、行为变化和主人反馈等多模态线索。',
+    },
+    {
+      label: '02',
+      title: '综合判断',
+      description: '结合个体历史模式，推测可能状态并保留其他解释。',
+    },
+    {
+      label: '03',
+      title: '给出行动',
+      description: '提示观察重点、照护建议和需要进一步确认的风险点。',
+    },
+  ],
   abilities: [
     {
       title: '声音理解',
@@ -102,16 +120,16 @@ export const homeFeaturedProducts: HomeFeaturedProduct[] = [
     detailLabel: '查看 App 规划',
   },
   {
-    id: 'ai-understanding-engine',
-    icon: 'sparkles',
-    name: 'AI 宠物理解引擎',
-    status: '能力验证与产品定义阶段',
-    summary: 'PetSense 融合多模态数据，输出可能状态、分析依据、置信度、其他解释和风险提示。',
-    image: '/images/concepts/hero-care-scene.svg',
-    alt: 'PetSense 多模态宠物理解引擎概念视觉',
-    features: ['多模态分析', '置信度提示', '不确定性说明'],
-    detailTo: '/ai-pet-understanding',
-    detailLabel: '探索 AI 宠物理解',
+    id: 'health-platform',
+    icon: 'chart',
+    name: '健康管理平台',
+    status: '场景验证阶段',
+    summary: '面向医院、门店与合作机构，探索设备数据接入、客户服务记录和长期健康管理流程。',
+    image: '/images/concepts/clinic-workflow.svg',
+    alt: '宠物健康管理平台概念视觉',
+    features: ['设备数据接入', '服务流程记录', '长期趋势协同'],
+    detailTo: '/products/health-platform',
+    detailLabel: '查看平台方向',
   },
 ]
 
@@ -213,6 +231,25 @@ export const brandNotes: HomeBrandNote[] = [
   {
     title: '发展状态',
     description: '当前处于官网、需求验证与产品定义阶段，真实团队、资质和案例资料待项目方确认。',
+  },
+]
+
+export const homeTrustPrinciples: HomeTrustPrinciple[] = [
+  {
+    title: '不做逐字翻译',
+    description: '知宠不会把 AI 宠物理解描述成宠物语言逐字翻译。',
+  },
+  {
+    title: '保留不确定性',
+    description: '状态提示使用可能、推测、趋势和风险提示等概率表达。',
+  },
+  {
+    title: '展示分析依据',
+    description: '关键 AI 判断需要同时呈现依据、置信度示例和其他可能解释。',
+  },
+  {
+    title: '尊重敏感数据',
+    description: '原始音频、家庭环境音频和宠物数据均按敏感数据处理。',
   },
 ]
 

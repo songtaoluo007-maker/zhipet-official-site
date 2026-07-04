@@ -10,21 +10,23 @@ test('home route loads formal homepage content with no horizontal overflow', asy
   )
   await expect(page.getByRole('banner')).toBeVisible()
   await expect(page.getByRole('contentinfo')).toBeVisible()
-  await expect(page.getByRole('heading', { level: 1 })).toHaveText('用 AI 读懂每一次陪伴')
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('用 AI 理解宠物的日常信号')
   await expect(
-    page.getByText('融合宠物声音、动作、活动与长期成长数据，帮助主人更好地理解宠物的情绪、需求、健康与安全状态。'),
+    page.getByText('融合声音、行为、活动与成长记录，帮助主人获得更有依据的情绪、健康与安全趋势提示。'),
   ).toBeVisible()
   await expect(
-    page.getByLabel('首页主要操作').getByRole('link', { name: '探索 AI 宠物理解' }),
-  ).toHaveAttribute(
-    'href',
-    '/ai-pet-understanding',
-  )
+    page.getByLabel('首页主要操作').getByRole('link', { name: '预约演示' }),
+  ).toHaveAttribute('href', '/demo')
+  await expect(page.getByText('感知 / 理解 / 行动')).toBeVisible()
+  await expect(page.getByText('依据 / 不确定性')).toBeVisible()
   await expect(
     page.locator('#what-we-do').getByRole('heading', { name: '知宠在做什么' }),
   ).toBeVisible()
   const aiSection = page.locator('#ai-understanding')
-  await expect(aiSection.getByRole('heading', { name: '不只是听见，更要理解' })).toBeVisible()
+  await expect(aiSection.getByRole('heading', { name: '一次提示如何形成' })).toBeVisible()
+  await expect(aiSection.getByText('采集信号')).toBeVisible()
+  await expect(aiSection.getByText('综合判断')).toBeVisible()
+  await expect(aiSection.getByText('给出行动')).toBeVisible()
   await expect(aiSection.getByText('声音理解')).toBeVisible()
   await expect(aiSection.getByText('行为识别')).toBeVisible()
   await expect(aiSection.getByText('情绪推测')).toBeVisible()
@@ -35,7 +37,7 @@ test('home route loads formal homepage content with no horizontal overflow', asy
   await expect(page.locator('#products').getByRole('heading', { name: '核心产品' })).toBeVisible()
   await expect(page.getByRole('heading', { name: '知宠智能挂件 / 感知设备' })).toBeVisible()
   await expect(page.getByRole('heading', { name: '知宠 App' }).first()).toBeVisible()
-  await expect(page.getByRole('heading', { name: 'AI 宠物理解引擎' })).toBeVisible()
+  await expect(page.getByRole('heading', { name: '健康管理平台' }).first()).toBeVisible()
   await expect(
     page.locator('#solutions').getByRole('heading', { name: '解决方案', exact: true }),
   ).toBeVisible()
@@ -43,9 +45,10 @@ test('home route loads formal homepage content with no horizontal overflow', asy
   await expect(page.getByText('主人不在家时的行为变化')).toBeVisible()
   await expect(page.getByText('夜间或日常活动突然异常')).toBeVisible()
   await expect(page.getByText('长期个体习惯变化')).toBeVisible()
-  await expect(page.locator('#cases').getByRole('heading', { name: '客户案例' })).toBeVisible()
+  await expect(page.locator('#about').getByRole('heading', { name: '我们如何谨慎使用 AI 判断' })).toBeVisible()
+  await expect(page.getByText('不做逐字翻译')).toBeVisible()
+  await expect(page.getByText('尊重敏感数据')).toBeVisible()
   await expect(page.getByText('AI 概念图，仅供参考').first()).toBeVisible()
-  await expect(page.getByText('真实信息待确认')).toBeVisible()
   await expect(page.getByText('宠物语言翻译器')).toHaveCount(0)
   await expect(page.getByText('百分百听懂')).toHaveCount(0)
   await expect(page.getByText('人宠无障碍交流')).toHaveCount(0)
@@ -78,7 +81,9 @@ test('smart collar product page shows prototype-safe product details', async ({ 
 
   await expect(page.getByRole('heading', { level: 1 })).toHaveText('知宠智能挂件')
   await expect(page.getByText('记录声音、动作和安全变化，让陪伴更有依据')).toBeVisible()
-  await expect(page.locator('#values').getByRole('heading', { name: '三项核心价值' })).toBeVisible()
+  await expect(page.locator('#values').getByRole('heading', { name: '产品如何形成参考' })).toBeVisible()
+  await expect(page.getByText('采集日常信号')).toBeVisible()
+  await expect(page.getByText('呈现依据与建议')).toBeVisible()
   await expect(
     page.locator('#ecosystem').getByRole('heading', { name: '设备、App 与 AI 引擎协同' }),
   ).toBeVisible()
@@ -172,7 +177,7 @@ test('contact route shows safe contact placeholders and disabled submission', as
 
   await expect(page.getByRole('heading', { level: 1 })).toHaveText('联系我们')
   await expect(page.getByRole('heading', { name: '联系信息' })).toBeVisible()
-  await expect(page.getByText('联系方式待项目方确认')).toBeVisible()
+  await expect(page.getByText('联系方式待项目方确认', { exact: true })).toBeVisible()
   await expect(page.getByRole('heading', { name: '留下合作需求' })).toBeVisible()
   await expect(page.getByLabel('姓名')).toBeVisible()
   await expect(page.getByRole('button', { name: '提交接口待项目方确认' })).toBeDisabled()
@@ -289,7 +294,7 @@ test('app product page shows planning-stage app details', async ({ page }) => {
 
   await expect(page.getByRole('heading', { level: 1 })).toHaveText('知宠 App')
   await expect(page.getByText('体验流程规划中').first()).toBeVisible()
-  await expect(page.locator('#values').getByRole('heading', { name: '三项核心价值' })).toBeVisible()
+  await expect(page.locator('#values').getByRole('heading', { name: '产品如何形成参考' })).toBeVisible()
   await expect(page.locator('#specifications caption')).toContainText('规划参数，仅供展示')
   await expect(page.getByText('待项目方确认').first()).toBeVisible()
   await expect(page.getByText('AI 概念图，仅供参考').first()).toBeVisible()
@@ -305,6 +310,7 @@ test('health platform product page shows validation-stage platform details', asy
 
   await expect(page.getByRole('heading', { level: 1 })).toHaveText('健康管理平台')
   await expect(page.getByText('场景验证阶段').first()).toBeVisible()
+  await expect(page.locator('#values').getByRole('heading', { name: '产品如何形成参考' })).toBeVisible()
   await expect(page.locator('#ecosystem').getByRole('heading', { name: '设备、App 与平台协同' })).toBeVisible()
   await expect(page.locator('#specifications caption')).toContainText('规划参数，仅供展示')
   await expect(page.getByText('待项目方确认').first()).toBeVisible()

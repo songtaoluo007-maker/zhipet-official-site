@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { computed } from 'vue'
 import BaseButton from '~/components/base/BaseButton.vue'
 import BaseContainer from '~/components/base/BaseContainer.vue'
 import BaseIcon from '~/components/base/BaseIcon.vue'
@@ -10,14 +11,16 @@ import {
   brandNotes,
   heroPoints,
   homeAiUnderstanding,
-  homeCases,
   homeFeaturedProducts,
   homePillars,
   homeSolutions,
   homeTimeline,
+  homeTrustPrinciples,
 } from '~/data/home'
 
 const { register } = useScrollReveal()
+const primaryProduct = computed(() => homeFeaturedProducts[0])
+const supportingProducts = computed(() => homeFeaturedProducts.slice(1))
 
 useSeoMeta({
   title: '知宠 ZHIPET | 用 AI 读懂每一次陪伴',
@@ -35,19 +38,19 @@ useSeoMeta({
     <section class="home-hero" aria-labelledby="home-hero-title">
       <BaseContainer class="home-hero__inner" width="wide">
         <div class="home-hero__copy">
-          <h1 id="home-hero-title">用 AI 读懂每一次陪伴</h1>
+          <h1 id="home-hero-title">用 AI 理解宠物的日常信号</h1>
           <p class="home-hero__lead">
-            融合宠物声音、动作、活动与长期成长数据，帮助主人更好地理解宠物的情绪、需求、健康与安全状态。
+            融合声音、行为、活动与成长记录，帮助主人获得更有依据的情绪、健康与安全趋势提示。
           </p>
           <div class="home-hero__actions" aria-label="首页主要操作">
-            <BaseButton to="#what-we-do" size="lg">
-              了解知宠
+            <BaseButton to="/demo" size="lg">
+              预约演示
               <template #iconRight>
                 <BaseIcon name="arrow-right" />
               </template>
             </BaseButton>
-            <BaseButton to="/ai-pet-understanding" variant="secondary" size="lg">
-              探索 AI 宠物理解
+            <BaseButton to="#ai-understanding" variant="text" size="lg">
+              了解 AI 宠物理解
             </BaseButton>
           </div>
           <dl class="home-hero__points" aria-label="知宠当前信息摘要">
@@ -60,14 +63,29 @@ useSeoMeta({
         </div>
 
         <div class="home-hero__visual">
-          <BaseImage
-            src="/images/concepts/hero-care-scene.svg"
-            alt="知宠连接宠物家庭、智能设备和健康服务的概念视觉"
-            aspect-ratio="4 / 3"
-            radius="lg"
-            priority
-            concept
-          />
+          <div class="home-hero__visual-stage">
+            <BaseImage
+              src="/images/concepts/hero-care-scene.svg"
+              alt="知宠连接宠物家庭、智能设备和健康服务的概念视觉"
+              aspect-ratio="4 / 3"
+              radius="lg"
+              priority
+              concept
+              label-placement="below"
+            />
+            <div class="home-hero__insight-card">
+              <span>{{ homeAiUnderstanding.statusLabel }}</span>
+              <strong>{{ homeAiUnderstanding.statusValue }}</strong>
+              <p>{{ homeAiUnderstanding.confidenceLabel }}</p>
+            </div>
+            <div class="home-hero__signal-card" aria-label="知宠产品链路示意">
+              <span>感知</span>
+              <i aria-hidden="true" />
+              <span>理解</span>
+              <i aria-hidden="true" />
+              <span>行动</span>
+            </div>
+          </div>
         </div>
       </BaseContainer>
     </section>
@@ -82,15 +100,17 @@ useSeoMeta({
       <SectionHeading
         id="what-we-do-title"
         title="知宠在做什么"
-        description="先把复杂的健康信息变得连续、可读、可行动，再把设备、App 与服务流程连接起来。"
+        description="从日常信号到状态提示，再到家庭或服务机构中的下一步行动。"
       />
-      <div class="pillar-grid">
-        <article v-for="pillar in homePillars" :key="pillar.id" class="pillar-card">
+      <div class="capability-rail">
+        <article v-for="pillar in homePillars" :key="pillar.id" class="capability-item">
           <span class="icon-shell" aria-hidden="true">
             <BaseIcon :name="pillar.icon" />
           </span>
-          <h3>{{ pillar.title }}</h3>
-          <p>{{ pillar.description }}</p>
+          <div>
+            <h3>{{ pillar.title }}</h3>
+            <p>{{ pillar.description }}</p>
+          </div>
         </article>
       </div>
     </BaseContainer>
@@ -110,16 +130,17 @@ useSeoMeta({
               aspect-ratio="4 / 3"
               radius="lg"
               concept
+              label-placement="below"
             />
             <div class="wave-strip" aria-hidden="true">
               <span v-for="index in 18" :key="index" />
             </div>
-            <div class="ai-status-note">
+            <div class="ai-analysis-card">
               <span>{{ homeAiUnderstanding.statusLabel }}</span>
               <strong>{{ homeAiUnderstanding.statusValue }}</strong>
               <p>{{ homeAiUnderstanding.confidenceLabel }}</p>
             </div>
-            <div class="ai-basis-note" aria-label="分析依据示例">
+            <div class="ai-basis-note">
               <span>分析依据示例</span>
               <ul>
                 <li v-for="item in homeAiUnderstanding.analysisBasis" :key="item">{{ item }}</li>
@@ -134,6 +155,15 @@ useSeoMeta({
               :description="homeAiUnderstanding.description"
               align="left"
             />
+            <div class="analysis-step-list" aria-label="AI 提示形成链路">
+              <article v-for="step in homeAiUnderstanding.analysisSteps" :key="step.label">
+                <span>{{ step.label }}</span>
+                <div>
+                  <h3>{{ step.title }}</h3>
+                  <p>{{ step.description }}</p>
+                </div>
+              </article>
+            </div>
             <div class="ai-ability-strip" aria-label="AI 宠物理解能力">
               <div v-for="ability in homeAiUnderstanding.abilities" :key="ability.title">
                 <h3>{{ ability.title }}</h3>
@@ -161,21 +191,54 @@ useSeoMeta({
         <SectionHeading
           id="products-title"
           title="核心产品"
-          description="第一阶段围绕感知设备、知宠 App、PetSense 多模态宠物理解引擎和专业服务平台，验证从日常陪伴到服务连接的闭环。"
+          description="以智能感知设备为入口，用 App 承接家庭照护，再把长期记录连接到服务流程。"
         />
-        <div class="product-list">
-          <article v-for="product in homeFeaturedProducts" :key="product.id" class="product-row">
-            <div class="product-row__copy">
-              <div class="product-row__head">
+        <div class="product-ecosystem">
+          <article v-if="primaryProduct" class="product-feature">
+            <div class="product-feature__copy">
+              <div class="product-feature__head">
                 <span class="icon-shell" aria-hidden="true">
-                  <BaseIcon :name="product.icon" />
+                  <BaseIcon :name="primaryProduct.icon" />
                 </span>
                 <div>
-                  <h3>{{ product.name }}</h3>
-                  <BaseTag tone="concept">{{ product.status }}</BaseTag>
+                  <BaseTag tone="concept">{{ primaryProduct.status }}</BaseTag>
+                  <h3>{{ primaryProduct.name }}</h3>
                 </div>
               </div>
-              <p>{{ product.summary }}</p>
+              <p>{{ primaryProduct.summary }}</p>
+              <ul class="check-list">
+                <li v-for="feature in primaryProduct.features" :key="feature">
+                  <BaseIcon name="check-circle" />
+                  <span>{{ feature }}</span>
+                </li>
+              </ul>
+              <BaseButton v-if="primaryProduct.detailTo" :to="primaryProduct.detailTo" variant="text">
+                {{ primaryProduct.detailLabel ?? '查看详情' }}
+                <template #iconRight>
+                  <BaseIcon name="arrow-right" />
+                </template>
+              </BaseButton>
+            </div>
+            <BaseImage
+              class="product-feature__image"
+              :src="primaryProduct.image"
+              :alt="primaryProduct.alt"
+              aspect-ratio="3 / 2"
+              radius="lg"
+              concept
+              label-placement="below"
+            />
+          </article>
+          <div class="product-support-grid">
+            <article v-for="product in supportingProducts" :key="product.id" class="product-support-card">
+              <span class="icon-shell" aria-hidden="true">
+                <BaseIcon :name="product.icon" />
+              </span>
+              <div>
+                <BaseTag tone="concept">{{ product.status }}</BaseTag>
+                <h3>{{ product.name }}</h3>
+                <p>{{ product.summary }}</p>
+              </div>
               <ul class="check-list">
                 <li v-for="feature in product.features" :key="feature">
                   <BaseIcon name="check-circle" />
@@ -188,16 +251,8 @@ useSeoMeta({
                   <BaseIcon name="arrow-right" />
                 </template>
               </BaseButton>
-            </div>
-            <BaseImage
-              class="product-row__image"
-              :src="product.image"
-              :alt="product.alt"
-              aspect-ratio="3 / 2"
-              radius="lg"
-              concept
-            />
-          </article>
+            </article>
+          </div>
         </div>
       </BaseContainer>
     </section>
@@ -215,9 +270,9 @@ useSeoMeta({
           <SectionHeading
             id="solutions-title"
             title="解决方案"
-            description="不把官网做成后台看板，而是清楚说明不同对象如何使用知宠能力。"
+            description="不同角色看到的是同一套能力在不同服务流程里的使用方式。"
           />
-          <BaseButton to="/solutions" variant="secondary">
+          <BaseButton to="/solutions" variant="text">
             了解解决方案
             <template #iconRight>
               <BaseIcon name="arrow-right" />
@@ -242,49 +297,30 @@ useSeoMeta({
       </div>
     </BaseContainer>
 
-    <section
-      id="cases"
-      :ref="register"
-      class="home-section case-section"
-      aria-labelledby="cases-title"
-    >
-      <BaseContainer width="wide">
-        <SectionHeading
-          id="cases-title"
-          title="客户案例"
-          description="真实客户授权前，只展示示范案例和概念验证项目，不冒充合作成果。"
-        />
-        <div class="case-grid">
-          <article v-for="item in homeCases" :key="item.id" class="case-card">
-            <div class="case-card__meta">
-              <BaseTag tone="warning">{{ item.label }}</BaseTag>
-              <span>{{ item.clientType }}</span>
-            </div>
-            <h3>{{ item.title }}</h3>
-            <p>{{ item.summary }}</p>
-            <ul class="case-card__results">
-              <li v-for="result in item.results" :key="result">{{ result }}</li>
-            </ul>
-          </article>
-        </div>
-      </BaseContainer>
-    </section>
-
     <BaseContainer
       id="about"
       :ref="register"
       tag="section"
-      class="home-section brand-section"
+      class="home-section trust-brand-section"
       width="wide"
       aria-labelledby="brand-title"
     >
-      <div class="brand-layout">
-        <div class="brand-layout__main">
+      <div class="trust-brand-layout">
+        <div class="trust-brand-layout__main">
           <SectionHeading
             id="brand-title"
-            title="品牌与团队"
-            description="保持克制表达：先展示愿景、技术路线和项目状态，真实团队与资质资料确认后再上线。"
+            title="我们如何谨慎使用 AI 判断"
+            description="把产品边界讲清楚，是知宠建立信任的一部分。"
           />
+          <div class="trust-principle-list">
+            <article v-for="principle in homeTrustPrinciples" :key="principle.title" class="trust-principle">
+              <BaseIcon name="shield-check" />
+              <div>
+                <h3>{{ principle.title }}</h3>
+                <p>{{ principle.description }}</p>
+              </div>
+            </article>
+          </div>
           <div class="brand-note-list">
             <article v-for="note in brandNotes" :key="note.title" class="brand-note">
               <h3>{{ note.title }}</h3>
@@ -292,13 +328,14 @@ useSeoMeta({
             </article>
           </div>
         </div>
-        <aside class="brand-layout__aside" aria-label="知宠项目阶段与团队概念视觉">
+        <aside class="trust-brand-layout__aside" aria-label="知宠项目阶段与团队概念视觉">
           <BaseImage
             src="/images/concepts/team-lab.svg"
             alt="知宠团队与宠物健康技术探索概念视觉"
             aspect-ratio="3 / 2"
             radius="lg"
             concept
+            label-placement="below"
           />
           <ol class="timeline-list">
             <li v-for="item in homeTimeline" :key="item.date + item.title">
@@ -316,6 +353,8 @@ useSeoMeta({
     <CTASection
       title="携手知宠，为更多宠物带来健康守护"
       description="预约产品演示，了解适合家庭、医院、门店与合作机构的下一步方案。"
+      secondary-label="查看产品中心"
+      secondary-to="/products"
     />
   </div>
 </template>
@@ -328,12 +367,12 @@ useSeoMeta({
 }
 
 .home-hero {
-  padding-block: var(--space-9) var(--space-8);
+  padding-block: var(--space-9) var(--space-7);
 }
 
 .home-hero__inner {
   display: grid;
-  grid-template-columns: minmax(0, 0.92fr) minmax(360px, 0.78fr);
+  grid-template-columns: minmax(0, 0.92fr) minmax(420px, 0.82fr);
   gap: var(--space-8);
   align-items: center;
 }
@@ -345,7 +384,7 @@ useSeoMeta({
 
 .home-hero h1 {
   max-width: 760px;
-  font-size: 58px;
+  font-size: 56px;
   line-height: 1.08;
   letter-spacing: 0;
 }
@@ -359,7 +398,8 @@ useSeoMeta({
 .home-hero__actions {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--space-3);
+  gap: var(--space-4);
+  align-items: center;
 }
 
 .home-hero__points {
@@ -397,16 +437,78 @@ useSeoMeta({
   position: relative;
 }
 
-.home-hero__visual::before {
+.home-hero__visual-stage {
+  position: relative;
+  padding: var(--space-5);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-media);
+  background:
+    linear-gradient(180deg, rgb(255 255 255 / 82%), rgb(246 241 233 / 78%)),
+    var(--color-surface-soft);
+}
+
+.home-hero__visual-stage::before {
   position: absolute;
-  inset: -20px 28px 28px -20px;
+  inset: -18px 30px 30px -18px;
+  z-index: -1;
   border: 1px solid var(--color-border);
   border-radius: var(--radius-media);
   content: '';
 }
 
-.home-hero__visual :deep(.base-image) {
-  box-shadow: 0 24px 64px rgb(47 36 27 / 10%);
+.home-hero__visual :deep(.base-image__frame) {
+  box-shadow: 0 24px 64px rgb(47 36 27 / 9%);
+}
+
+.home-hero__insight-card,
+.home-hero__signal-card {
+  border: 1px solid rgb(200 138 56 / 24%);
+  background: rgb(255 255 255 / 88%);
+}
+
+.home-hero__insight-card {
+  position: absolute;
+  right: var(--space-7);
+  bottom: var(--space-8);
+  display: grid;
+  max-width: 280px;
+  gap: var(--space-2);
+  padding: var(--space-4);
+  border-radius: var(--radius-card);
+}
+
+.home-hero__insight-card span,
+.home-hero__signal-card span {
+  color: var(--color-text-secondary);
+  font-size: 13px;
+  font-weight: 750;
+}
+
+.home-hero__insight-card strong {
+  color: var(--color-brand-900);
+  font-size: 19px;
+}
+
+.home-hero__insight-card p {
+  color: var(--color-text-secondary);
+  font-size: 13px;
+}
+
+.home-hero__signal-card {
+  position: absolute;
+  top: var(--space-7);
+  left: var(--space-7);
+  display: inline-flex;
+  gap: var(--space-2);
+  align-items: center;
+  padding: 8px 12px;
+  border-radius: var(--radius-pill);
+}
+
+.home-hero__signal-card i {
+  width: 18px;
+  height: 1px;
+  background: var(--color-accent-300);
 }
 
 .home-section {
@@ -417,28 +519,45 @@ useSeoMeta({
   padding-top: var(--space-8);
 }
 
-.pillar-grid {
+.capability-rail {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: var(--space-5);
+  border-block: 1px solid var(--color-border);
 }
 
-.pillar-card,
-.case-card,
+.capability-item,
+.trust-principle,
+.brand-note {
+  min-width: 0;
+}
+
+.capability-item {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: var(--space-4);
+  padding: var(--space-5);
+  border-right: 1px solid var(--color-border);
+}
+
+.capability-item:last-child {
+  border-right: 0;
+}
+
 .brand-note {
   display: grid;
   gap: var(--space-3);
-  padding: var(--space-5);
+  padding: var(--space-4);
   border: 1px solid var(--color-border);
-  border-radius: var(--radius-card);
+  border-radius: var(--radius-button);
   background: var(--color-surface);
 }
 
-.pillar-card p,
-.case-card p,
+.capability-item p,
 .brand-note p,
+.trust-principle p,
 .solution-item p,
-.product-row p,
+.product-feature p,
+.product-support-card p,
 .timeline-list p {
   color: var(--color-text-secondary);
 }
@@ -457,49 +576,46 @@ useSeoMeta({
 }
 
 .ai-understanding-section {
-  background: var(--color-surface);
+  background: var(--color-surface-soft);
 }
 
 .ai-understanding-layout {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(360px, 0.72fr);
+  grid-template-columns: minmax(0, 0.98fr) minmax(380px, 0.78fr);
   gap: var(--space-8);
   align-items: center;
 }
 
 .ai-understanding-visual {
-  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(260px, 0.72fr);
   min-width: 0;
+  gap: var(--space-4);
   padding: var(--space-5);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-media);
-  background: var(--color-surface-soft);
+  background: var(--color-surface);
 }
 
 .ai-understanding-visual :deep(.base-image) {
-  box-shadow: 0 18px 44px rgb(47 36 27 / 8%);
+  grid-row: span 2;
 }
 
 .wave-strip,
-.ai-status-note,
+.ai-analysis-card,
 .ai-basis-note {
   border: 1px solid rgb(200 138 56 / 22%);
-  background: rgb(255 255 255 / 88%);
-  backdrop-filter: blur(10px);
+  background: var(--color-surface);
 }
 
 .wave-strip {
-  position: absolute;
-  right: var(--space-7);
-  bottom: var(--space-7);
-  left: var(--space-7);
   display: flex;
-  height: 58px;
+  height: 52px;
   align-items: center;
   justify-content: center;
-  gap: 7px;
-  padding: 0 var(--space-4);
-  border-radius: var(--radius-card);
+  gap: 6px;
+  padding: 0 var(--space-3);
+  border-radius: var(--radius-button);
 }
 
 .wave-strip span {
@@ -524,46 +640,41 @@ useSeoMeta({
   background: var(--color-success);
 }
 
-.ai-status-note,
+.wave-strip span:nth-child(odd) {
+  animation: wave-soft 3.2s ease-in-out infinite;
+}
+
+.wave-strip span:nth-child(even) {
+  animation: wave-soft 3.2s ease-in-out 240ms infinite;
+}
+
+.ai-analysis-card,
 .ai-basis-note {
-  position: absolute;
   display: grid;
   gap: var(--space-2);
   padding: var(--space-4);
-  border-radius: var(--radius-card);
-  box-shadow: 0 16px 36px rgb(47 36 27 / 10%);
+  border-radius: var(--radius-button);
 }
 
-.ai-status-note {
-  top: var(--space-7);
-  right: var(--space-7);
-  width: min(292px, 48%);
-}
-
-.ai-status-note span,
+.ai-analysis-card span,
 .ai-basis-note span {
   color: var(--color-text-secondary);
   font-size: 13px;
   font-weight: 750;
 }
 
-.ai-status-note strong {
+.ai-analysis-card strong {
   color: var(--color-brand-900);
   font-size: 20px;
   line-height: 1.3;
 }
 
-.ai-status-note p,
+.ai-analysis-card p,
 .ai-basis-note li,
-.ai-ability-strip p {
+.ai-ability-strip p,
+.analysis-step-list p {
   color: var(--color-text-secondary);
   font-size: 14px;
-}
-
-.ai-basis-note {
-  bottom: calc(var(--space-7) + 76px);
-  left: var(--space-7);
-  width: min(300px, 48%);
 }
 
 .ai-basis-note ul {
@@ -594,6 +705,36 @@ useSeoMeta({
   min-width: 0;
 }
 
+.analysis-step-list {
+  display: grid;
+  gap: var(--space-3);
+  margin-bottom: var(--space-5);
+}
+
+.analysis-step-list article {
+  display: grid;
+  grid-template-columns: 42px minmax(0, 1fr);
+  gap: var(--space-3);
+  padding-bottom: var(--space-3);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.analysis-step-list article:last-child {
+  padding-bottom: 0;
+  border-bottom: 0;
+}
+
+.analysis-step-list span {
+  color: var(--color-accent-600);
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.analysis-step-list h3 {
+  margin-bottom: var(--space-1);
+  font-size: 18px;
+}
+
 .ai-ability-strip {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -612,19 +753,18 @@ useSeoMeta({
   font-size: 18px;
 }
 
-.product-section,
-.case-section {
+.product-section {
   background: var(--color-surface-soft);
 }
 
-.product-list {
+.product-ecosystem {
   display: grid;
   gap: var(--space-6);
 }
 
-.product-row {
+.product-feature {
   display: grid;
-  grid-template-columns: minmax(0, 0.82fr) minmax(320px, 0.78fr);
+  grid-template-columns: minmax(0, 0.92fr) minmax(360px, 0.78fr);
   gap: var(--space-6);
   align-items: center;
   padding: var(--space-6);
@@ -633,23 +773,41 @@ useSeoMeta({
   background: var(--color-surface);
 }
 
-.product-row:nth-child(even) .product-row__copy {
-  order: 2;
-}
-
-.product-row__copy {
+.product-feature__copy,
+.product-support-card {
   display: grid;
   gap: var(--space-4);
 }
 
-.product-row__head {
+.product-feature__head {
   display: flex;
   gap: var(--space-4);
   align-items: flex-start;
 }
 
-.product-row__head h3 {
-  margin-bottom: var(--space-2);
+.product-feature__head h3 {
+  margin-top: var(--space-2);
+}
+
+.product-feature h3 {
+  font-size: 28px;
+}
+
+.product-support-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-5);
+}
+
+.product-support-card {
+  padding: var(--space-5);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-button);
+  background: var(--color-surface);
+}
+
+.product-support-card h3 {
+  margin: var(--space-2) 0;
 }
 
 .check-list {
@@ -677,7 +835,7 @@ useSeoMeta({
 }
 
 .solution-layout,
-.brand-layout {
+.trust-brand-layout {
   display: grid;
   grid-template-columns: minmax(0, 0.72fr) minmax(420px, 1fr);
   gap: var(--space-8);
@@ -729,53 +887,47 @@ useSeoMeta({
   font-weight: 650;
 }
 
-.case-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: var(--space-5);
-}
-
-.case-card__meta {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-3);
-  align-items: center;
-  color: var(--color-text-secondary);
-  font-size: 14px;
-  font-weight: 650;
-}
-
-.case-card__results {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-2);
-  padding: 0;
-  margin: var(--space-2) 0 0;
-  list-style: none;
-}
-
-.case-card__results li {
-  padding: 7px 10px;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-pill);
-  color: var(--color-brand-900);
-  background: var(--color-surface-soft);
-  font-size: 13px;
-  font-weight: 650;
-}
-
-.brand-layout__main,
-.brand-layout__aside {
+.trust-brand-layout__main,
+.trust-brand-layout__aside {
   min-width: 0;
 }
 
+.trust-principle-list,
 .brand-note-list {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: var(--space-4);
 }
 
-.brand-layout__aside {
+.trust-principle-list {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin-bottom: var(--space-6);
+}
+
+.trust-principle {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: var(--space-3);
+  padding: var(--space-4);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-button);
+  background: var(--color-surface);
+}
+
+.trust-principle .base-icon {
+  color: var(--color-success);
+  font-size: 20px;
+}
+
+.trust-principle h3,
+.brand-note h3 {
+  margin-bottom: var(--space-2);
+}
+
+.brand-note-list {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.trust-brand-layout__aside {
   display: grid;
   gap: var(--space-5);
 }
@@ -807,12 +959,18 @@ useSeoMeta({
   font-size: 18px;
 }
 
+@keyframes wave-soft {
+  50% {
+    transform: scaleY(0.72);
+  }
+}
+
 @media (max-width: 1100px) {
   .home-hero__inner,
   .ai-understanding-layout,
-  .product-row,
+  .product-feature,
   .solution-layout,
-  .brand-layout {
+  .trust-brand-layout {
     grid-template-columns: 1fr;
   }
 
@@ -822,10 +980,6 @@ useSeoMeta({
 
   .solution-layout__copy {
     position: static;
-  }
-
-  .product-row:nth-child(even) .product-row__copy {
-    order: initial;
   }
 }
 
@@ -843,42 +997,39 @@ useSeoMeta({
   }
 
   .home-hero__points,
-  .pillar-grid,
+  .capability-rail,
+  .ai-understanding-visual,
   .ai-ability-strip,
-  .case-grid,
+  .product-support-grid,
+  .trust-principle-list,
   .brand-note-list {
     grid-template-columns: 1fr;
   }
 
-  .ai-understanding-visual {
-    display: grid;
-    gap: var(--space-3);
+  .capability-item {
+    border-right: 0;
+    border-bottom: 1px solid var(--color-border);
   }
 
-  .wave-strip,
-  .ai-status-note,
-  .ai-basis-note {
+  .capability-item:last-child {
+    border-bottom: 0;
+  }
+
+  .ai-understanding-visual :deep(.base-image) {
+    grid-row: auto;
+  }
+
+  .home-hero__insight-card,
+  .home-hero__signal-card {
     position: static;
-    width: auto;
-  }
-
-  .wave-strip {
-    order: 2;
-  }
-
-  .ai-status-note {
-    order: 3;
-  }
-
-  .ai-basis-note {
-    order: 4;
+    margin-top: var(--space-3);
   }
 
   .check-list {
     grid-template-columns: 1fr;
   }
 
-  .product-row {
+  .product-feature {
     padding: var(--space-5);
   }
 }
@@ -919,7 +1070,6 @@ useSeoMeta({
   }
 
   .home-hero__visual {
-    width: min(100%, 300px);
     margin-inline: auto;
   }
 
@@ -927,7 +1077,11 @@ useSeoMeta({
     width: 100%;
   }
 
-  .home-hero__visual::before {
+  .home-hero__visual-stage {
+    padding: var(--space-4);
+  }
+
+  .home-hero__visual-stage::before {
     inset: -12px 16px 16px -12px;
   }
 
@@ -945,12 +1099,13 @@ useSeoMeta({
     width: 3px;
   }
 
-  .ai-status-note,
+  .ai-analysis-card,
   .ai-basis-note {
     padding: var(--space-3);
   }
 
-  .product-row__head,
+  .product-feature__head,
+  .trust-principle,
   .solution-item {
     grid-template-columns: 1fr;
   }
@@ -961,6 +1116,12 @@ useSeoMeta({
 
   .timeline-list li {
     grid-template-columns: 1fr;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wave-strip span {
+    animation: none;
   }
 }
 </style>
