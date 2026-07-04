@@ -30,6 +30,65 @@ test('sitemap route lists current canonical pages without a hard-coded productio
   expect(body).not.toContain('zhipet.example')
 })
 
+test('home route exposes canonical, share, and structured SEO metadata', async ({ page }) => {
+  await page.goto('/')
+
+  await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
+    'href',
+    'http://127.0.0.1:3000/',
+  )
+  await expect(page.locator('meta[property="og:site_name"]')).toHaveAttribute(
+    'content',
+    '知宠 ZHIPET',
+  )
+  await expect(page.locator('meta[property="og:image"]')).toHaveAttribute(
+    'content',
+    'http://127.0.0.1:3000/images/share/zhipet-og.png',
+  )
+  await expect(page.locator('meta[property="og:image:width"]')).toHaveAttribute(
+    'content',
+    '1200',
+  )
+  await expect(page.locator('meta[property="og:image:height"]')).toHaveAttribute(
+    'content',
+    '630',
+  )
+  await expect(page.locator('meta[name="twitter:card"]')).toHaveAttribute(
+    'content',
+    'summary_large_image',
+  )
+
+  const jsonLdTypes = await page
+    .locator('script[type="application/ld+json"]')
+    .evaluateAll((scripts) =>
+      scripts.map((script) => JSON.parse(script.textContent ?? '{}')['@type']),
+    )
+
+  expect(jsonLdTypes).toContain('WebSite')
+  expect(jsonLdTypes).toContain('Organization')
+})
+
+test('news detail route exposes article canonical and breadcrumb structured data', async ({
+  page,
+}) => {
+  await page.goto('/news/product-direction')
+
+  await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
+    'href',
+    'http://127.0.0.1:3000/news/product-direction',
+  )
+  await expect(page.locator('meta[property="og:type"]')).toHaveAttribute('content', 'article')
+
+  const jsonLdTypes = await page
+    .locator('script[type="application/ld+json"]')
+    .evaluateAll((scripts) =>
+      scripts.map((script) => JSON.parse(script.textContent ?? '{}')['@type']),
+    )
+
+  expect(jsonLdTypes).toContain('WebPage')
+  expect(jsonLdTypes).toContain('BreadcrumbList')
+})
+
 test('unknown routes show the branded not-found experience', async ({ page }) => {
   const response = await page.goto('/not-found-check')
 

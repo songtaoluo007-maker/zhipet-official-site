@@ -6,7 +6,7 @@
 
 GitHub Pages 地址：[知宠 ZHIPET 官网](https://songtaoluo007-maker.github.io/zhipet-official-site/)
 
-> 首次启用时，需要在 GitHub 仓库 `Settings -> Pages` 中将 Source 设置为 `GitHub Actions`。之后推送到 `main` 会自动构建并发布静态官网。
+> 当前仓库使用 `gh-pages` 分支发布静态官网。推送源码到 `main` 后，需要将 `.output/public` 的静态产物同步到 `gh-pages` 分支。
 
 ## 当前进度
 
@@ -18,6 +18,9 @@ GitHub Pages 地址：[知宠 ZHIPET 官网](https://songtaoluo007-maker.github.
 - 已实现转化与合规占位页：联系我们、预约演示、隐私政策、服务条款。
 - 已补充上线基础能力：动态 `robots.txt`、动态 `sitemap.xml`、品牌化 404/错误页。
 - 已补充安全与组件工程加固：基础安全响应头、Canonical 域名配置、链接 URL 防护、移动端菜单焦点管理。
+- 已补充 SEO 与分享基础：全站 canonical、Open Graph/Twitter 分享图、WebSite/Organization 结构化数据、favicon 与 manifest。
+- 已接入内容运营能力：资讯列表与详情页读取 `content/news/*.md`，支持 Markdown 草稿预览和静态预渲染。
+- 已补充性能基础配置：静态资源压缩、构建产物缓存头、图片断点与密度配置。
 - 已将启动实施方案归档到 `docs/STARTUP_IMPLEMENTATION_PLAN.md`。
 - 当前使用概念视觉资产，页面均标注“AI 概念图，仅供参考”。真实产品图、Logo、团队、资质、联系方式和备案信息仍需项目方确认。
 
@@ -60,6 +63,27 @@ app/
 └── types
 ```
 
+## 资讯内容运营
+
+资讯内容放在 `content/news/`，每篇 Markdown 会生成一个 `/news/文件名` 页面，并出现在资讯中心列表。
+
+```markdown
+---
+title: 文章标题待项目方确认
+description: 文章摘要待项目方确认。
+category: 产品动态
+publishedLabel: 发布日期待项目方确认
+status: 正文待项目方确认
+order: 4
+---
+
+## 内容定位
+
+正文待项目方确认。
+```
+
+正式发布前不要填写未经确认的发布日期、作者、客户、合作机构、准确率、资质编号、联系方式或备案信息。
+
 ## 内容规范
 
 - 不编造企业、客户、团队、地址、电话、资质、备案和业务数据。
@@ -72,7 +96,7 @@ app/
 
 当前仓库已配置 GitHub Pages 自动部署：
 
-- Workflow：`.github/workflows/pages.yml`
+- Source：`gh-pages` 分支根目录
 - 静态产物：`.output/public`
 - 构建命令：`pnpm generate`
 - GitHub Pages 子路径：`/zhipet-official-site/`

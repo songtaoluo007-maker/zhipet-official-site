@@ -1,9 +1,11 @@
 const nodeEnv = (globalThis as { process?: { env?: Record<string, string | undefined> } }).process
   ?.env
+const rawAppBaseURL = nodeEnv?.NUXT_APP_BASE_URL || '/'
+const appBaseURL = rawAppBaseURL.endsWith('/') ? rawAppBaseURL : `${rawAppBaseURL}/`
 
 export default defineNuxtConfig({
   compatibilityDate: '2026-07-02',
-  devtools: { enabled: true },
+  devtools: { enabled: nodeEnv?.NUXT_DEVTOOLS === 'true' },
   modules: ['@nuxt/content', '@nuxt/image', '@nuxt/fonts', '@nuxt/eslint'],
   components: [{ path: './app/components', pathPrefix: false }],
   css: ['~/assets/styles/main.scss'],
@@ -13,11 +15,15 @@ export default defineNuxtConfig({
     },
   },
   app: {
-    baseURL: nodeEnv?.NUXT_APP_BASE_URL || '/',
+    baseURL: appBaseURL,
     head: {
       htmlAttrs: {
         lang: 'zh-CN',
       },
+      link: [
+        { rel: 'icon', type: 'image/svg+xml', href: `${appBaseURL}favicon.svg` },
+        { rel: 'manifest', href: `${appBaseURL}site.webmanifest` },
+      ],
       title: '知宠 ZHIPET',
       meta: [
         {
@@ -46,12 +52,34 @@ export default defineNuxtConfig({
     },
   },
   nitro: {
+    compressPublicAssets: true,
     prerender: {
+      crawlLinks: true,
       routes: ['/robots.txt', '/sitemap.xml'],
+    },
+    routeRules: {
+      '/_nuxt/**': {
+        headers: { 'cache-control': 'public, max-age=31536000, immutable' },
+      },
+      '/images/**': {
+        headers: { 'cache-control': 'public, max-age=604800, stale-while-revalidate=86400' },
+      },
+      '/favicon.svg': {
+        headers: { 'cache-control': 'public, max-age=604800, stale-while-revalidate=86400' },
+      },
     },
   },
   image: {
     format: ['webp', 'avif'],
     quality: 82,
+    screens: {
+      xs: 320,
+      sm: 640,
+      md: 768,
+      lg: 1024,
+      xl: 1200,
+      xxl: 1320,
+    },
+    densities: [1, 2],
   },
 })

@@ -6,9 +6,44 @@ import BaseImage from '~/components/base/BaseImage.vue'
 import BaseTag from '~/components/base/BaseTag.vue'
 import CTASection from '~/components/common/CTASection.vue'
 import SectionHeading from '~/components/common/SectionHeading.vue'
-import { newsItems } from '~/data/corporate'
 
 const { register } = useScrollReveal()
+
+interface NewsArticleCard {
+  path: string
+  title: string
+  description: string
+  category: string
+  publishedLabel: string
+  status: string
+  order: number
+}
+
+const toNewsArticleCard = (entry: {
+  path: string
+  title: string
+  description?: string
+  category?: string
+  publishedLabel?: string
+  status?: string
+  order?: number
+}): NewsArticleCard => ({
+  path: entry.path,
+  title: entry.title,
+  description: entry.description ?? '正文待项目方确认。',
+  category: entry.category ?? '内容规划',
+  publishedLabel: entry.publishedLabel ?? '发布日期待项目方确认',
+  status: entry.status ?? '正文待项目方确认',
+  order: entry.order ?? 999,
+})
+
+const { data: newsArticles } = await useAsyncData('news-list', async () => {
+  const entries = await queryCollection('news').order('order', 'ASC').all()
+
+  return entries.map(toNewsArticleCard)
+})
+
+const articleCards = computed(() => newsArticles.value ?? [])
 
 const contentPlans = [
   {
@@ -108,14 +143,22 @@ useSeoMeta({
           description="以下为文章方向占位，发布日期、作者和正式正文待项目方确认。"
         />
         <div class="article-list">
-          <article v-for="item in newsItems" :key="item.id" class="article-card">
+          <article v-for="item in articleCards" :key="item.path" class="article-card">
             <div class="article-card__meta">
               <BaseTag>{{ item.category }}</BaseTag>
-              <span>{{ item.date }}</span>
+              <span>{{ item.publishedLabel }}</span>
             </div>
             <h2>{{ item.title }}</h2>
-            <p>{{ item.summary }}</p>
-            <BaseButton disabled variant="text">正文待项目方确认</BaseButton>
+            <p>{{ item.description }}</p>
+            <div class="article-card__footer">
+              <BaseTag tone="concept">{{ item.status }}</BaseTag>
+              <BaseButton :to="item.path" variant="text">
+                查看内容草稿
+                <template #iconRight>
+                  <BaseIcon name="arrow-right" />
+                </template>
+              </BaseButton>
+            </div>
           </article>
         </div>
       </BaseContainer>
@@ -305,6 +348,14 @@ useSeoMeta({
   color: var(--color-text-secondary);
   font-size: 14px;
   font-weight: 650;
+}
+
+.article-card__footer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  align-items: center;
+  justify-content: space-between;
 }
 
 @media (max-width: 1000px) {

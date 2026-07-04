@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="知宠 ZHIPET">
+  <rect width="64" height="64" rx="14" fill="#faf8f4"/>
+  <path d="M18 34c0-10 7-18 16-18s16 8 16 18c0 9-7 16-16 16s-16-7-16-16Z" fill="#2f241b"/>
+  <path d="M22 31c-4-3-6-8-4-12 5 0 9 3 11 7m17 5c4-3 6-8 4-12-5 0-9 3-11 7" fill="none" stroke="#2f241b" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="28" cy="34" r="3" fill="#e8c894"/>
+  <circle cx="40" cy="34" r="3" fill="#e8c894"/>
+  <path d="M31 42c2 2 4 2 6 0" fill="none" stroke="#e8c894" stroke-width="3" stroke-linecap="round"/>
+</svg>

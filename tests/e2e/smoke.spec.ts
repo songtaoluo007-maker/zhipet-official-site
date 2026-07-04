@@ -270,6 +270,33 @@ test('news route shows placeholder news center safely', async ({ page }) => {
   await expect(page.getByRole('heading', { name: '当前内容规划' })).toBeVisible()
   await expect(page.getByText('发布日期待项目方确认').first()).toBeVisible()
   await expect(page.getByText('待项目方确认').first()).toBeVisible()
+  await expect(page.getByRole('link', { name: /查看内容草稿/ })).toHaveCount(3)
+  await expect(page.getByRole('link', { name: /查看内容草稿/ }).first()).toHaveAttribute(
+    'href',
+    '/news/product-direction',
+  )
+
+  const hasOverflow = await page.evaluate(
+    () => document.documentElement.scrollWidth > window.innerWidth,
+  )
+  expect(hasOverflow).toBe(false)
+})
+
+test('news detail route renders markdown content safely', async ({ page }) => {
+  await page.goto('/news/product-direction')
+
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('产品动态内容方向')
+  await expect(page.getByText('发布日期待项目方确认').first()).toBeVisible()
+  await expect(page.getByRole('heading', { name: '内容定位' })).toBeVisible()
+  await expect(page.getByRole('heading', { name: '待确认信息' })).toBeVisible()
+  await expect(page.getByRole('heading', { name: '正式发布前仍需确认' })).toBeVisible()
+  await expect(page.getByRole('link', { name: '返回资讯中心' })).toHaveAttribute(
+    'href',
+    '/news',
+  )
+  await expect(page.locator('body')).not.toContainText(
+    /已发布于|客户名称：|真实客户授权|合作机构名单|准确率[:：]\s*\d/u,
+  )
 
   const hasOverflow = await page.evaluate(
     () => document.documentElement.scrollWidth > window.innerWidth,
