@@ -1,13 +1,14 @@
 import { defineEventHandler, setHeader } from 'h3'
-import { getSiteOrigin } from '../utils/site-origin'
+import { getSiteBaseUrl } from '../utils/site-origin'
+import { resolveSiteUrl } from '../utils/site-origin-core'
 import { siteRoutes } from '../utils/site-routes'
 
 export default defineEventHandler((event) => {
-  const origin = getSiteOrigin(event)
+  const siteBaseUrl = getSiteBaseUrl(event)
   const urls = siteRoutes
     .map(
       (route) => `  <url>
-    <loc>${new URL(route, origin).toString()}</loc>
+    <loc>${resolveSiteUrl(route, siteBaseUrl)}</loc>
   </url>`,
     )
     .join('\n')

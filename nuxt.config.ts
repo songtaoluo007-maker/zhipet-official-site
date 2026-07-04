@@ -1,3 +1,6 @@
+const nodeEnv = (globalThis as { process?: { env?: Record<string, string | undefined> } }).process
+  ?.env
+
 export default defineNuxtConfig({
   compatibilityDate: '2026-07-02',
   devtools: { enabled: true },
@@ -10,6 +13,7 @@ export default defineNuxtConfig({
     },
   },
   app: {
+    baseURL: nodeEnv?.NUXT_APP_BASE_URL || '/',
     head: {
       htmlAttrs: {
         lang: 'zh-CN',
@@ -39,6 +43,11 @@ export default defineNuxtConfig({
   content: {
     experimental: {
       sqliteConnector: 'native',
+    },
+  },
+  nitro: {
+    prerender: {
+      routes: ['/robots.txt', '/sitemap.xml'],
     },
   },
   image: {

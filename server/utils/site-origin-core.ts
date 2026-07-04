@@ -1,4 +1,6 @@
-export const resolveSiteOrigin = (
+const ensureTrailingSlash = (value: string) => (value.endsWith('/') ? value : `${value}/`)
+
+export const resolveSiteBaseUrl = (
   configuredSiteUrl: string | undefined,
   fallbackOrigin: string,
 ) => {
@@ -8,11 +10,20 @@ export const resolveSiteOrigin = (
     const url = new URL(candidate)
 
     if (url.protocol !== 'http:' && url.protocol !== 'https:') {
-      return fallbackOrigin
+      return ensureTrailingSlash(fallbackOrigin)
     }
 
-    return url.origin
+    url.search = ''
+    url.hash = ''
+
+    return ensureTrailingSlash(url.toString())
   } catch {
-    return fallbackOrigin
+    return ensureTrailingSlash(fallbackOrigin)
   }
+}
+
+export const resolveSiteUrl = (route: string, siteBaseUrl: string) => {
+  const normalizedRoute = route.replace(/^\/+/, '')
+
+  return new URL(normalizedRoute, siteBaseUrl).toString()
 }

@@ -2,6 +2,12 @@
 
 基于 Nuxt 4、Vue 3、TypeScript 和 SCSS 的知宠企业级官方网站工程。
 
+## 在线预览
+
+GitHub Pages 地址：[知宠 ZHIPET 官网](https://songtaoluo007-maker.github.io/zhipet-official-site/)
+
+> 首次启用时，需要在 GitHub 仓库 `Settings -> Pages` 中将 Source 设置为 `GitHub Actions`。之后推送到 `main` 会自动构建并发布静态官网。
+
 ## 当前进度
 
 - 已完成工程初始化、基础设计 Token、布局壳层和轻量 UI Kit。
@@ -64,4 +70,11 @@ app/
 
 ## 部署
 
-第一阶段推荐部署到 Vercel、Cloudflare Pages 或国内支持 Nuxt/Nitro 的平台。正式域名确认后填写 `NUXT_PUBLIC_SITE_URL`，`robots.txt` 和 `sitemap.xml` 会优先使用该配置生成 Canonical URL；未配置时回退到当前请求域名。正式国内上线前需要确认域名备案和合规信息。
+当前仓库已配置 GitHub Pages 自动部署：
+
+- Workflow：`.github/workflows/pages.yml`
+- 静态产物：`.output/public`
+- 构建命令：`pnpm generate`
+- GitHub Pages 子路径：`/zhipet-official-site/`
+
+正式域名确认后填写 `NUXT_PUBLIC_SITE_URL`，并同步调整 GitHub Pages 域名配置；`robots.txt` 和 `sitemap.xml` 会优先使用该配置生成 Canonical URL。正式国内上线前需要确认域名备案和合规信息。
