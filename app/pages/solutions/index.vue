@@ -269,12 +269,14 @@ useSeoMeta({
   font-size: 52px;
   line-height: 1.08;
   letter-spacing: 0;
+  text-wrap: balance;
 }
 
 .solutions-hero p {
   max-width: 720px;
   color: var(--color-text-secondary);
   font-size: 18px;
+  line-height: 1.72;
 }
 
 .solutions-hero__actions {
@@ -286,6 +288,7 @@ useSeoMeta({
 
 .solutions-hero__visual {
   position: relative;
+  overflow: hidden;
   min-width: 0;
   padding: var(--space-5);
   border: 1px solid var(--color-border);
@@ -293,6 +296,14 @@ useSeoMeta({
   background:
     linear-gradient(180deg, rgb(255 255 255 / 86%), rgb(246 241 233 / 72%)),
     var(--color-surface-soft);
+}
+
+.solutions-hero__visual::after {
+  position: absolute;
+  inset: 0 0 auto;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgb(232 200 148 / 72%), transparent);
+  content: '';
 }
 
 .solutions-hero__visual :deep(.base-image__frame) {
@@ -356,12 +367,14 @@ useSeoMeta({
   background: var(--color-surface);
   transition:
     border-color var(--motion-duration-fast) var(--motion-ease-out),
+    box-shadow var(--motion-duration-fast) var(--motion-ease-out),
     transform var(--motion-duration-fast) var(--motion-ease-out);
 }
 
 .scenario-route-card:hover,
 .scenario-route-card:focus-visible {
   border-color: rgb(200 138 56 / 45%);
+  box-shadow: var(--shadow-hover);
   transform: translateY(-2px);
 }
 
@@ -401,12 +414,14 @@ useSeoMeta({
   overflow: hidden;
   transition:
     border-color var(--motion-duration-fast) var(--motion-ease-out),
+    box-shadow var(--motion-duration-fast) var(--motion-ease-out),
     transform var(--motion-duration-fast) var(--motion-ease-out);
 }
 
 .solution-card:hover,
 .solution-card:focus-within {
   border-color: rgb(200 138 56 / 45%);
+  box-shadow: var(--shadow-hover);
   transform: translateY(-2px);
 }
 

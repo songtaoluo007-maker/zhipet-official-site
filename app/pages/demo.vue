@@ -302,12 +302,14 @@ useSeoMeta({
   font-size: 52px;
   line-height: 1.08;
   letter-spacing: 0;
+  text-wrap: balance;
 }
 
 .demo-hero p {
   max-width: 720px;
   color: var(--color-text-secondary);
   font-size: 18px;
+  line-height: 1.72;
 }
 
 .demo-hero__actions {
@@ -327,6 +329,8 @@ useSeoMeta({
 }
 
 .focus-option {
+  @include subtle-lift(-1px);
+
   position: relative;
   display: grid;
   grid-template-columns: auto minmax(0, 1fr);
@@ -342,6 +346,7 @@ useSeoMeta({
   transition:
     border-color var(--motion-duration-fast) var(--motion-ease-out),
     background var(--motion-duration-fast) var(--motion-ease-out),
+    box-shadow var(--motion-duration-fast) var(--motion-ease-out),
     transform var(--motion-duration-fast) var(--motion-ease-out);
 }
 

@@ -233,12 +233,14 @@ useSeoMeta({
   font-size: 52px;
   line-height: 1.08;
   letter-spacing: 0;
+  text-wrap: balance;
 }
 
 .about-hero p {
   max-width: 720px;
   color: var(--color-text-secondary);
   font-size: 18px;
+  line-height: 1.72;
 }
 
 .about-hero__actions {
@@ -249,6 +251,7 @@ useSeoMeta({
 
 .about-hero__visual {
   position: relative;
+  overflow: hidden;
   min-width: 0;
   padding: var(--space-5);
   border: 1px solid var(--color-border);
@@ -256,6 +259,14 @@ useSeoMeta({
   background:
     linear-gradient(180deg, rgb(255 255 255 / 86%), rgb(246 241 233 / 72%)),
     var(--color-surface-soft);
+}
+
+.about-hero__visual::after {
+  position: absolute;
+  inset: 0 0 auto;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgb(232 200 148 / 72%), transparent);
+  content: '';
 }
 
 .about-hero__visual::before {
@@ -311,7 +322,10 @@ useSeoMeta({
 .transparency-list {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  border-block: 1px solid var(--color-border);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-media);
+  background: var(--color-surface);
+  overflow: hidden;
 }
 
 .transparency-item {
@@ -320,10 +334,15 @@ useSeoMeta({
   gap: var(--space-4);
   padding: var(--space-5);
   border-right: 1px solid var(--color-border);
+  transition: background var(--motion-duration-fast) var(--motion-ease-out);
 }
 
 .transparency-item:last-child {
   border-right: 0;
+}
+
+.transparency-item:hover {
+  background: rgb(246 234 216 / 34%);
 }
 
 .transparency-item h2 {
@@ -343,6 +362,8 @@ useSeoMeta({
 }
 
 .principle-card {
+  @include subtle-lift(-1px);
+
   display: grid;
   gap: var(--space-3);
   padding: var(--space-5);

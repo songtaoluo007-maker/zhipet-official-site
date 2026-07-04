@@ -16,6 +16,7 @@
           class="app-header__link"
           :class="{ 'is-active': isActive(item.href) }"
           :to="item.href"
+          :aria-current="isActive(item.href) ? 'page' : undefined"
         >
           {{ item.label }}
         </NuxtLink>
@@ -81,15 +82,19 @@ onBeforeUnmount(() => {
   top: 0;
   z-index: 40;
   height: 72px;
-  background: rgb(250 248 244 / 92%);
+  border-bottom: 1px solid transparent;
+  background: rgb(250 248 244 / 88%);
+  backdrop-filter: blur(10px);
   transition:
+    background var(--motion-duration-base) var(--motion-ease-out),
     border-color var(--motion-duration-base) var(--motion-ease-out),
-    backdrop-filter var(--motion-duration-base) var(--motion-ease-out);
+    box-shadow var(--motion-duration-base) var(--motion-ease-out);
 }
 
 .app-header.is-scrolled {
   border-bottom: 1px solid var(--color-border);
-  backdrop-filter: blur(14px);
+  background: rgb(250 248 244 / 96%);
+  box-shadow: 0 10px 32px rgb(47 36 27 / 6%);
 }
 
 .app-header__inner {
@@ -115,7 +120,9 @@ onBeforeUnmount(() => {
   justify-content: center;
   border-radius: 10px;
   color: var(--color-surface);
-  background: var(--color-brand-900);
+  background:
+    linear-gradient(135deg, rgb(47 36 27), rgb(102 80 60)),
+    var(--color-brand-900);
   font-weight: 800;
 }
 
@@ -144,7 +151,7 @@ onBeforeUnmount(() => {
 
 .app-header__link {
   position: relative;
-  padding: var(--space-2) 0;
+  padding: var(--space-2) 2px;
   color: var(--color-text-secondary);
   font-size: 15px;
   font-weight: 650;
@@ -171,6 +178,11 @@ onBeforeUnmount(() => {
   color: var(--color-brand-900);
 }
 
+.app-header__link:hover::after {
+  opacity: 0.5;
+  transform: scaleX(0.68);
+}
+
 .app-header__link.is-active::after {
   opacity: 1;
   transform: scaleX(1);
@@ -188,6 +200,13 @@ onBeforeUnmount(() => {
 
   .app-header__menu-button {
     display: inline-flex;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .app-header,
+  .app-header__link::after {
+    transition-duration: 0.01ms;
   }
 }
 </style>

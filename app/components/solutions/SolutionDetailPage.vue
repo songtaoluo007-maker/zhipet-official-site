@@ -243,6 +243,7 @@ const solution = props.solution
   font-size: 52px;
   line-height: 1.08;
   letter-spacing: 0;
+  text-wrap: balance;
 }
 
 .solution-hero__headline {
@@ -255,6 +256,7 @@ const solution = props.solution
   max-width: 720px;
   color: var(--color-text-secondary);
   font-size: 17px;
+  line-height: 1.72;
 }
 
 .solution-hero__actions,
@@ -320,6 +322,8 @@ const solution = props.solution
 }
 
 .pain-card {
+  @include subtle-lift(-1px);
+
   display: grid;
   gap: var(--space-3);
   padding: var(--space-5);
@@ -421,6 +425,8 @@ const solution = props.solution
 }
 
 .module-item {
+  @include subtle-lift(-1px);
+
   display: grid;
   grid-template-columns: auto minmax(0, 1fr);
   gap: var(--space-4);

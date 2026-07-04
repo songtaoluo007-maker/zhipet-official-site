@@ -133,15 +133,18 @@ const handleClick = (event: MouseEvent) => {
   align-items: center;
   justify-content: center;
   width: fit-content;
+  max-width: 100%;
   border: 1px solid transparent;
   border-radius: var(--radius-button);
   font-weight: 650;
-  line-height: 1;
+  line-height: 1.15;
   text-align: center;
+  white-space: normal;
   transition:
     color var(--motion-duration-fast) var(--motion-ease-out),
     background var(--motion-duration-fast) var(--motion-ease-out),
     border-color var(--motion-duration-fast) var(--motion-ease-out),
+    box-shadow var(--motion-duration-fast) var(--motion-ease-out),
     transform var(--motion-duration-fast) var(--motion-ease-out);
 
   &:not(.is-disabled):hover {
@@ -180,6 +183,7 @@ const handleClick = (event: MouseEvent) => {
   &:not(.is-disabled):hover {
     background: var(--color-accent-500);
     border-color: var(--color-accent-500);
+    box-shadow: 0 12px 28px rgb(183 121 43 / 20%);
   }
 }
 
@@ -229,6 +233,11 @@ const handleClick = (event: MouseEvent) => {
   width: 1em;
   height: 1em;
   flex: 0 0 auto;
+}
+
+.base-button__label {
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 
 .base-button__icon--right {

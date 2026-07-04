@@ -20,7 +20,13 @@
         </div>
         <ul class="mobile-menu__list">
           <li v-for="item in items" :key="item.href">
-            <NuxtLink class="mobile-menu__link" :to="item.href" @click="$emit('close')">
+            <NuxtLink
+              class="mobile-menu__link"
+              :class="{ 'is-active': isActive(item.href) }"
+              :to="item.href"
+              :aria-current="isActive(item.href) ? 'page' : undefined"
+              @click="$emit('close')"
+            >
               {{ item.label }}
             </NuxtLink>
           </li>
@@ -47,6 +53,7 @@ const emit = defineEmits<{
   close: []
 }>()
 
+const route = useRoute()
 const dialogElement = ref<HTMLElement | null>(null)
 let previousActiveElement: HTMLElement | null = null
 let previousBodyOverflow = ''
@@ -68,6 +75,14 @@ const getFocusableElements = () => {
   return Array.from(dialogElement.value.querySelectorAll<HTMLElement>(focusableSelector)).filter(
     (element) => element.tabIndex >= 0 && !element.hasAttribute('aria-hidden'),
   )
+}
+
+const isActive = (href: string) => {
+  if (href === '/') {
+    return route.path === '/'
+  }
+
+  return route.path.startsWith(href)
 }
 
 const focusCloseButton = async () => {
@@ -175,7 +190,8 @@ onBeforeUnmount(() => {
   position: absolute;
   inset: 0;
   border: 0;
-  background: rgb(36 29 24 / 35%);
+  background: rgb(36 29 24 / 38%);
+  backdrop-filter: blur(6px);
 }
 
 .mobile-menu__panel {
@@ -187,7 +203,10 @@ onBeforeUnmount(() => {
   flex-direction: column;
   gap: var(--space-6);
   padding: var(--space-5);
-  background: var(--color-bg);
+  border-left: 1px solid rgb(232 224 213 / 78%);
+  background:
+    linear-gradient(180deg, rgb(255 255 255 / 82%), rgb(246 241 233 / 94%)),
+    var(--color-bg);
   box-shadow: -20px 0 60px rgb(47 36 27 / 15%);
 }
 
@@ -227,9 +246,27 @@ onBeforeUnmount(() => {
   display: flex;
   min-height: 48px;
   align-items: center;
+  justify-content: space-between;
   border-bottom: 1px solid var(--color-border);
   color: var(--color-brand-900);
   font-weight: 650;
+}
+
+.mobile-menu__link::after {
+  width: 8px;
+  height: 8px;
+  border-radius: var(--radius-pill);
+  background: var(--color-accent-600);
+  content: '';
+  opacity: 0;
+}
+
+.mobile-menu__link.is-active {
+  color: var(--color-accent-600);
+}
+
+.mobile-menu__link.is-active::after {
+  opacity: 1;
 }
 
 .mobile-menu-enter-active,
@@ -255,6 +292,15 @@ onBeforeUnmount(() => {
 @media (max-width: 899px) {
   .mobile-menu {
     display: block;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mobile-menu-enter-active,
+  .mobile-menu-leave-active,
+  .mobile-menu-enter-active .mobile-menu__panel,
+  .mobile-menu-leave-active .mobile-menu__panel {
+    transition-duration: 0.01ms;
   }
 }
 </style>

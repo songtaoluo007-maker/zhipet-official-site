@@ -12,7 +12,7 @@ test('ai pet understanding page presents probabilistic analysis with safe bounda
   await expect(h1).toHaveText('用 AI，更好地理解宠物')
   await expect(page.locator('h1')).toHaveCount(1)
 
-  await expect(page.getByLabel('界面与分析逻辑示例').getByText('置信度：74%')).toBeVisible()
+  await expect(page.getByLabel('界面与分析逻辑示例').getByText('置信度：中等偏高')).toBeVisible()
   await expect(page.getByText('知宠提供概率分析和风险提示，不对宠物语言进行逐字翻译，也不替代专业兽医诊断。')).toBeVisible()
   await expect(page.getByText('不是宠物语言逐字翻译')).toBeVisible()
 

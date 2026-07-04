@@ -213,12 +213,14 @@ useSeoMeta({
   font-size: 52px;
   line-height: 1.08;
   letter-spacing: 0;
+  text-wrap: balance;
 }
 
 .products-hero p {
   max-width: 720px;
   color: var(--color-text-secondary);
   font-size: 18px;
+  line-height: 1.72;
 }
 
 .products-hero__actions {
@@ -230,6 +232,7 @@ useSeoMeta({
 
 .products-hero__visual {
   position: relative;
+  overflow: hidden;
   min-width: 0;
   padding: var(--space-5);
   border: 1px solid var(--color-border);
@@ -237,6 +240,14 @@ useSeoMeta({
   background:
     linear-gradient(180deg, rgb(255 255 255 / 86%), rgb(246 241 233 / 72%)),
     var(--color-surface-soft);
+}
+
+.products-hero__visual::after {
+  position: absolute;
+  inset: 0 0 auto;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgb(232 200 148 / 72%), transparent);
+  content: '';
 }
 
 .products-hero__visual :deep(.base-image__frame) {
@@ -304,7 +315,10 @@ useSeoMeta({
   grid-template-columns: repeat(3, minmax(0, 1fr));
   padding: 0;
   margin: 0;
-  border-block: 1px solid var(--color-border);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-media);
+  background: var(--color-surface);
+  overflow: hidden;
   list-style: none;
 }
 
@@ -315,10 +329,15 @@ useSeoMeta({
   gap: var(--space-4);
   padding: var(--space-5);
   border-right: 1px solid var(--color-border);
+  transition: background var(--motion-duration-fast) var(--motion-ease-out);
 }
 
 .product-path-list li:last-child {
   border-right: 0;
+}
+
+.product-path-list li:hover {
+  background: rgb(246 234 216 / 34%);
 }
 
 .product-path-list__index {
@@ -358,12 +377,14 @@ useSeoMeta({
   background: var(--color-surface);
   transition:
     border-color var(--motion-duration-fast) var(--motion-ease-out),
+    box-shadow var(--motion-duration-fast) var(--motion-ease-out),
     transform var(--motion-duration-fast) var(--motion-ease-out);
 }
 
 .product-card:hover,
 .product-card:focus-within {
   border-color: rgb(200 138 56 / 45%);
+  box-shadow: var(--shadow-hover);
   transform: translateY(-2px);
 }
 

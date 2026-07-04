@@ -55,7 +55,7 @@ export const homeAiUnderstanding: HomeAiUnderstanding = {
   alt: '知宠 AI 宠物理解家庭陪伴场景概念视觉',
   statusLabel: '当前可能状态',
   statusValue: '可能处于轻度不安',
-  confidenceLabel: '置信度示例 74%，仍需结合家庭环境与持续观察',
+  confidenceLabel: '置信度示例：中等偏高，仍需结合家庭环境与持续观察',
   analysisBasis: ['短促叫声较平时增多', '门口区域往返活动增加', '夜间休息片段变短'],
   analysisSteps: [
     {
@@ -245,7 +245,7 @@ export const homeTrustPrinciples: HomeTrustPrinciple[] = [
   },
   {
     title: '展示分析依据',
-    description: '关键 AI 判断需要同时呈现依据、置信度示例和其他可能解释。',
+    description: '关键 AI 判断需要同时呈现依据、置信度区间和其他可能解释。',
   },
   {
     title: '尊重敏感数据',

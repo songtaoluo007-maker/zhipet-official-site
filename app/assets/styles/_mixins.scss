@@ -22,3 +22,25 @@
     padding-block: var(--space-7);
   }
 }
+
+@mixin subtle-lift($lift: -2px) {
+  transition:
+    border-color var(--motion-duration-fast) var(--motion-ease-out),
+    background var(--motion-duration-fast) var(--motion-ease-out),
+    box-shadow var(--motion-duration-fast) var(--motion-ease-out),
+    transform var(--motion-duration-fast) var(--motion-ease-out);
+
+  &:hover,
+  &:focus-within {
+    border-color: rgb(200 138 56 / 45%);
+    box-shadow: var(--shadow-hover);
+    transform: translateY($lift);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    &:hover,
+    &:focus-within {
+      transform: none;
+    }
+  }
+}

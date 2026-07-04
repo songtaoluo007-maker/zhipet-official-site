@@ -304,6 +304,7 @@ const productSignalFlow = [
   font-size: 52px;
   line-height: 1.08;
   letter-spacing: 0;
+  text-wrap: balance;
 }
 
 .product-hero__headline {
@@ -316,6 +317,7 @@ const productSignalFlow = [
   max-width: 680px;
   color: var(--color-text-secondary);
   font-size: 17px;
+  line-height: 1.72;
 }
 
 .product-hero__actions,
@@ -405,6 +407,8 @@ const productSignalFlow = [
 }
 
 .value-card {
+  @include subtle-lift(-1px);
+
   display: grid;
   gap: var(--space-3);
   padding: var(--space-5);
@@ -484,6 +488,8 @@ const productSignalFlow = [
 }
 
 .scenario-item {
+  @include subtle-lift(-1px);
+
   padding: var(--space-5);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-card);

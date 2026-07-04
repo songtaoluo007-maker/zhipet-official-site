@@ -98,7 +98,7 @@ export const aiPetUnderstandingPage: AiPetUnderstandingPageData = {
     label: '界面与分析逻辑示例',
     title: '一次“持续叫唤”的分析结果',
     possibleState: '宠物当前可能处于焦虑或寻求关注状态。',
-    confidenceLabel: '置信度：74%',
+    confidenceLabel: '置信度：中等偏高',
     riskLevel: '风险等级：中低风险，建议持续观察',
     basis: [
       '出现连续短促叫声',

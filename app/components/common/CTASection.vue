@@ -47,27 +47,69 @@ withDefaults(
 }
 
 .cta-section__inner {
+  position: relative;
+  overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: var(--space-6);
   padding: var(--space-7);
-  border: 1px solid var(--color-border);
+  border: 1px solid rgb(232 200 148 / 24%);
   border-radius: var(--radius-media);
-  background: var(--color-surface);
+  color: var(--color-surface);
+  background:
+    linear-gradient(135deg, rgb(47 36 27), rgb(68 51 38) 58%, rgb(102 80 60)),
+    var(--color-brand-900);
+}
+
+.cta-section__inner::before {
+  position: absolute;
+  inset: 0 0 auto;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgb(232 200 148 / 70%), transparent);
+  content: '';
 }
 
 .cta-section__copy {
+  position: relative;
   display: grid;
   max-width: 680px;
   gap: var(--space-3);
 }
 
+.cta-section__copy h2 {
+  color: var(--color-surface);
+}
+
+.cta-section__copy p {
+  color: rgb(255 255 255 / 74%);
+}
+
 .cta-section__actions {
+  position: relative;
   display: grid;
   flex-wrap: wrap;
   gap: var(--space-3);
   justify-items: end;
+}
+
+.cta-section__actions :deep(.base-button--primary) {
+  color: var(--color-brand-900);
+  border-color: var(--color-accent-300);
+  background: var(--color-accent-300);
+}
+
+.cta-section__actions :deep(.base-button--primary:hover) {
+  border-color: var(--color-surface);
+  background: var(--color-surface);
+}
+
+.cta-section__actions :deep(.base-button--text) {
+  color: var(--color-accent-300);
+}
+
+.cta-section__actions :deep(.base-button--text:hover) {
+  color: var(--color-surface);
 }
 
 @media (max-width: 820px) {
