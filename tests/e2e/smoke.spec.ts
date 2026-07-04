@@ -63,6 +63,10 @@ test('products route loads product center without inventing release status', asy
   await page.goto('/products')
 
   await expect(page.getByRole('heading', { level: 1 })).toHaveText('产品中心')
+  await expect(page.getByRole('heading', { name: '产品链路怎么选' })).toBeVisible()
+  await expect(page.getByText('先获得日常信号')).toBeVisible()
+  await expect(page.getByText('再形成可能判断')).toBeVisible()
+  await expect(page.getByText('最后承接到行动')).toBeVisible()
   await expect(page.getByRole('heading', { name: '当前产品方向' })).toBeVisible()
   await expect(page.getByRole('heading', { name: '知宠智能挂件' })).toBeVisible()
   await expect(page.getByText('宠物声音采集', { exact: true })).toBeVisible()
@@ -107,8 +111,14 @@ test('solutions route loads solution center without fake proof', async ({ page }
   await page.goto('/solutions')
 
   await expect(page.getByRole('heading', { level: 1 })).toHaveText('解决方案')
+  await expect(page.getByRole('heading', { name: '先按角色进入' })).toBeVisible()
+  await expect(page.getByText('公开信息边界')).toBeVisible()
   await expect(page.getByRole('heading', { name: '按场景选择知宠方案' })).toBeVisible()
-  await expect(page.getByRole('heading', { name: '家庭养宠' })).toBeVisible()
+  await expect(
+    page
+      .locator('section[aria-labelledby="solution-list-title"]')
+      .getByRole('heading', { name: '家庭养宠' }),
+  ).toBeVisible()
   await expect(page.getByRole('link', { name: '查看方案详情' })).toHaveCount(3)
   await expect(page.getByText('AI 概念图，仅供参考').first()).toBeVisible()
 
@@ -209,6 +219,10 @@ test('about route shows brand-safe company placeholders', async ({ page }) => {
   await page.goto('/about')
 
   await expect(page.getByRole('heading', { level: 1 })).toHaveText('关于知宠')
+  await expect(page.getByRole('heading', { name: '官网内容怎么更新' })).toBeVisible()
+  await expect(page.getByText('真实资料优先')).toBeVisible()
+  await expect(page.getByText('AI 判断有边界')).toBeVisible()
+  await expect(page.getByText('敏感数据谨慎处理')).toBeVisible()
   await expect(page.getByRole('heading', { name: '我们坚持的方向' })).toBeVisible()
   await expect(page.getByRole('heading', { name: '团队与资质信息' })).toBeVisible()
   await expect(page.getByText('待项目方确认').first()).toBeVisible()

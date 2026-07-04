@@ -69,19 +69,59 @@ useSeoMeta({
                 <BaseIcon name="arrow-right" />
               </template>
             </BaseButton>
-            <BaseButton to="/demo" variant="secondary" size="lg">预约方案演示</BaseButton>
+            <BaseButton to="/demo" variant="text" size="lg">预约方案演示</BaseButton>
           </div>
         </div>
-        <BaseImage
-          src="/images/concepts/family-solution.svg"
-          alt="知宠家庭养宠解决方案概念视觉"
-          aspect-ratio="16 / 10"
-          radius="lg"
-          priority
-          concept
-        />
+        <aside class="solutions-hero__visual" aria-label="解决方案边界概览">
+          <BaseImage
+            src="/images/concepts/family-solution.svg"
+            alt="知宠家庭养宠解决方案概念视觉"
+            aspect-ratio="16 / 10"
+            radius="lg"
+            priority
+            concept
+            label-placement="below"
+          />
+          <div class="solutions-hero__status">
+            <span>公开信息边界</span>
+            <strong>方案方向已整理，落地资料待确认</strong>
+            <p>不展示未确认客户、价格、资质、覆盖城市或服务效果数据。</p>
+          </div>
+        </aside>
       </BaseContainer>
     </section>
+
+    <BaseContainer
+      :ref="register"
+      tag="section"
+      class="solutions-section scenario-route-section"
+      width="wide"
+      aria-labelledby="scenario-route-title"
+    >
+      <SectionHeading
+        id="scenario-route-title"
+        title="先按角色进入"
+        description="家庭用户、医疗机构和门店服务者关注的入口不同，但共用同一套记录、理解和协作思路。"
+      />
+      <nav class="scenario-route-list" aria-label="解决方案角色入口">
+        <NuxtLink
+          v-for="solution in solutionCards"
+          :key="solution.id"
+          class="scenario-route-card"
+          :to="solution.href ?? '/solutions'"
+        >
+          <span class="icon-shell" aria-hidden="true">
+            <BaseIcon :name="solution.icon" />
+          </span>
+          <div>
+            <BaseTag tone="concept">{{ solution.status }}</BaseTag>
+            <h2>{{ solution.title }}</h2>
+            <p>{{ solution.audience }}</p>
+          </div>
+          <BaseIcon name="arrow-right" class="scenario-route-card__arrow" aria-hidden="true" />
+        </NuxtLink>
+      </nav>
+    </BaseContainer>
 
     <BaseContainer
       :ref="register"
@@ -103,6 +143,7 @@ useSeoMeta({
             aspect-ratio="4 / 3"
             radius="lg"
             concept
+            label-placement="below"
           />
           <div class="solution-card__body">
             <div class="solution-card__head">
@@ -240,10 +281,109 @@ useSeoMeta({
   display: flex;
   flex-wrap: wrap;
   gap: var(--space-3);
+  align-items: center;
+}
+
+.solutions-hero__visual {
+  position: relative;
+  min-width: 0;
+  padding: var(--space-5);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-media);
+  background:
+    linear-gradient(180deg, rgb(255 255 255 / 86%), rgb(246 241 233 / 72%)),
+    var(--color-surface-soft);
+}
+
+.solutions-hero__visual :deep(.base-image__frame) {
+  box-shadow: 0 22px 56px rgb(47 36 27 / 8%);
+}
+
+.solutions-hero__status {
+  position: absolute;
+  right: var(--space-7);
+  bottom: var(--space-8);
+  display: grid;
+  max-width: 300px;
+  gap: var(--space-2);
+  padding: var(--space-4);
+  border: 1px solid rgb(200 138 56 / 24%);
+  border-radius: var(--radius-button);
+  background: rgb(255 255 255 / 88%);
+}
+
+.solutions-hero__status span {
+  color: var(--color-text-secondary);
+  font-size: 13px;
+  font-weight: 750;
+}
+
+.solutions-hero__status strong {
+  color: var(--color-brand-900);
+  font-size: 18px;
+  line-height: 1.35;
+}
+
+.solutions-hero__status p {
+  font-size: 13px;
 }
 
 .solutions-section {
   @include section-spacing;
+}
+
+.scenario-route-section {
+  padding-top: var(--space-6);
+}
+
+.scenario-route-list {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-4);
+}
+
+.scenario-route-card {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: var(--space-4);
+  align-items: start;
+  min-width: 0;
+  padding: var(--space-5);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-button);
+  color: inherit;
+  background: var(--color-surface);
+  transition:
+    border-color var(--motion-duration-fast) var(--motion-ease-out),
+    transform var(--motion-duration-fast) var(--motion-ease-out);
+}
+
+.scenario-route-card:hover,
+.scenario-route-card:focus-visible {
+  border-color: rgb(200 138 56 / 45%);
+  transform: translateY(-2px);
+}
+
+.scenario-route-card h2 {
+  margin: var(--space-2) 0 var(--space-1);
+  font-size: 20px;
+}
+
+.scenario-route-card p {
+  color: var(--color-text-secondary);
+  font-size: 14px;
+}
+
+.scenario-route-card__arrow {
+  color: var(--color-accent-600);
+  font-size: 20px;
+  transition: transform var(--motion-duration-fast) var(--motion-ease-out);
+}
+
+.scenario-route-card:hover .scenario-route-card__arrow,
+.scenario-route-card:focus-visible .scenario-route-card__arrow {
+  transform: translateX(3px);
 }
 
 .solution-grid {
@@ -259,6 +399,15 @@ useSeoMeta({
   border-radius: var(--radius-media);
   background: var(--color-surface);
   overflow: hidden;
+  transition:
+    border-color var(--motion-duration-fast) var(--motion-ease-out),
+    transform var(--motion-duration-fast) var(--motion-ease-out);
+}
+
+.solution-card:hover,
+.solution-card:focus-within {
+  border-color: rgb(200 138 56 / 45%);
+  transform: translateY(-2px);
 }
 
 .solution-card__body {
@@ -369,7 +518,8 @@ useSeoMeta({
 @media (max-width: 1100px) {
   .solutions-hero__inner,
   .solution-grid,
-  .collaboration-list {
+  .collaboration-list,
+  .scenario-route-list {
     grid-template-columns: 1fr;
   }
 
@@ -399,9 +549,38 @@ useSeoMeta({
     width: 100%;
   }
 
+  .solutions-hero__visual {
+    padding: var(--space-4);
+  }
+
+  .solutions-hero__status {
+    position: static;
+    max-width: none;
+    margin-top: var(--space-3);
+  }
+
+  .scenario-route-card {
+    grid-template-columns: 1fr auto;
+  }
+
+  .scenario-route-card .icon-shell {
+    grid-column: 1 / -1;
+  }
+
   .confirmation-row {
     grid-template-columns: 1fr;
     gap: var(--space-2);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scenario-route-card:hover,
+  .scenario-route-card:focus-visible,
+  .solution-card:hover,
+  .solution-card:focus-within,
+  .scenario-route-card:hover .scenario-route-card__arrow,
+  .scenario-route-card:focus-visible .scenario-route-card__arrow {
+    transform: none;
   }
 }
 </style>

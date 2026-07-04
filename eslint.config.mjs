@@ -5,4 +5,6 @@ export default withNuxt({
     '@typescript-eslint/no-explicit-any': 'error',
     'vue/multi-word-component-names': 'off',
   },
+}).prepend({
+  ignores: ['**/.pytest_cache/**'],
 })
