@@ -57,7 +57,13 @@ useSeoMeta({
             radius="lg"
             priority
             concept
+            label-placement="below"
           />
+          <div class="cases-hero__status" aria-label="案例资料公开状态">
+            <span>案例口径</span>
+            <strong>当前为示范内容</strong>
+            <p>真实客户授权、实施数据和公开时间均待项目方确认。</p>
+          </div>
         </div>
       </BaseContainer>
     </section>
@@ -161,24 +167,77 @@ useSeoMeta({
   font-size: 52px;
   line-height: 1.08;
   letter-spacing: 0;
+  text-wrap: balance;
 }
 
 .cases-hero p {
   max-width: 720px;
   color: var(--color-text-secondary);
   font-size: 18px;
+  line-height: 1.72;
 }
 
 .cases-hero__visual {
   position: relative;
+  overflow: hidden;
+  min-width: 0;
+  padding: var(--space-5);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-media);
+  background:
+    linear-gradient(180deg, rgb(255 255 255 / 86%), rgb(246 241 233 / 72%)),
+    var(--color-surface-soft);
 }
 
 .cases-hero__visual::before {
   position: absolute;
   inset: -18px 24px 24px -18px;
+  z-index: -1;
   border: 1px solid var(--color-border);
   border-radius: var(--radius-media);
   content: '';
+}
+
+.cases-hero__visual::after {
+  position: absolute;
+  inset: 0 0 auto;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgb(232 200 148 / 72%), transparent);
+  content: '';
+}
+
+.cases-hero__visual :deep(.base-image__frame) {
+  box-shadow: 0 22px 56px rgb(47 36 27 / 8%);
+}
+
+.cases-hero__status {
+  position: absolute;
+  right: var(--space-7);
+  bottom: var(--space-8);
+  display: grid;
+  max-width: 300px;
+  gap: var(--space-2);
+  padding: var(--space-4);
+  border: 1px solid rgb(200 138 56 / 24%);
+  border-radius: var(--radius-button);
+  background: rgb(255 255 255 / 88%);
+  backdrop-filter: blur(10px);
+}
+
+.cases-hero__status span {
+  color: var(--color-text-secondary);
+  font-size: 13px;
+  font-weight: 750;
+}
+
+.cases-hero__status strong {
+  color: var(--color-brand-900);
+  font-size: 18px;
+  line-height: 1.35;
+}
+
+.cases-hero__status p {
+  font-size: 13px;
 }
 
 .cases-section {
@@ -192,6 +251,8 @@ useSeoMeta({
 }
 
 .case-card {
+  @include subtle-lift(-1px);
+
   display: grid;
   gap: var(--space-4);
   padding: var(--space-5);
@@ -299,12 +360,18 @@ useSeoMeta({
   }
 
   .cases-hero__visual {
-    width: min(100%, 300px);
     margin-inline: auto;
+    padding: var(--space-4);
   }
 
   .cases-hero__visual::before {
     inset: -12px 16px 16px -12px;
+  }
+
+  .cases-hero__status {
+    position: static;
+    max-width: none;
+    margin-top: var(--space-3);
   }
 
   .proof-row {

@@ -4,10 +4,17 @@
       <div class="app-footer__top">
         <div class="app-footer__brand">
           <NuxtLink class="app-footer__logo" to="/">
-            <span>知宠</span>
-            <strong>ZHIPET</strong>
+            <span class="app-footer__mark" aria-hidden="true">知</span>
+            <span class="app-footer__logo-text">
+              <span>知宠</span>
+              <strong>ZHIPET</strong>
+            </span>
           </NuxtLink>
           <p>{{ site.description }}</p>
+          <div class="app-footer__notice" role="note">
+            <span>信息边界</span>
+            <p>官网未确认资料均以“待项目方确认”标记，不展示虚构客户、资质或联系方式。</p>
+          </div>
         </div>
 
         <div class="app-footer__groups">
@@ -43,7 +50,9 @@ const { footerGroups } = useNavigation()
 .app-footer {
   padding-block: var(--space-9) var(--space-6);
   border-top: 1px solid var(--color-border);
-  background: var(--color-brand-900);
+  background:
+    linear-gradient(135deg, rgb(36 29 24), rgb(47 36 27) 56%, rgb(68 51 38)),
+    var(--color-brand-900);
   color: rgb(255 255 255 / 78%);
 }
 
@@ -54,19 +63,37 @@ const { footerGroups } = useNavigation()
 }
 
 .app-footer__logo {
-  display: grid;
+  display: inline-flex;
   width: fit-content;
-  gap: 2px;
+  gap: var(--space-3);
+  align-items: center;
   color: var(--color-surface);
   line-height: 1.1;
 }
 
-.app-footer__logo span {
+.app-footer__mark {
+  display: inline-flex;
+  width: 38px;
+  height: 38px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgb(255 255 255 / 14%);
+  border-radius: 10px;
+  background: rgb(255 255 255 / 10%);
+  font-weight: 800;
+}
+
+.app-footer__logo-text {
+  display: grid;
+  gap: 2px;
+}
+
+.app-footer__logo-text span {
   font-size: 24px;
   font-weight: 800;
 }
 
-.app-footer__logo strong {
+.app-footer__logo-text strong {
   color: rgb(255 255 255 / 58%);
   font-size: 12px;
   letter-spacing: 0.1em;
@@ -80,6 +107,28 @@ const { footerGroups } = useNavigation()
 .app-footer__brand p {
   max-width: 320px;
   color: rgb(255 255 255 / 64%);
+}
+
+.app-footer__notice {
+  display: grid;
+  max-width: 360px;
+  gap: var(--space-2);
+  padding: var(--space-4);
+  border: 1px solid rgb(255 255 255 / 12%);
+  border-radius: var(--radius-button);
+  background: rgb(255 255 255 / 6%);
+}
+
+.app-footer__notice span {
+  color: var(--color-accent-300);
+  font-size: 13px;
+  font-weight: 750;
+}
+
+.app-footer__notice p {
+  margin: 0;
+  color: rgb(255 255 255 / 66%);
+  font-size: 13px;
 }
 
 .app-footer__groups {
@@ -109,6 +158,13 @@ const { footerGroups } = useNavigation()
 
 .app-footer__group a:hover {
   color: var(--color-surface);
+}
+
+.app-footer__group a:focus-visible,
+.app-footer__logo:focus-visible {
+  box-shadow: 0 0 0 3px rgb(232 200 148 / 30%);
+  outline: 2px solid transparent;
+  outline-offset: 4px;
 }
 
 .app-footer__contact {

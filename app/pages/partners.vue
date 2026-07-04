@@ -78,7 +78,13 @@ useSeoMeta({
             radius="lg"
             priority
             concept
+            label-placement="below"
           />
+          <div class="partners-hero__status" aria-label="合作资料公开状态">
+            <span>公开边界</span>
+            <strong>合作名单与授权资料待确认</strong>
+            <p>确认前不展示客户 Logo、合作城市或落地成果。</p>
+          </div>
         </div>
       </BaseContainer>
     </section>
@@ -196,12 +202,14 @@ useSeoMeta({
   font-size: 52px;
   line-height: 1.08;
   letter-spacing: 0;
+  text-wrap: balance;
 }
 
 .partners-hero p {
   max-width: 720px;
   color: var(--color-text-secondary);
   font-size: 18px;
+  line-height: 1.72;
 }
 
 .partners-hero__actions {
@@ -212,14 +220,65 @@ useSeoMeta({
 
 .partners-hero__visual {
   position: relative;
+  overflow: hidden;
+  min-width: 0;
+  padding: var(--space-5);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-media);
+  background:
+    linear-gradient(180deg, rgb(255 255 255 / 86%), rgb(246 241 233 / 72%)),
+    var(--color-surface-soft);
 }
 
 .partners-hero__visual::before {
   position: absolute;
   inset: -18px 24px 24px -18px;
+  z-index: -1;
   border: 1px solid var(--color-border);
   border-radius: var(--radius-media);
   content: '';
+}
+
+.partners-hero__visual::after {
+  position: absolute;
+  inset: 0 0 auto;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgb(232 200 148 / 72%), transparent);
+  content: '';
+}
+
+.partners-hero__visual :deep(.base-image__frame) {
+  box-shadow: 0 22px 56px rgb(47 36 27 / 8%);
+}
+
+.partners-hero__status {
+  position: absolute;
+  right: var(--space-7);
+  bottom: var(--space-8);
+  display: grid;
+  max-width: 300px;
+  gap: var(--space-2);
+  padding: var(--space-4);
+  border: 1px solid rgb(200 138 56 / 24%);
+  border-radius: var(--radius-button);
+  background: rgb(255 255 255 / 88%);
+  backdrop-filter: blur(10px);
+}
+
+.partners-hero__status span {
+  color: var(--color-text-secondary);
+  font-size: 13px;
+  font-weight: 750;
+}
+
+.partners-hero__status strong {
+  color: var(--color-brand-900);
+  font-size: 18px;
+  line-height: 1.35;
+}
+
+.partners-hero__status p {
+  font-size: 13px;
 }
 
 .partners-section {
@@ -233,6 +292,8 @@ useSeoMeta({
 }
 
 .scenario-card {
+  @include subtle-lift(-1px);
+
   display: grid;
   gap: var(--space-3);
   padding: var(--space-5);
@@ -307,6 +368,14 @@ useSeoMeta({
   gap: var(--space-4);
   padding-block: var(--space-4);
   border-bottom: 1px solid var(--color-border);
+  transition:
+    border-color var(--motion-duration-fast) var(--motion-ease-out),
+    transform var(--motion-duration-fast) var(--motion-ease-out);
+}
+
+.process-list li:hover {
+  border-color: rgb(200 138 56 / 42%);
+  transform: translateX(4px);
 }
 
 .process-list li:first-child {
@@ -382,16 +451,28 @@ useSeoMeta({
   }
 
   .partners-hero__visual {
-    width: min(100%, 300px);
     margin-inline: auto;
+    padding: var(--space-4);
   }
 
   .partners-hero__visual::before {
     inset: -12px 16px 16px -12px;
   }
 
+  .partners-hero__status {
+    position: static;
+    max-width: none;
+    margin-top: var(--space-3);
+  }
+
   .process-list li {
     grid-template-columns: 1fr;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .process-list li:hover {
+    transform: none;
   }
 }
 </style>
