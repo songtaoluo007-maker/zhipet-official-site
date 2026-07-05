@@ -1,0 +1,1 @@
+import{k as s,o,b as r,H as t}from"./BJc2gvwc.js";const n={};function a(e,c){return o(),r("td",null,[t(e.$slots,"default")])}const _=Object.assign(s(n,[["render",a]]),{__name:"ProseTd"});export{_ as default};

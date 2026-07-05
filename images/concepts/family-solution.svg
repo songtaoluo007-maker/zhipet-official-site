@@ -1,0 +1,37 @@
+<svg width="1200" height="760" viewBox="0 0 1200 760" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">知宠家庭养宠解决方案概念视觉</title>
+  <desc id="desc">温暖家庭场景中，智能项圈、手机应用和健康趋势记录协同展示。</desc>
+  <rect width="1200" height="760" rx="44" fill="#F6F1E9"/>
+  <path d="M0 544C146 474 264 487 403 545C566 614 696 617 862 548C994 494 1092 489 1200 528V760H0V544Z" fill="#E8C894" fill-opacity="0.34"/>
+  <circle cx="982" cy="142" r="112" fill="#F6EAD8"/>
+  <circle cx="214" cy="168" r="80" fill="#FFFFFF" fill-opacity="0.72"/>
+  <rect x="134" y="126" width="440" height="500" rx="36" fill="#FFFFFF" stroke="#E8E0D5" stroke-width="4"/>
+  <rect x="180" y="174" width="348" height="56" rx="18" fill="#F6EAD8"/>
+  <rect x="180" y="264" width="348" height="92" rx="22" fill="#FAF8F4" stroke="#E8E0D5" stroke-width="3"/>
+  <path d="M214 320C248 287 278 328 312 298C346 268 374 318 414 286C448 259 480 284 500 266" stroke="#B7792B" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="180" y="386" width="154" height="154" rx="26" fill="#F6F1E9"/>
+  <rect x="374" y="386" width="154" height="154" rx="26" fill="#F6F1E9"/>
+  <circle cx="257" cy="444" r="34" fill="#568267" fill-opacity="0.18"/>
+  <path d="M241 445C249 458 261 462 276 430" stroke="#568267" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="451" cy="444" r="34" fill="#B7792B" fill-opacity="0.16"/>
+  <path d="M436 455C436 438 451 427 466 438C481 449 468 470 451 476C445 474 436 466 436 455Z" stroke="#B7792B" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="666" y="206" width="344" height="420" rx="42" fill="#443326"/>
+  <rect x="696" y="244" width="284" height="344" rx="30" fill="#FAF8F4"/>
+  <rect x="732" y="284" width="212" height="34" rx="12" fill="#E8E0D5"/>
+  <rect x="732" y="348" width="212" height="82" rx="20" fill="#FFFFFF" stroke="#E8E0D5" stroke-width="3"/>
+  <path d="M760 398C790 372 818 417 848 385C874 358 900 382 924 364" stroke="#C88A38" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="732" y="458" width="92" height="82" rx="20" fill="#F6EAD8"/>
+  <rect x="852" y="458" width="92" height="82" rx="20" fill="#F6EAD8"/>
+  <path d="M642 542C636 493 658 454 711 431C765 408 812 430 841 476C873 523 846 593 782 607C718 622 651 601 642 542Z" fill="#FFFFFF" stroke="#2F241B" stroke-width="5"/>
+  <path d="M717 426C708 388 732 354 770 356C805 358 826 390 818 426" fill="#FFFFFF"/>
+  <path d="M717 426C708 388 732 354 770 356C805 358 826 390 818 426" stroke="#2F241B" stroke-width="5" stroke-linecap="round"/>
+  <path d="M676 480C642 451 647 406 692 397C714 411 718 441 704 468" fill="#FFFFFF" stroke="#2F241B" stroke-width="5" stroke-linejoin="round"/>
+  <circle cx="744" cy="486" r="7" fill="#2F241B"/>
+  <circle cx="805" cy="486" r="7" fill="#2F241B"/>
+  <path d="M767 509C776 517 787 517 796 509" stroke="#2F241B" stroke-width="5" stroke-linecap="round"/>
+  <path d="M704 557C744 579 800 578 838 553" stroke="#C88A38" stroke-width="15" stroke-linecap="round"/>
+  <circle cx="770" cy="558" r="18" fill="#B7792B"/>
+  <path d="M530 252C579 235 620 239 666 266" stroke="#B7792B" stroke-width="7" stroke-linecap="round" stroke-dasharray="2 18"/>
+  <path d="M530 484C579 501 620 497 666 470" stroke="#B7792B" stroke-width="7" stroke-linecap="round" stroke-dasharray="2 18"/>
+  <rect x="116" y="642" width="968" height="54" rx="27" fill="#FFFFFF" fill-opacity="0.72"/>
+</svg>

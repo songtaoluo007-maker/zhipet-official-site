@@ -1,0 +1,1 @@
+import{d as s,o as t,b as o,G as n,H as r,k as c}from"./BJc2gvwc.js";const l=s({__name:"BaseTag",props:{tone:{default:"neutral"}},setup(e){return(a,p)=>(t(),o("span",{class:n(["base-tag",`base-tag--${e.tone}`])},[r(a.$slots,"default",{},void 0,!0)],2))}}),d=c(l,[["__scopeId","data-v-653f82f4"]]);export{d as B};

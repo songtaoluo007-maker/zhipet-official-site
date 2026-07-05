@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://songtaoluo007-maker.github.io/zhipet-official-site/sitemap.xml
