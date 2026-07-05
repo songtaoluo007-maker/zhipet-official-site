@@ -25,7 +25,7 @@ export interface CaseStudy {
   checkpoints: string[]
 }
 
-export interface NewsItem {
+export interface ResearchItem {
   id: string
   category: string
   title: string
@@ -110,27 +110,27 @@ export const caseStudies: CaseStudy[] = [
   },
 ]
 
-export const newsItems: NewsItem[] = [
+export const researchItems: ResearchItem[] = [
   {
-    id: 'product-direction',
-    category: '产品动态',
-    title: '知宠产品方向规划',
+    id: 'health-signals',
+    category: '健康洞察',
+    title: '宠物不会说话，但健康会留下痕迹',
     date: '发布日期待项目方确认',
-    summary: '围绕智能挂件、知宠 App 和健康管理平台梳理第一阶段产品定义，具体发布时间待项目方确认。',
+    summary: '围绕活动、休息、叫声和照护记录解释连续观察的价值，正式资料待项目方确认。',
   },
   {
-    id: 'scenario-research',
-    category: '场景研究',
-    title: '家庭、医院与门店场景观察',
+    id: 'ai-state-boundary',
+    category: 'AI 与技术',
+    title: 'AI 状态解释不是“翻译”',
     date: '发布日期待项目方确认',
-    summary: '整理宠物健康记录、复诊沟通和会员服务链路中的信息缺口，真实调研资料待项目方确认。',
+    summary: '说明 AI 状态解释需要依据和不确定性，不描述成宠物语言逐字翻译。',
   },
   {
-    id: 'brand-progress',
-    category: '品牌进展',
-    title: '知宠官网内容建设说明',
+    id: 'trend-report-draft',
+    category: '研究报告',
+    title: '知宠宠物健康趋势报告方向',
     date: '发布日期待项目方确认',
-    summary: '当前官网以概念展示和需求验证为主，团队、资质、联系方式和备案信息待项目方确认后更新。',
+    summary: '报告结构、数据来源、样本规模和发布时间均待项目方确认。',
   },
 ]
 

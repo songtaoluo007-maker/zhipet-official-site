@@ -34,8 +34,8 @@ withDefaults(
     description: '预约产品演示，了解适合您的合作方案。',
     primaryLabel: '预约演示',
     primaryTo: '/demo',
-    secondaryLabel: '联系我们',
-    secondaryTo: '/contact',
+    secondaryLabel: '帮助中心',
+    secondaryTo: '/help',
     showSecondary: true,
   },
 )

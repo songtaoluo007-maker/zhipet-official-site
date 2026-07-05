@@ -44,8 +44,8 @@ useSeoMeta({
           <BaseButton to="/products" variant="secondary" size="lg" @click="clearError()">
             查看产品中心
           </BaseButton>
-          <BaseButton to="/contact" variant="ghost" size="lg" @click="clearError()">
-            联系知宠
+          <BaseButton to="/help" variant="ghost" size="lg" @click="clearError()">
+            帮助中心
           </BaseButton>
         </div>
         <ul class="error-page__quick-links" aria-label="推荐访问">
@@ -59,7 +59,7 @@ useSeoMeta({
           </li>
           <li>
             <BaseIcon name="mail" aria-hidden="true" />
-            <span>联系与演示</span>
+            <span>帮助与演示</span>
           </li>
         </ul>
       </BaseContainer>

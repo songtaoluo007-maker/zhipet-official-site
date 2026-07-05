@@ -68,14 +68,14 @@ test('home route exposes canonical, share, and structured SEO metadata', async (
   expect(jsonLdTypes).toContain('Organization')
 })
 
-test('news detail route exposes article canonical and breadcrumb structured data', async ({
+test('research detail route exposes article canonical and breadcrumb structured data', async ({
   page,
 }) => {
-  await page.goto('/news/product-direction')
+  await page.goto('/research/health-signals')
 
   await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
     'href',
-    'http://127.0.0.1:3000/news/product-direction',
+    'http://127.0.0.1:3000/research/health-signals',
   )
   await expect(page.locator('meta[property="og:type"]')).toHaveAttribute('content', 'article')
 
@@ -96,7 +96,7 @@ test('unknown routes show the branded not-found experience', async ({ page }) =>
   await expect(page.getByRole('heading', { name: '页面暂未找到' })).toBeVisible()
   await expect(page.getByRole('link', { name: '返回首页' })).toBeVisible()
   await expect(page.getByRole('link', { name: '查看产品中心' })).toBeVisible()
-  await expect(page.getByRole('link', { name: '联系知宠' })).toBeVisible()
+  await expect(page.locator('.error-page__actions').getByRole('link', { name: '帮助中心' })).toBeVisible()
 
   const hasOverflow = await page.evaluate(
     () => document.documentElement.scrollWidth > window.innerWidth,

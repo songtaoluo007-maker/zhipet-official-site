@@ -6,44 +6,16 @@ import BaseImage from '~/components/base/BaseImage.vue'
 import BaseTag from '~/components/base/BaseTag.vue'
 import CTASection from '~/components/common/CTASection.vue'
 import SectionHeading from '~/components/common/SectionHeading.vue'
-import { solutionCards } from '~/data/solutions'
-import type { IconName } from '~/types/ui'
+import { solutionScenarios, trustStrip } from '~/data/v2'
 
 const { register } = useScrollReveal()
-
-const collaborationSteps: Array<{ id: string; icon: IconName; title: string; description: string }> = [
-  {
-    id: 'record',
-    icon: 'collar',
-    title: '设备记录',
-    description: '从日常佩戴和健康信号出发，沉淀连续记录，具体设备能力待样机验证。',
-  },
-  {
-    id: 'app',
-    icon: 'phone',
-    title: 'App 协作',
-    description: '将档案、提醒和家庭成员协作放在同一入口，减少信息分散和重复沟通。',
-  },
-  {
-    id: 'service',
-    icon: 'building',
-    title: '服务连接',
-    description: '为医院、门店与合作机构预留连接路径，真实合作流程确认后再上线。',
-  },
-]
-
-const confirmationItems = [
-  { label: '合作机构名单', value: '待项目方确认' },
-  { label: '服务覆盖城市', value: '待项目方确认' },
-  { label: '上线节奏', value: '待项目方确认' },
-]
 
 useSeoMeta({
   title: '解决方案 | 知宠 ZHIPET',
   description:
-    '知宠 ZHIPET 解决方案中心，展示家庭养宠、宠物医院和宠物门店的当前方案方向。真实服务范围和合作信息以项目方确认为准。',
+    '知宠解决方案面向家庭养宠、宠物医院和宠物门店/机构，展示同一套能力在不同场景中的使用方式。',
   ogTitle: '解决方案 | 知宠 ZHIPET',
-  ogDescription: '展示家庭、医院与门店场景下的宠物健康管理方案方向。',
+  ogDescription: '同一套能力，服务不同场景。真实合作机构与服务范围待项目方确认。',
   ogType: 'website',
 })
 </script>
@@ -58,115 +30,83 @@ useSeoMeta({
             <span aria-hidden="true">/</span>
             <span>解决方案</span>
           </nav>
-          <h1 id="solutions-title">解决方案</h1>
+          <BaseTag tone="concept">场景方案待确认</BaseTag>
+          <h1 id="solutions-title">同一套能力，服务不同场景</h1>
           <p>
-            知宠围绕家庭、宠物医院和宠物门店三个核心场景设计解决方案。当前页面只展示方案方向，真实服务范围、合作机构和上线信息待项目方确认。
+            知宠围绕安全防走失、健康趋势观察和状态解释，服务家庭、宠物医院与门店机构。当前不展示虚构客户、合作 Logo 或落地数据。
           </p>
-          <div class="solutions-hero__actions" aria-label="解决方案主要操作">
-            <BaseButton to="/solutions/family" size="lg">
-              查看家庭方案
-              <template #iconRight>
-                <BaseIcon name="arrow-right" />
-              </template>
-            </BaseButton>
-            <BaseButton to="/demo" variant="text" size="lg">预约方案演示</BaseButton>
-          </div>
+          <BaseButton to="#scenario-cards" size="lg">
+            查看场景方案
+            <template #iconRight>
+              <BaseIcon name="arrow-right" />
+            </template>
+          </BaseButton>
         </div>
-        <aside class="solutions-hero__visual" aria-label="解决方案边界概览">
+        <div class="solutions-hero__visual">
           <BaseImage
             src="/images/concepts/family-solution.svg"
-            alt="知宠家庭养宠解决方案概念视觉"
+            alt="知宠家庭、医院和门店协同场景概念视觉"
             aspect-ratio="16 / 10"
             radius="lg"
             priority
             concept
             label-placement="below"
           />
-          <div class="solutions-hero__status">
-            <span>公开信息边界</span>
-            <strong>方案方向已整理，落地资料待确认</strong>
-            <p>不展示未确认客户、价格、资质、覆盖城市或服务效果数据。</p>
+          <div class="solutions-hero__card">
+            <span>公开边界</span>
+            <strong>不展示未确认客户或资质</strong>
+            <p>合作机构、覆盖城市和上线节奏均待项目方确认。</p>
           </div>
-        </aside>
+        </div>
       </BaseContainer>
     </section>
 
     <BaseContainer
-      :ref="register"
-      tag="section"
-      class="solutions-section scenario-route-section"
-      width="wide"
-      aria-labelledby="scenario-route-title"
-    >
-      <SectionHeading
-        id="scenario-route-title"
-        title="先按角色进入"
-        description="家庭用户、医疗机构和门店服务者关注的入口不同，但共用同一套记录、理解和协作思路。"
-      />
-      <nav class="scenario-route-list" aria-label="解决方案角色入口">
-        <NuxtLink
-          v-for="solution in solutionCards"
-          :key="solution.id"
-          class="scenario-route-card"
-          :to="solution.href ?? '/solutions'"
-        >
-          <span class="icon-shell" aria-hidden="true">
-            <BaseIcon :name="solution.icon" />
-          </span>
-          <div>
-            <BaseTag tone="concept">{{ solution.status }}</BaseTag>
-            <h2>{{ solution.title }}</h2>
-            <p>{{ solution.audience }}</p>
-          </div>
-          <BaseIcon name="arrow-right" class="scenario-route-card__arrow" aria-hidden="true" />
-        </NuxtLink>
-      </nav>
-    </BaseContainer>
-
-    <BaseContainer
+      id="scenario-cards"
       :ref="register"
       tag="section"
       class="solutions-section"
       width="wide"
-      aria-labelledby="solution-list-title"
+      aria-labelledby="scenario-title"
     >
       <SectionHeading
-        id="solution-list-title"
-        title="按场景选择知宠方案"
-        description="先呈现官网信息架构中的核心场景，不展示未确认客户、价格、资质或落地数据。"
+        id="scenario-title"
+        title="三大场景"
+        description="每个场景都围绕不同角色的真实任务组织，不把官网做成后台系统展示页。"
       />
-      <div class="solution-grid">
-        <article v-for="solution in solutionCards" :key="solution.id" class="solution-card">
+      <div class="scenario-grid">
+        <article v-for="scenario in solutionScenarios" :key="scenario.id" class="scenario-card">
           <BaseImage
-            :src="solution.image"
-            :alt="solution.alt"
+            :src="scenario.image"
+            :alt="scenario.alt"
             aspect-ratio="4 / 3"
             radius="lg"
             concept
             label-placement="below"
           />
-          <div class="solution-card__body">
-            <div class="solution-card__head">
+          <div class="scenario-card__body">
+            <div class="scenario-card__head">
               <span class="icon-shell" aria-hidden="true">
-                <BaseIcon :name="solution.icon" />
+                <BaseIcon :name="scenario.icon" />
               </span>
               <div>
-                <h2>{{ solution.title }}</h2>
-                <p>{{ solution.audience }}</p>
+                <BaseTag tone="concept">{{ scenario.audience }}</BaseTag>
+                <h2>{{ scenario.title }}</h2>
               </div>
             </div>
-            <BaseTag tone="concept">{{ solution.status }}</BaseTag>
-            <p class="solution-card__summary">{{ solution.summary }}</p>
+            <p>{{ scenario.description }}</p>
             <ul>
-              <li v-for="feature in solution.features" :key="feature">{{ feature }}</li>
+              <li v-for="ability in scenario.abilities" :key="ability">{{ ability }}</li>
             </ul>
-            <BaseButton v-if="solution.href" :to="solution.href" variant="text">
+            <p v-if="scenario.boundary" class="scenario-card__boundary">
+              {{ scenario.boundary }}
+            </p>
+            <BaseButton :to="scenario.href" variant="text">
               查看方案详情
               <template #iconRight>
                 <BaseIcon name="arrow-right" />
               </template>
             </BaseButton>
-            <BaseButton v-else disabled variant="text">方案细节待项目方确认</BaseButton>
           </div>
         </article>
       </div>
@@ -174,52 +114,48 @@ useSeoMeta({
 
     <section
       :ref="register"
-      class="solutions-section collaboration-section"
-      aria-labelledby="collaboration-title"
+      class="solutions-section trust-section"
+      aria-labelledby="trust-title"
     >
       <BaseContainer width="wide">
         <SectionHeading
-          id="collaboration-title"
-          title="设备、App 与服务连接"
-          description="方案不是把概念能力包装成结果承诺，而是先建立可验证的记录、提醒和服务协同路径。"
+          id="trust-title"
+          title="信任基础"
+          description="背书条只呈现确认前可公开的原则，不编造合作机构、数据规模或效果承诺。"
         />
-        <ol class="collaboration-list">
-          <li v-for="step in collaborationSteps" :key="step.id">
+        <div class="trust-grid">
+          <article v-for="item in trustStrip" :key="item.id" class="trust-card">
             <span class="icon-shell" aria-hidden="true">
-              <BaseIcon :name="step.icon" />
+              <BaseIcon :name="item.icon" />
             </span>
-            <div>
-              <h3>{{ step.title }}</h3>
-              <p>{{ step.description }}</p>
-            </div>
-          </li>
-        </ol>
+            <h2>{{ item.title }}</h2>
+            <p>{{ item.description }}</p>
+          </article>
+        </div>
       </BaseContainer>
     </section>
 
     <BaseContainer
       :ref="register"
       tag="section"
-      class="solutions-section confirmation-section"
+      class="solutions-section boundary-panel"
       width="wide"
-      aria-labelledby="confirmation-title"
+      aria-labelledby="solution-boundary-title"
     >
-      <SectionHeading
-        id="confirmation-title"
-        title="待确认资料"
-        description="以下资料确认后才能成为正式官网信息，当前不生成看似真实的客户或资质证明。"
-      />
-      <div class="confirmation-list">
-        <div v-for="item in confirmationItems" :key="item.label" class="confirmation-row">
-          <span>{{ item.label }}</span>
-          <strong>{{ item.value }}</strong>
-        </div>
+      <BaseIcon name="shield-check" aria-hidden="true" />
+      <div>
+        <h2 id="solution-boundary-title">方案边界</h2>
+        <p>
+          医院场景只做辅助沟通，不替代诊断。门店场景不承诺经营结果。所有合作机构、服务覆盖、接口开放和研究结论需项目方确认后再公开。
+        </p>
       </div>
     </BaseContainer>
 
     <CTASection
-      title="需要匹配您的养宠或机构场景？"
-      description="预约演示，确认适用场景、当前样机能力和下一步合作方式。"
+      title="想确认哪种方案适合您的场景？"
+      description="预约演示，沟通家庭、医院或门店机构的具体需求与当前可验证范围。"
+      secondary-label="查看帮助中心"
+      secondary-to="/help"
     />
   </div>
 </template>
@@ -237,7 +173,7 @@ useSeoMeta({
 
 .solutions-hero__inner {
   display: grid;
-  grid-template-columns: minmax(0, 0.86fr) minmax(360px, 0.82fr);
+  grid-template-columns: minmax(0, 0.86fr) minmax(380px, 0.82fr);
   gap: var(--space-8);
   align-items: center;
 }
@@ -266,7 +202,8 @@ useSeoMeta({
 }
 
 .solutions-hero h1 {
-  font-size: 52px;
+  max-width: 760px;
+  font-size: 56px;
   line-height: 1.08;
   letter-spacing: 0;
   text-wrap: balance;
@@ -279,16 +216,8 @@ useSeoMeta({
   line-height: 1.72;
 }
 
-.solutions-hero__actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-3);
-  align-items: center;
-}
-
 .solutions-hero__visual {
   position: relative;
-  overflow: hidden;
   min-width: 0;
   padding: var(--space-5);
   border: 1px solid var(--color-border);
@@ -298,19 +227,7 @@ useSeoMeta({
     var(--color-surface-soft);
 }
 
-.solutions-hero__visual::after {
-  position: absolute;
-  inset: 0 0 auto;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, rgb(232 200 148 / 72%), transparent);
-  content: '';
-}
-
-.solutions-hero__visual :deep(.base-image__frame) {
-  box-shadow: 0 22px 56px rgb(47 36 27 / 8%);
-}
-
-.solutions-hero__status {
+.solutions-hero__card {
   position: absolute;
   right: var(--space-7);
   bottom: var(--space-8);
@@ -320,22 +237,22 @@ useSeoMeta({
   padding: var(--space-4);
   border: 1px solid rgb(200 138 56 / 24%);
   border-radius: var(--radius-button);
-  background: rgb(255 255 255 / 88%);
+  background: rgb(255 255 255 / 90%);
+  backdrop-filter: blur(10px);
 }
 
-.solutions-hero__status span {
+.solutions-hero__card span {
   color: var(--color-text-secondary);
   font-size: 13px;
   font-weight: 750;
 }
 
-.solutions-hero__status strong {
+.solutions-hero__card strong {
   color: var(--color-brand-900);
   font-size: 18px;
-  line-height: 1.35;
 }
 
-.solutions-hero__status p {
+.solutions-hero__card p {
   font-size: 13px;
 }
 
@@ -343,113 +260,49 @@ useSeoMeta({
   @include section-spacing;
 }
 
-.scenario-route-section {
-  padding-top: var(--space-6);
-}
-
-.scenario-route-list {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: var(--space-4);
-}
-
-.scenario-route-card {
-  position: relative;
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr) auto;
-  gap: var(--space-4);
-  align-items: start;
-  min-width: 0;
-  padding: var(--space-5);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-button);
-  color: inherit;
-  background: var(--color-surface);
-  transition:
-    border-color var(--motion-duration-fast) var(--motion-ease-out),
-    box-shadow var(--motion-duration-fast) var(--motion-ease-out),
-    transform var(--motion-duration-fast) var(--motion-ease-out);
-}
-
-.scenario-route-card:hover,
-.scenario-route-card:focus-visible {
-  border-color: rgb(200 138 56 / 45%);
-  box-shadow: var(--shadow-hover);
-  transform: translateY(-2px);
-}
-
-.scenario-route-card h2 {
-  margin: var(--space-2) 0 var(--space-1);
-  font-size: 20px;
-}
-
-.scenario-route-card p {
-  color: var(--color-text-secondary);
-  font-size: 14px;
-}
-
-.scenario-route-card__arrow {
-  color: var(--color-accent-600);
-  font-size: 20px;
-  transition: transform var(--motion-duration-fast) var(--motion-ease-out);
-}
-
-.scenario-route-card:hover .scenario-route-card__arrow,
-.scenario-route-card:focus-visible .scenario-route-card__arrow {
-  transform: translateX(3px);
-}
-
-.solution-grid {
+.scenario-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: var(--space-5);
 }
 
-.solution-card {
+.scenario-card {
   display: grid;
   grid-template-rows: auto 1fr;
   border: 1px solid var(--color-border);
   border-radius: var(--radius-media);
   background: var(--color-surface);
   overflow: hidden;
-  transition:
-    border-color var(--motion-duration-fast) var(--motion-ease-out),
-    box-shadow var(--motion-duration-fast) var(--motion-ease-out),
-    transform var(--motion-duration-fast) var(--motion-ease-out);
 }
 
-.solution-card:hover,
-.solution-card:focus-within {
-  border-color: rgb(200 138 56 / 45%);
-  box-shadow: var(--shadow-hover);
-  transform: translateY(-2px);
-}
-
-.solution-card__body {
+.scenario-card__body {
   display: grid;
   gap: var(--space-4);
   align-content: start;
   padding: var(--space-5);
 }
 
-.solution-card__head {
+.scenario-card__head {
   display: grid;
   grid-template-columns: auto minmax(0, 1fr);
   gap: var(--space-3);
-  align-items: start;
 }
 
-.solution-card h2 {
-  margin-bottom: var(--space-1);
+.scenario-card h2,
+.trust-card h2 {
+  margin-top: var(--space-2);
+  font-size: 22px;
+  line-height: 1.25;
 }
 
-.solution-card__head p,
-.solution-card__summary,
-.collaboration-list p {
+.scenario-card p,
+.trust-card p,
+.boundary-panel p {
   color: var(--color-text-secondary);
+  line-height: 1.72;
 }
 
-.solution-card ul {
+.scenario-card ul {
   display: flex;
   flex-wrap: wrap;
   gap: var(--space-2);
@@ -458,7 +311,7 @@ useSeoMeta({
   list-style: none;
 }
 
-.solution-card li {
+.scenario-card li {
   padding: 7px 10px;
   border: 1px solid var(--color-border);
   border-radius: var(--radius-pill);
@@ -468,88 +321,81 @@ useSeoMeta({
   font-weight: 650;
 }
 
+.scenario-card__boundary {
+  padding: var(--space-3);
+  border: 1px solid rgb(183 121 43 / 22%);
+  border-radius: var(--radius-button);
+  background: var(--color-accent-100);
+  font-weight: 650;
+}
+
 .icon-shell {
   display: inline-flex;
   width: 44px;
   height: 44px;
   align-items: center;
   justify-content: center;
-  border: 1px solid rgb(200 138 56 / 24%);
+  border: 1px solid rgb(86 130 103 / 22%);
   border-radius: var(--radius-button);
-  color: var(--color-accent-600);
-  background: var(--color-accent-100);
+  color: var(--color-sage-700);
+  background: var(--color-sage-100);
   font-size: 22px;
 }
 
-.collaboration-section {
+.trust-section {
   background: var(--color-surface-soft);
 }
 
-.collaboration-list {
+.trust-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: var(--space-5);
-  padding: 0;
-  margin: 0;
-  list-style: none;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--space-4);
 }
 
-.collaboration-list li {
+.trust-card {
   display: grid;
   gap: var(--space-3);
-  padding-top: var(--space-4);
-  border-top: 1px solid var(--color-border);
-}
-
-.confirmation-list {
+  padding: var(--space-5);
   border: 1px solid var(--color-border);
-  border-radius: var(--radius-media);
+  border-radius: var(--radius-card);
   background: var(--color-surface);
-  overflow: hidden;
 }
 
-.confirmation-row {
+.boundary-panel {
   display: grid;
-  grid-template-columns: minmax(180px, 0.4fr) minmax(0, 1fr);
+  grid-template-columns: auto minmax(0, 1fr);
   gap: var(--space-4);
-  padding: var(--space-4) var(--space-5);
-  border-top: 1px solid var(--color-border);
+  padding: var(--space-5);
+  border: 1px solid rgb(183 121 43 / 24%);
+  border-radius: var(--radius-media);
+  background: var(--color-accent-100);
 }
 
-.confirmation-row:first-child {
-  border-top: 0;
+.boundary-panel .base-icon {
+  color: var(--color-accent-600);
+  font-size: 24px;
 }
 
-.confirmation-row span {
-  color: var(--color-brand-900);
-  font-weight: 750;
-}
-
-.confirmation-row strong {
-  color: var(--color-text-secondary);
-  font-weight: 650;
+.boundary-panel h2 {
+  margin-bottom: var(--space-2);
+  font-size: 22px;
 }
 
 @media (max-width: 1100px) {
   .solutions-hero__inner,
-  .solution-grid,
-  .collaboration-list,
-  .scenario-route-list {
+  .scenario-grid,
+  .trust-grid {
     grid-template-columns: 1fr;
   }
 
   .solutions-hero h1 {
-    font-size: 44px;
+    font-size: 46px;
   }
 }
 
 @media (max-width: 560px) {
   .solutions-hero {
     padding-block: var(--space-6) var(--space-5);
-  }
-
-  .solutions-hero__copy {
-    gap: var(--space-3);
   }
 
   .solutions-hero h1 {
@@ -560,43 +406,22 @@ useSeoMeta({
     font-size: 15px;
   }
 
-  .solutions-hero__actions :deep(.base-button) {
-    width: 100%;
-  }
-
-  .solutions-hero__visual {
+  .solutions-hero__visual,
+  .scenario-card__body,
+  .trust-card,
+  .boundary-panel {
     padding: var(--space-4);
   }
 
-  .solutions-hero__status {
+  .solutions-hero__card {
     position: static;
     max-width: none;
     margin-top: var(--space-3);
   }
 
-  .scenario-route-card {
-    grid-template-columns: 1fr auto;
-  }
-
-  .scenario-route-card .icon-shell {
-    grid-column: 1 / -1;
-  }
-
-  .confirmation-row {
+  .scenario-card__head,
+  .boundary-panel {
     grid-template-columns: 1fr;
-    gap: var(--space-2);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .scenario-route-card:hover,
-  .scenario-route-card:focus-visible,
-  .solution-card:hover,
-  .solution-card:focus-within,
-  .scenario-route-card:hover .scenario-route-card__arrow,
-  .scenario-route-card:focus-visible .scenario-route-card__arrow {
-    transform: none;
   }
 }
 </style>
-

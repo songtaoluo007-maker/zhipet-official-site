@@ -6,7 +6,7 @@ describe('useNavigation', () => {
     const { mainNavigation } = useNavigation()
     const labels = mainNavigation.map((item) => item.label)
 
-    expect(labels).toEqual(['首页', '产品', '解决方案', '合作伙伴', '关于我们', '资讯中心'])
+    expect(labels).toEqual(['产品', '解决方案', '健康研究院', '关于我们', '帮助中心'])
   })
 
   it('does not use empty navigation hrefs', () => {

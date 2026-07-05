@@ -23,7 +23,8 @@
       </nav>
 
       <div class="app-header__actions">
-        <BaseButton to="/demo" size="sm">预约演示</BaseButton>
+        <BaseButton to="/login" variant="text" size="sm">登录</BaseButton>
+        <BaseButton to="/login?mode=register" variant="secondary" size="sm">注册</BaseButton>
       </div>
 
       <BaseIconButton
@@ -146,7 +147,14 @@ onBeforeUnmount(() => {
 .app-header__actions {
   display: flex;
   align-items: center;
-  gap: var(--space-4);
+}
+
+.app-header__nav {
+  gap: var(--space-5);
+}
+
+.app-header__actions {
+  gap: var(--space-3);
 }
 
 .app-header__link {

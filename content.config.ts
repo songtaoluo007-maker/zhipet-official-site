@@ -10,9 +10,9 @@ export default defineContentConfig({
         description: z.string().optional(),
       }),
     }),
-    news: defineCollection({
+    research: defineCollection({
       type: 'page',
-      source: 'news/*.md',
+      source: 'research/*.md',
       schema: z.object({
         title: z.string(),
         description: z.string().optional(),
@@ -20,6 +20,7 @@ export default defineContentConfig({
         publishedLabel: z.string().default('发布日期待项目方确认'),
         status: z.string().default('正文待项目方确认'),
         order: z.number().default(999),
+        tags: z.array(z.string()).default([]),
         publishedAt: z.string().optional(),
       }),
     }),

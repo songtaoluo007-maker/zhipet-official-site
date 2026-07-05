@@ -6,181 +6,165 @@ import BaseImage from '~/components/base/BaseImage.vue'
 import BaseTag from '~/components/base/BaseTag.vue'
 import CTASection from '~/components/common/CTASection.vue'
 import SectionHeading from '~/components/common/SectionHeading.vue'
-import { homeProducts } from '~/data/home'
-import type { IconName } from '~/types/ui'
+import { productFeatureStrip, productVariants, valueLayers } from '~/data/v2'
 
 const { register } = useScrollReveal()
 
-const productPathways: Array<{
-  id: string
-  icon: IconName
-  label: string
-  title: string
-  description: string
-}> = [
-  {
-    id: 'sense',
-    icon: 'collar',
-    label: '01',
-    title: '先获得日常信号',
-    description: '智能挂件负责探索声音、活动和安全相关变化的连续记录。',
-  },
-  {
-    id: 'understand',
-    icon: 'sparkles',
-    label: '02',
-    title: '再形成可能判断',
-    description: 'PetSense 将多模态线索转化为带依据和不确定性的状态提示。',
-  },
-  {
-    id: 'act',
-    icon: 'phone',
-    label: '03',
-    title: '最后承接到行动',
-    description: '知宠 App 与平台把提示落到记录、提醒、协作和服务连接中。',
-  },
-]
-
-const productDetailPath = (id: string) => {
-  if (id === 'zhipet-app') {
-    return '/products/app'
-  }
-
-  return `/products/${id}`
-}
-
 useSeoMeta({
-  title: '产品中心 | 知宠 ZHIPET',
+  title: '产品 | 知宠 ZHIPET',
   description:
-    '知宠 ZHIPET 产品中心，展示智能挂件、知宠 App 与健康管理平台的当前产品方向。真实参数和上线状态以项目方确认为准。',
-  ogTitle: '产品中心 | 知宠 ZHIPET',
-  ogDescription: '展示智能挂件、用户端 App 与健康管理平台的当前产品方向。',
+    '知宠产品页展示一个核心主模块、两种安装方式和安全、健康、状态解读三层价值。参数与上市状态待项目方确认。',
+  ogTitle: '产品 | 知宠 ZHIPET',
+  ogDescription: '一个核心主模块，两种安装方式，探索宠物安全与健康趋势管理。',
   ogType: 'website',
 })
 </script>
 
 <template>
   <div class="products-page">
-    <section class="products-hero" aria-labelledby="products-title">
-      <BaseContainer class="products-hero__inner" width="wide">
-        <div class="products-hero__copy">
+    <section class="product-hero" aria-labelledby="products-title">
+      <BaseContainer class="product-hero__inner" width="wide">
+        <div class="product-hero__copy">
           <nav class="breadcrumb" aria-label="面包屑">
             <NuxtLink to="/">首页</NuxtLink>
             <span aria-hidden="true">/</span>
-            <span>产品中心</span>
+            <span>产品</span>
           </nav>
-          <h1 id="products-title">产品中心</h1>
+          <BaseTag tone="concept">产品形态待项目方确认</BaseTag>
+          <h1 id="products-title">一个核心主模块，两种安装方式</h1>
           <p>
-            知宠第一阶段围绕智能挂件、知宠 App
-            和健康管理平台展开产品定义与场景验证。未确认产品参数和上线状态均以项目方资料为准。
+            知宠 V2 以智能项圈核心模块为中心，围绕项圈一体与夹扣安装拓展体验。真实参数、量产节奏和能力范围以项目方确认为准。
           </p>
-          <div class="products-hero__actions" aria-label="产品中心主要操作">
-            <BaseButton to="/demo" size="lg">
-              预约产品演示
+          <div class="product-hero__actions">
+            <BaseButton to="#variants" size="lg">
+              查看产品形态
               <template #iconRight>
                 <BaseIcon name="arrow-right" />
               </template>
             </BaseButton>
-            <BaseButton to="/ai-pet-understanding" variant="text" size="lg">
-              了解 AI 宠物理解
-            </BaseButton>
+            <BaseButton to="/demo" variant="secondary" size="lg">预约演示</BaseButton>
           </div>
         </div>
-        <aside class="products-hero__visual" aria-label="产品阶段概览">
+        <div class="product-hero__visual">
           <BaseImage
-            src="/images/concepts/collar-ecosystem.svg"
-            alt="知宠智能设备、App 和平台协同概念视觉"
+            src="/images/concepts/smart-collar.svg"
+            alt="知宠智能项圈核心模块与安装方式概念视觉"
             aspect-ratio="4 / 3"
             radius="lg"
             priority
             concept
             label-placement="below"
           />
-          <div class="products-hero__status">
-            <span>当前公开口径</span>
-            <strong>产品定义与场景验证中</strong>
-            <p>参数、上线节奏和正式能力范围均待项目方确认。</p>
+          <div class="module-card">
+            <span>核心主模块</span>
+            <strong>安全 + 健康趋势 + 状态解释</strong>
+            <p>硬件参数、传感器范围和上市节奏待项目方确认。</p>
           </div>
-        </aside>
+        </div>
       </BaseContainer>
     </section>
 
     <BaseContainer
+      id="variants"
       :ref="register"
       tag="section"
-      class="products-section product-path-section"
+      class="products-section"
       width="wide"
-      aria-labelledby="product-path-title"
+      aria-labelledby="variants-title"
     >
       <SectionHeading
-        id="product-path-title"
-        title="产品链路怎么选"
-        description="先看入口设备，再看 AI 理解方式，最后确认家庭或机构侧如何承接。"
+        id="variants-title"
+        title="产品形态"
+        description="先展示 V2 的产品组合逻辑，不把未确认硬件形态写成已发布商品。"
       />
-      <ol class="product-path-list">
-        <li v-for="item in productPathways" :key="item.id">
-          <span class="product-path-list__index">{{ item.label }}</span>
-          <span class="icon-shell" aria-hidden="true">
-            <BaseIcon :name="item.icon" />
-          </span>
+      <div class="variant-grid">
+        <article v-for="variant in productVariants" :key="variant.id" class="variant-card">
+          <BaseTag tone="concept">{{ variant.status }}</BaseTag>
+          <h2>{{ variant.title }}</h2>
+          <p>{{ variant.description }}</p>
+          <ul>
+            <li v-for="tag in variant.tags" :key="tag">{{ tag }}</li>
+          </ul>
+        </article>
+      </div>
+    </BaseContainer>
+
+    <section
+      id="core-module"
+      :ref="register"
+      class="products-section core-section"
+      aria-labelledby="core-title"
+    >
+      <BaseContainer width="wide">
+        <div class="core-layout">
+          <BaseImage
+            src="/images/concepts/collar-ecosystem.svg"
+            alt="知宠核心模块、App 与健康档案生态概念视觉"
+            aspect-ratio="16 / 10"
+            radius="lg"
+            concept
+            label-placement="below"
+          />
           <div>
-            <h2>{{ item.title }}</h2>
-            <p>{{ item.description }}</p>
+            <SectionHeading
+              id="core-title"
+              title="一个模块承接三层价值"
+              description="核心模块不是单点功能堆叠，而是把安全、健康趋势和状态解释放进可持续的使用路径。"
+              align="left"
+            />
+            <div class="feature-strip" aria-label="产品功能条">
+              <span v-for="feature in productFeatureStrip" :key="feature">{{ feature }}</span>
+            </div>
           </div>
-        </li>
-      </ol>
+        </div>
+      </BaseContainer>
+    </section>
+
+    <BaseContainer
+      id="value-layers"
+      :ref="register"
+      tag="section"
+      class="products-section"
+      width="wide"
+      aria-labelledby="value-title"
+    >
+      <SectionHeading
+        id="value-title"
+        title="三层价值"
+        description="先解决安全入口，再长期观察健康趋势，最后用 AI 状态解释帮助用户理解下一步。"
+      />
+      <div class="value-grid">
+        <article v-for="layer in valueLayers" :key="layer.id" class="value-card">
+          <span class="icon-shell" aria-hidden="true">
+            <BaseIcon :name="layer.icon" />
+          </span>
+          <h2>{{ layer.title }}</h2>
+          <p>{{ layer.description }}</p>
+        </article>
+      </div>
     </BaseContainer>
 
     <BaseContainer
       :ref="register"
       tag="section"
-      class="products-section"
+      class="products-section boundary-panel"
       width="wide"
-      aria-labelledby="product-list-title"
+      aria-labelledby="product-boundary-title"
     >
-      <SectionHeading
-        id="product-list-title"
-        title="当前产品方向"
-        description="只展示已经进入官网信息架构的产品模块，不把概念能力包装成已发布商品。"
-      />
-      <div class="products-list">
-        <article v-for="product in homeProducts" :key="product.id" class="product-card">
-          <BaseImage
-            :src="product.image"
-            :alt="product.alt"
-            aspect-ratio="3 / 2"
-            radius="lg"
-            concept
-            label-placement="below"
-          />
-          <div class="product-card__copy">
-            <div class="product-card__head">
-              <span class="icon-shell" aria-hidden="true">
-                <BaseIcon :name="product.icon" />
-              </span>
-              <div>
-                <h2>{{ product.name }}</h2>
-                <BaseTag tone="concept">{{ product.status }}</BaseTag>
-              </div>
-            </div>
-            <p>{{ product.summary }}</p>
-            <ul>
-              <li v-for="feature in product.features" :key="feature">{{ feature }}</li>
-            </ul>
-            <BaseButton :to="productDetailPath(product.id)" variant="text">
-              查看产品详情
-              <template #iconRight>
-                <BaseIcon name="arrow-right" />
-              </template>
-            </BaseButton>
-          </div>
-        </article>
+      <BaseIcon name="shield-check" aria-hidden="true" />
+      <div>
+        <h2 id="product-boundary-title">产品发布边界</h2>
+        <p>
+          未确认前，不展示未验证生命体征指标、真实续航、防水等级、上市时间或价格。猫端体验将强调轻量、安全脱扣和低打扰，具体设计待项目方确认。
+        </p>
       </div>
     </BaseContainer>
 
     <CTASection
-      title="需要了解知宠产品组合？"
-      description="预约演示，确认当前样机能力、产品规划和适合您的合作方式。"
+      title="想确认哪种产品形态适合您的场景？"
+      description="预约演示，了解核心模块、安装方式和当前样机验证边界。"
+      secondary-label="阅读产品思考"
+      secondary-to="/research/safety-first"
     />
   </div>
 </template>
@@ -192,94 +176,21 @@ useSeoMeta({
   overflow: hidden;
 }
 
-.products-hero {
+.product-hero {
   padding-block: var(--space-8) var(--space-7);
 }
 
-.products-hero__inner {
+.product-hero__inner,
+.core-layout {
   display: grid;
-  grid-template-columns: minmax(0, 0.82fr) minmax(360px, 0.76fr);
-  min-height: 420px;
+  grid-template-columns: minmax(0, 0.86fr) minmax(380px, 0.8fr);
   gap: var(--space-8);
   align-items: center;
 }
 
-.products-hero__copy {
+.product-hero__copy {
   display: grid;
   gap: var(--space-4);
-}
-
-.products-hero h1 {
-  font-size: 52px;
-  line-height: 1.08;
-  letter-spacing: 0;
-  text-wrap: balance;
-}
-
-.products-hero p {
-  max-width: 720px;
-  color: var(--color-text-secondary);
-  font-size: 18px;
-  line-height: 1.72;
-}
-
-.products-hero__actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-3);
-  align-items: center;
-}
-
-.products-hero__visual {
-  position: relative;
-  overflow: hidden;
-  min-width: 0;
-  padding: var(--space-5);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-media);
-  background:
-    linear-gradient(180deg, rgb(255 255 255 / 86%), rgb(246 241 233 / 72%)),
-    var(--color-surface-soft);
-}
-
-.products-hero__visual::after {
-  position: absolute;
-  inset: 0 0 auto;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, rgb(232 200 148 / 72%), transparent);
-  content: '';
-}
-
-.products-hero__visual :deep(.base-image__frame) {
-  box-shadow: 0 22px 56px rgb(47 36 27 / 8%);
-}
-
-.products-hero__status {
-  position: absolute;
-  right: var(--space-7);
-  bottom: var(--space-8);
-  display: grid;
-  max-width: 280px;
-  gap: var(--space-2);
-  padding: var(--space-4);
-  border: 1px solid rgb(200 138 56 / 24%);
-  border-radius: var(--radius-button);
-  background: rgb(255 255 255 / 88%);
-}
-
-.products-hero__status span {
-  color: var(--color-text-secondary);
-  font-size: 13px;
-  font-weight: 750;
-}
-
-.products-hero__status strong {
-  color: var(--color-brand-900);
-  font-size: 18px;
-}
-
-.products-hero__status p {
-  font-size: 13px;
 }
 
 .breadcrumb {
@@ -300,118 +211,105 @@ useSeoMeta({
   color: var(--color-accent-600);
 }
 
+.product-hero h1 {
+  max-width: 760px;
+  font-size: 56px;
+  line-height: 1.08;
+  letter-spacing: 0;
+  text-wrap: balance;
+}
+
+.product-hero p {
+  max-width: 720px;
+  color: var(--color-text-secondary);
+  font-size: 18px;
+  line-height: 1.72;
+}
+
+.product-hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+.product-hero__visual {
+  position: relative;
+  min-width: 0;
+  padding: var(--space-5);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-media);
+  background:
+    linear-gradient(180deg, rgb(255 255 255 / 86%), rgb(246 241 233 / 72%)),
+    var(--color-surface-soft);
+}
+
+.module-card {
+  position: absolute;
+  right: var(--space-7);
+  bottom: var(--space-8);
+  display: grid;
+  max-width: 300px;
+  gap: var(--space-2);
+  padding: var(--space-4);
+  border: 1px solid rgb(200 138 56 / 24%);
+  border-radius: var(--radius-button);
+  background: rgb(255 255 255 / 90%);
+  backdrop-filter: blur(10px);
+}
+
+.module-card span {
+  color: var(--color-text-secondary);
+  font-size: 13px;
+  font-weight: 750;
+}
+
+.module-card strong {
+  color: var(--color-brand-900);
+  font-size: 18px;
+  line-height: 1.35;
+}
+
+.module-card p {
+  font-size: 13px;
+}
+
 .products-section {
   @include section-spacing;
-
-  padding-top: var(--space-8);
 }
 
-.product-path-section {
-  padding-top: var(--space-6);
-}
-
-.product-path-list {
+.variant-grid,
+.value-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  padding: 0;
-  margin: 0;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-media);
-  background: var(--color-surface);
-  overflow: hidden;
-  list-style: none;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--space-5);
 }
 
-.product-path-list li {
-  position: relative;
+.variant-card,
+.value-card {
   display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
-  gap: var(--space-4);
+  align-content: start;
+  gap: var(--space-3);
   padding: var(--space-5);
-  border-right: 1px solid var(--color-border);
-  transition: background var(--motion-duration-fast) var(--motion-ease-out);
-}
-
-.product-path-list li:last-child {
-  border-right: 0;
-}
-
-.product-path-list li:hover {
-  background: rgb(246 234 216 / 34%);
-}
-
-.product-path-list__index {
-  position: absolute;
-  top: var(--space-5);
-  right: var(--space-5);
-  color: var(--color-accent-300);
-  font-size: 28px;
-  font-weight: 850;
-  line-height: 1;
-}
-
-.product-path-list h2 {
-  padding-right: var(--space-8);
-  margin-bottom: var(--space-2);
-  font-size: 20px;
-}
-
-.product-path-list p {
-  color: var(--color-text-secondary);
-  font-size: 14px;
-}
-
-.products-list {
-  display: grid;
-  gap: var(--space-6);
-}
-
-.product-card {
-  display: grid;
-  grid-template-columns: minmax(320px, 0.78fr) minmax(0, 0.9fr);
-  gap: var(--space-6);
-  align-items: center;
-  padding: var(--space-6);
   border: 1px solid var(--color-border);
-  border-radius: var(--radius-media);
+  border-radius: var(--radius-card);
   background: var(--color-surface);
-  transition:
-    border-color var(--motion-duration-fast) var(--motion-ease-out),
-    box-shadow var(--motion-duration-fast) var(--motion-ease-out),
-    transform var(--motion-duration-fast) var(--motion-ease-out);
 }
 
-.product-card:hover,
-.product-card:focus-within {
-  border-color: rgb(200 138 56 / 45%);
-  box-shadow: var(--shadow-hover);
-  transform: translateY(-2px);
+.variant-card h2,
+.value-card h2 {
+  font-size: 22px;
+  line-height: 1.25;
 }
 
-.product-card:nth-child(even) .base-image {
-  order: 2;
-}
-
-.product-card__copy {
-  display: grid;
-  gap: var(--space-4);
-}
-
-.product-card__head {
-  display: flex;
-  gap: var(--space-4);
-  align-items: flex-start;
-}
-
-.product-card h2 {
-  margin-bottom: var(--space-2);
-}
-
-.product-card p {
+.variant-card p,
+.value-card p,
+.boundary-panel p {
   color: var(--color-text-secondary);
+  line-height: 1.72;
 }
 
-.product-card ul {
+.variant-card ul,
+.feature-strip {
   display: flex;
   flex-wrap: wrap;
   gap: var(--space-2);
@@ -420,7 +318,8 @@ useSeoMeta({
   list-style: none;
 }
 
-.product-card li {
+.variant-card li,
+.feature-strip span {
   padding: 7px 10px;
   border: 1px solid var(--color-border);
   border-radius: var(--radius-pill);
@@ -430,99 +329,97 @@ useSeoMeta({
   font-weight: 650;
 }
 
+.core-section {
+  background: var(--color-surface-soft);
+}
+
 .icon-shell {
   display: inline-flex;
   width: 44px;
   height: 44px;
   align-items: center;
   justify-content: center;
-  border: 1px solid rgb(200 138 56 / 24%);
+  border: 1px solid rgb(86 130 103 / 22%);
   border-radius: var(--radius-button);
-  color: var(--color-accent-600);
-  background: var(--color-accent-100);
+  color: var(--color-sage-700);
+  background: var(--color-sage-100);
   font-size: 22px;
 }
 
-@media (max-width: 960px) {
-  .products-hero__inner,
-  .product-card {
+.value-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.boundary-panel {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: var(--space-4);
+  padding: var(--space-5);
+  border: 1px solid rgb(183 121 43 / 24%);
+  border-radius: var(--radius-media);
+  background: var(--color-accent-100);
+}
+
+.boundary-panel .base-icon {
+  color: var(--color-accent-600);
+  font-size: 24px;
+}
+
+.boundary-panel h2 {
+  margin-bottom: var(--space-2);
+  font-size: 22px;
+}
+
+@media (max-width: 1100px) {
+  .product-hero__inner,
+  .core-layout,
+  .variant-grid {
     grid-template-columns: 1fr;
   }
 
-  .products-hero__inner {
-    min-height: auto;
+  .product-hero h1 {
+    font-size: 46px;
   }
+}
 
-  .product-path-list {
+@media (max-width: 820px) {
+  .value-grid {
     grid-template-columns: 1fr;
-  }
-
-  .product-path-list li {
-    border-right: 0;
-    border-bottom: 1px solid var(--color-border);
-  }
-
-  .product-path-list li:last-child {
-    border-bottom: 0;
-  }
-
-  .product-card:nth-child(even) .base-image {
-    order: initial;
   }
 }
 
 @media (max-width: 560px) {
-  .products-hero {
+  .product-hero {
     padding-block: var(--space-6) var(--space-5);
   }
 
-  .products-hero__inner {
-    min-height: 280px;
-  }
-
-  .products-hero h1 {
+  .product-hero h1 {
     font-size: 36px;
   }
 
-  .products-hero p {
+  .product-hero p {
     font-size: 15px;
   }
 
-  .products-hero__actions :deep(.base-button) {
+  .product-hero__actions :deep(.base-button) {
     width: 100%;
   }
 
-  .products-hero__visual {
+  .product-hero__visual,
+  .variant-card,
+  .value-card,
+  .boundary-panel {
     padding: var(--space-4);
   }
 
-  .products-hero__status {
+  .module-card {
     position: static;
     max-width: none;
     margin-top: var(--space-3);
   }
 
-  .product-path-list li {
+  .boundary-panel {
     grid-template-columns: 1fr;
-  }
-
-  .product-path-list h2 {
-    padding-right: var(--space-7);
-  }
-
-  .product-card {
-    padding: var(--space-5);
-  }
-
-  .product-card__head {
-    display: grid;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .product-card:hover,
-  .product-card:focus-within {
-    transform: none;
   }
 }
 </style>

@@ -52,8 +52,8 @@ defineProps<{
           <span>当前状态</span>
           <strong>{{ document.status }}</strong>
           <p>公司主体、联系方式、数据规则、用户权利与争议处理方式均待项目方确认。</p>
-          <BaseButton to="/contact" variant="text">
-            联系我们
+          <BaseButton to="/help" variant="text">
+            帮助中心
             <template #iconRight>
               <BaseIcon name="arrow-right" />
             </template>

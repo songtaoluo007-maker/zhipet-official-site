@@ -31,7 +31,10 @@
             </NuxtLink>
           </li>
         </ul>
-        <BaseButton to="/demo" block @click="$emit('close')">预约演示</BaseButton>
+        <div class="mobile-menu__actions" aria-label="账号入口">
+          <BaseButton to="/login" variant="ghost" block @click="$emit('close')">登录</BaseButton>
+          <BaseButton to="/login?mode=register" block @click="$emit('close')">注册</BaseButton>
+        </div>
       </nav>
     </div>
   </Transition>
@@ -267,6 +270,12 @@ onBeforeUnmount(() => {
 
 .mobile-menu__link.is-active::after {
   opacity: 1;
+}
+
+.mobile-menu__actions {
+  display: grid;
+  gap: var(--space-3);
+  margin-top: auto;
 }
 
 .mobile-menu-enter-active,

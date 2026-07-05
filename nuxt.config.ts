@@ -55,7 +55,21 @@ export default defineNuxtConfig({
     compressPublicAssets: true,
     prerender: {
       crawlLinks: true,
-      routes: ['/robots.txt', '/sitemap.xml'],
+      routes: [
+        '/robots.txt',
+        '/sitemap.xml',
+        '/news',
+        '/news/product-direction',
+        '/news/scenario-research',
+        '/news/brand-progress',
+        '/partners',
+        '/contact',
+        '/ai-pet-understanding',
+        '/cases',
+        '/products/smart-collar',
+        '/products/app',
+        '/products/health-platform',
+      ],
     },
     routeRules: {
       '/_nuxt/**': {

@@ -14,8 +14,8 @@ describe('site seo helpers', () => {
     )
 
     expect(siteOrigin).toBe('https://songtaoluo007-maker.github.io/zhipet-official-site')
-    expect(resolveAbsoluteUrl('/news/product-direction', siteOrigin)).toBe(
-      'https://songtaoluo007-maker.github.io/zhipet-official-site/news/product-direction',
+    expect(resolveAbsoluteUrl('/research/health-signals', siteOrigin)).toBe(
+      'https://songtaoluo007-maker.github.io/zhipet-official-site/research/health-signals',
     )
     expect(createShareImageUrl(siteOrigin)).toBe(
       'https://songtaoluo007-maker.github.io/zhipet-official-site/images/share/zhipet-og.png',
@@ -24,16 +24,16 @@ describe('site seo helpers', () => {
 
   it('creates bounded WebPage JSON-LD without fake organization details', () => {
     const jsonLd = createWebPageJsonLd({
-      name: '资讯中心',
+      name: '健康研究院',
       description: '内容待项目方确认。',
-      path: '/news',
+      path: '/research',
       siteOrigin: 'https://example.com/zhipet',
     })
 
     expect(jsonLd).toMatchObject({
       '@type': 'WebPage',
-      name: '资讯中心',
-      url: 'https://example.com/zhipet/news',
+      name: '健康研究院',
+      url: 'https://example.com/zhipet/research',
     })
     expect(JSON.stringify(jsonLd)).not.toMatch(/address|telephone|foundingDate/)
   })
