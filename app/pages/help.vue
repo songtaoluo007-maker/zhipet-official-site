@@ -3,10 +3,10 @@ import { computed, ref } from 'vue'
 import BaseButton from '~/components/base/BaseButton.vue'
 import BaseContainer from '~/components/base/BaseContainer.vue'
 import BaseIcon from '~/components/base/BaseIcon.vue'
-import BaseImage from '~/components/base/BaseImage.vue'
 import BaseInput from '~/components/base/BaseInput.vue'
 import BaseTag from '~/components/base/BaseTag.vue'
 import CTASection from '~/components/common/CTASection.vue'
+import SceneFrame from '~/components/common/SceneFrame.vue'
 import SectionHeading from '~/components/common/SectionHeading.vue'
 import { faqItems, helpCategories } from '~/data/v2'
 
@@ -90,20 +90,19 @@ useSeoMeta({
           </div>
         </div>
         <div class="help-hero__visual">
-          <BaseImage
-            src="/images/concepts/app-platform.svg"
-            alt="知宠帮助中心支持服务概念视觉"
-            aspect-ratio="16 / 10"
-            radius="lg"
-            priority
-            concept
-            label-placement="below"
-          />
-          <div class="help-hero__card">
-            <span>支持状态</span>
-            <strong>FAQ 草稿已建立</strong>
-            <p>客服、反馈和售后流程待项目方确认。</p>
-          </div>
+          <SceneFrame
+            class="help-support-frame"
+            src="/images/generated/pages/zhipet-help-setup-scene.png"
+            alt="知宠设备设置与帮助中心支持场景"
+            aspect-ratio="4 / 5"
+            object-position="center"
+          >
+            <div class="help-hero__card">
+              <span>支持状态</span>
+              <strong>FAQ 草稿已建立</strong>
+              <p>客服、反馈和售后流程待项目方确认。</p>
+            </div>
+          </SceneFrame>
         </div>
       </BaseContainer>
     </section>
@@ -202,7 +201,12 @@ useSeoMeta({
         <p>{{ feedbackMessage }}</p>
       </div>
       <div class="support-actions">
-        <BaseButton type="button" @click="showSupportPlaceholder('contact')">联系客服</BaseButton>
+        <BaseButton type="button" @click="showSupportPlaceholder('contact')">
+          联系客服
+          <template #iconLeft>
+            <BaseIcon name="headset" />
+          </template>
+        </BaseButton>
         <BaseButton type="button" variant="secondary" @click="showSupportPlaceholder('feedback')">提交反馈</BaseButton>
       </div>
     </BaseContainer>
@@ -222,7 +226,23 @@ useSeoMeta({
 }
 
 .help-hero {
+  position: relative;
+  isolation: isolate;
   padding-block: var(--space-8) var(--space-7);
+  background:
+    linear-gradient(180deg, rgb(255 255 255 / 58%), rgb(251 248 242 / 0) 78%),
+    radial-gradient(circle at 72% 18%, rgb(86 130 103 / 14%), transparent 32%);
+}
+
+.help-hero::before {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    linear-gradient(90deg, var(--color-bg) 0%, rgb(251 248 242 / 74%) 42%, rgb(251 248 242 / 28%) 100%),
+    url('/images/generated/pages/zhipet-help-setup-scene.png') center / cover no-repeat;
+  content: '';
+  opacity: 0.16;
 }
 
 .help-hero__inner {
@@ -256,7 +276,7 @@ useSeoMeta({
 }
 
 .help-hero h1 {
-  font-size: 52px;
+  font-size: 72px;
   line-height: 1.08;
   letter-spacing: 0;
 }
@@ -299,21 +319,22 @@ useSeoMeta({
 
 .help-hero__visual {
   position: relative;
-  min-width: 0;
-  padding: var(--space-5);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-media);
-  background:
-    linear-gradient(180deg, rgb(255 255 255 / 86%), rgb(246 241 233 / 72%)),
-    var(--color-surface-soft);
+  min-height: 520px;
+}
+
+.help-support-frame {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  min-height: 520px;
 }
 
 .help-hero__card {
   position: absolute;
-  right: var(--space-7);
-  bottom: var(--space-8);
+  left: var(--space-4);
+  bottom: var(--space-4);
   display: grid;
-  max-width: 280px;
+  width: min(280px, calc(100% - 32px));
   gap: var(--space-2);
   padding: var(--space-4);
   border: 1px solid rgb(200 138 56 / 24%);
@@ -347,6 +368,8 @@ useSeoMeta({
 }
 
 .category-card {
+  @include subtle-lift(-2px);
+
   display: grid;
   gap: var(--space-3);
   padding: var(--space-5);
@@ -534,17 +557,18 @@ useSeoMeta({
     font-size: 15px;
   }
 
-  .help-hero__visual,
   .category-card,
   .faq-filter,
   .support-panel {
     padding: var(--space-4);
   }
 
-  .help-hero__card {
-    position: static;
-    max-width: none;
-    margin-top: var(--space-3);
+  .help-hero__visual {
+    min-height: 520px;
+  }
+
+  .help-support-frame {
+    min-height: 430px;
   }
 
   .support-panel {

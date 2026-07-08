@@ -8,7 +8,7 @@ export const solutionCards: SolutionCard[] = [
     audience: '家庭用户',
     status: '方案定义阶段',
     summary: '围绕宠物叫声、日常行为、情绪趋势和长期个体画像，帮助家庭把陪伴状态与异常变化看得更清楚。',
-    image: '/images/concepts/family-solution.svg',
+    image: '/images/generated/pages/zhipet-family-care-scene.png',
     alt: '知宠家庭养宠解决方案概念视觉',
     features: ['叫声状态理解', '行为变化分析', '个体画像'],
     href: '/solutions/family',
@@ -20,7 +20,7 @@ export const solutionCards: SolutionCard[] = [
     audience: '医疗机构',
     status: '场景验证阶段',
     summary: '探索院外健康记录、复诊沟通和设备数据接入，真实合作流程待机构确认后再展示。',
-    image: '/images/concepts/clinic-workflow.svg',
+    image: '/images/generated/pages/zhipet-hospital-collab-scene.png',
     alt: '宠物医院健康管理协同概念视觉',
     features: ['院外管理', '复诊沟通', '数据接入'],
     href: '/solutions/hospital',
@@ -32,7 +32,7 @@ export const solutionCards: SolutionCard[] = [
     audience: '门店与服务机构',
     status: '服务流程规划中',
     summary: '围绕会员健康服务、提醒触达和照护记录归档建立长期连接，具体方案待项目方确认。',
-    image: '/images/concepts/app-platform.svg',
+    image: '/images/generated/pages/zhipet-store-service-scene.png',
     alt: '宠物门店服务连接概念视觉',
     features: ['会员服务', '提醒触达', '照护归档'],
     href: '/solutions/store',
@@ -47,7 +47,7 @@ export const familySolution: SolutionDetail = {
   summary:
     '知宠家庭养宠解决方案面向日常陪伴、状态理解和异常变化观察场景，融合设备或手机采集的声音、动作、活动、场景与长期记录，结合知宠 App 和 PetSense 引擎推测宠物可能的情绪、需求和异常状态。当前内容用于方案定义展示，真实服务范围与上线节奏以项目方确认为准。',
   status: '家庭场景方案定义阶段',
-  cover: '/images/concepts/family-solution.svg',
+  cover: '/images/generated/pages/zhipet-family-care-scene.png',
   coverAlt: '知宠家庭养宠解决方案概念视觉',
   painPoints: [
     {
@@ -175,7 +175,7 @@ export const familySolution: SolutionDetail = {
     painDescription: '方案先解决日常叫声、行为、情绪趋势和长期习惯的理解缺口，不做未验证诊疗承诺。',
     workflowTitle: '家庭宠物理解流程',
     workflowDescription: '从设备或手机采集到主人反馈，形成可持续更新的个体画像和陪伴建议。',
-    workflowImage: '/images/concepts/collar-ecosystem.svg',
+    workflowImage: '/images/generated/pages/zhipet-family-care-scene.png',
     workflowImageAlt: '智能挂件、知宠 App 和 PetSense 引擎协同概念视觉',
     modulesTitle: '家庭端能力组成',
     modulesDescription: '以长期个体画像、自然语言询问和陪伴建议组织当前能力，避免额外堆叠功能模块。',
@@ -194,7 +194,7 @@ export const hospitalSolution: SolutionDetail = {
   summary:
     '知宠宠物医院解决方案面向院外观察、复诊沟通和授权数据协同场景。当前内容用于场景验证展示，真实合作机构、数据接入范围和服务流程待项目方确认。',
   status: '场景验证阶段',
-  cover: '/images/concepts/clinic-workflow.svg',
+  cover: '/images/generated/pages/zhipet-hospital-collab-scene.png',
   coverAlt: '宠物医院健康管理协同概念视觉',
   painPoints: [
     {
@@ -306,7 +306,7 @@ export const hospitalSolution: SolutionDetail = {
     painDescription: '先梳理院外记录与复诊沟通中的信息缺口，不把概念流程写成已上线合作。',
     workflowTitle: '院外健康协同流程',
     workflowDescription: '从授权建档到复诊摘要，流程强调可验证、可撤回和边界清晰。',
-    workflowImage: '/images/concepts/clinic-workflow.svg',
+    workflowImage: '/images/generated/pages/zhipet-hospital-collab-scene.png',
     workflowImageAlt: '宠物医院院外健康协同概念视觉',
     modulesTitle: '方案组成',
     modulesDescription: '以院外记录、机构协同和授权规则三个层次组织能力，真实接入方式待项目方确认。',
@@ -325,7 +325,7 @@ export const storeSolution: SolutionDetail = {
   summary:
     '知宠宠物门店解决方案面向会员健康服务、提醒触达和照护记录归档场景。当前内容用于服务流程规划展示，合作门店、上线范围和触达规则待项目方确认。',
   status: '服务流程规划中',
-  cover: '/images/concepts/app-platform.svg',
+  cover: '/images/generated/pages/zhipet-store-service-scene.png',
   coverAlt: '宠物门店服务连接概念视觉',
   painPoints: [
     {
@@ -437,7 +437,7 @@ export const storeSolution: SolutionDetail = {
     painDescription: '先把会员服务链路中的信息分散、授权触达和记录归档问题讲清楚。',
     workflowTitle: '会员健康服务流程',
     workflowDescription: '从会员档案到服务归档，流程以可确认、可调整和可授权为前提。',
-    workflowImage: '/images/concepts/app-platform.svg',
+    workflowImage: '/images/generated/pages/zhipet-store-service-scene.png',
     workflowImageAlt: '宠物门店会员服务连接概念视觉',
     modulesTitle: '方案组成',
     modulesDescription: '以门店服务入口、会员 App 协作和授权归档三个层次组织当前方案。',

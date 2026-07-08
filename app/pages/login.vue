@@ -3,9 +3,7 @@ import { computed, reactive, ref, watch } from 'vue'
 import BaseButton from '~/components/base/BaseButton.vue'
 import BaseContainer from '~/components/base/BaseContainer.vue'
 import BaseIcon from '~/components/base/BaseIcon.vue'
-import BaseImage from '~/components/base/BaseImage.vue'
 import BaseInput from '~/components/base/BaseInput.vue'
-import BaseTag from '~/components/base/BaseTag.vue'
 import FormField from '~/components/forms/FormField.vue'
 
 const route = useRoute()
@@ -48,27 +46,6 @@ useSeoMeta({
 <template>
   <div class="login-page">
     <BaseContainer class="auth-layout" width="wide">
-      <section class="brand-panel" aria-labelledby="auth-brand-title">
-        <NuxtLink class="brand-panel__logo" to="/" aria-label="返回知宠首页">
-          <span aria-hidden="true">知</span>
-          <strong>ZHIPET</strong>
-        </NuxtLink>
-        <div>
-          <BaseTag tone="concept">账号入口待开放</BaseTag>
-          <h1 id="auth-brand-title">安静进入知宠生态</h1>
-          <p>未来用于承接 App、健康档案和家庭协作入口。当前只做静态 UI，不进行真实鉴权。</p>
-        </div>
-        <BaseImage
-          src="/images/concepts/team-lab.svg"
-          alt="知宠登录注册入口概念视觉"
-          aspect-ratio="4 / 3"
-          radius="lg"
-          priority
-          concept
-          label-placement="below"
-        />
-      </section>
-
       <section class="auth-card" aria-labelledby="auth-title">
         <div class="auth-tabs" role="tablist" aria-label="登录注册切换">
           <button
@@ -160,63 +137,41 @@ useSeoMeta({
 
 <style scoped lang="scss">
 .login-page {
-  min-height: calc(100vh - 72px);
+  position: relative;
+  isolation: isolate;
+  min-height: calc(100vh - 76px);
   display: grid;
   align-items: center;
   padding-block: var(--space-8);
   background:
-    radial-gradient(circle at 18% 18%, rgb(231 240 230 / 54%), transparent 30%),
+    linear-gradient(90deg, rgb(251 248 242 / 86%) 0%, rgb(251 248 242 / 42%) 58%, rgb(251 248 242 / 84%) 100%),
     var(--color-bg);
+}
+
+.login-page::before {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: url('/images/generated/pages/zhipet-family-care-scene.png') center / cover no-repeat;
+  content: '';
+  opacity: 0.24;
 }
 
 .auth-layout {
   display: grid;
-  grid-template-columns: minmax(0, 0.9fr) minmax(360px, 0.56fr);
-  gap: var(--space-8);
-  align-items: center;
-}
-
-.brand-panel,
-.auth-card {
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-media);
-  background: rgb(255 255 255 / 82%);
-}
-
-.brand-panel {
-  display: grid;
-  gap: var(--space-6);
-  padding: var(--space-6);
-}
-
-.brand-panel__logo {
-  display: inline-flex;
-  width: fit-content;
-  gap: var(--space-3);
-  align-items: center;
-  color: var(--color-brand-900);
-}
-
-.brand-panel__logo span {
-  display: inline-flex;
-  width: 38px;
-  height: 38px;
+  grid-template-columns: minmax(0, 520px);
   align-items: center;
   justify-content: center;
-  border-radius: 10px;
-  color: var(--color-surface);
-  background: var(--color-brand-900);
-  font-weight: 800;
 }
 
-.brand-panel h1 {
-  margin-top: var(--space-4);
-  font-size: 48px;
-  line-height: 1.1;
-  letter-spacing: 0;
+.auth-card {
+  border: 1px solid var(--color-border);
+  border-radius: 22px;
+  background: rgb(255 255 255 / 72%);
+  box-shadow: 0 24px 72px rgb(47 36 27 / 9%);
+  backdrop-filter: blur(18px);
 }
 
-.brand-panel p,
 .auth-card__head p,
 .auth-agreement,
 .auth-notice,
@@ -342,8 +297,7 @@ useSeoMeta({
 
 .auth-tabs button:focus-visible,
 .auth-options button:focus-visible,
-.auth-third-party button:focus-visible,
-.brand-panel__logo:focus-visible {
+.auth-third-party button:focus-visible {
   box-shadow: var(--focus-ring);
   outline: 2px solid transparent;
   outline-offset: 2px;
@@ -360,13 +314,8 @@ useSeoMeta({
     padding-block: var(--space-5);
   }
 
-  .brand-panel,
   .auth-card {
     padding: var(--space-4);
-  }
-
-  .brand-panel h1 {
-    font-size: 36px;
   }
 
   .auth-options {

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import AppFooter from '~/components/layout/AppFooter.vue'
 import AppHeader from '~/components/layout/AppHeader.vue'
+import BackToTopButton from '~/components/layout/BackToTopButton.vue'
 </script>
 
 <template>
@@ -10,6 +11,7 @@ import AppHeader from '~/components/layout/AppHeader.vue'
       <slot />
     </main>
     <AppFooter />
+    <BackToTopButton />
   </div>
 </template>
 

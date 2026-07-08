@@ -2,9 +2,9 @@
 import BaseButton from '~/components/base/BaseButton.vue'
 import BaseContainer from '~/components/base/BaseContainer.vue'
 import BaseIcon from '~/components/base/BaseIcon.vue'
-import BaseImage from '~/components/base/BaseImage.vue'
 import BaseTag from '~/components/base/BaseTag.vue'
 import CTASection from '~/components/common/CTASection.vue'
+import SceneFrame from '~/components/common/SceneFrame.vue'
 import SectionHeading from '~/components/common/SectionHeading.vue'
 import { productFeatureStrip, productVariants, valueLayers } from '~/data/v2'
 
@@ -45,22 +45,33 @@ useSeoMeta({
             <BaseButton to="/demo" variant="secondary" size="lg">预约演示</BaseButton>
           </div>
         </div>
-        <div class="product-hero__visual">
-          <BaseImage
-            src="/images/concepts/smart-collar.svg"
-            alt="知宠智能项圈核心模块与安装方式概念视觉"
-            aspect-ratio="4 / 3"
-            radius="lg"
-            priority
-            concept
-            label-placement="below"
-          />
+        <SceneFrame
+          class="product-hero__visual"
+          src="/images/generated/pages/zhipet-product-closeup-scene.png"
+          alt="犬猫与知宠智能项圈核心模块概念场景"
+          aspect-ratio="16 / 10"
+          object-position="center"
+        >
+          <ul class="product-points" aria-label="产品核心能力">
+            <li>
+              <BaseIcon name="shield-check" aria-hidden="true" />
+              <span>安全入口</span>
+            </li>
+            <li>
+              <BaseIcon name="heart-pulse" aria-hidden="true" />
+              <span>健康趋势</span>
+            </li>
+            <li>
+              <BaseIcon name="sparkles" aria-hidden="true" />
+              <span>状态解释</span>
+            </li>
+          </ul>
           <div class="module-card">
             <span>核心主模块</span>
             <strong>安全 + 健康趋势 + 状态解释</strong>
             <p>硬件参数、传感器范围和上市节奏待项目方确认。</p>
           </div>
-        </div>
+        </SceneFrame>
       </BaseContainer>
     </section>
 
@@ -97,14 +108,19 @@ useSeoMeta({
     >
       <BaseContainer width="wide">
         <div class="core-layout">
-          <BaseImage
-            src="/images/concepts/collar-ecosystem.svg"
-            alt="知宠核心模块、App 与健康档案生态概念视觉"
-            aspect-ratio="16 / 10"
-            radius="lg"
-            concept
-            label-placement="below"
-          />
+          <SceneFrame
+            class="core-scene"
+            src="/images/generated/pages/zhipet-app-profile-scene.png"
+            alt="知宠智能项圈模块与安装形态概念图"
+            aspect-ratio="16 / 9"
+            object-position="center"
+          >
+            <div class="collar-spec-card">
+              <span>模块化设计</span>
+              <strong>一体佩戴 / 夹扣适配</strong>
+              <p>材质、重量、防水等级和续航均待项目方确认。</p>
+            </div>
+          </SceneFrame>
           <div>
             <SectionHeading
               id="core-title"
@@ -177,7 +193,23 @@ useSeoMeta({
 }
 
 .product-hero {
+  position: relative;
+  isolation: isolate;
   padding-block: var(--space-8) var(--space-7);
+  background:
+    linear-gradient(180deg, rgb(255 255 255 / 54%), rgb(251 248 242 / 0) 78%),
+    radial-gradient(circle at 72% 18%, rgb(232 200 148 / 18%), transparent 30%);
+}
+
+.product-hero::before {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    linear-gradient(90deg, var(--color-bg) 0%, rgb(251 248 242 / 72%) 44%, rgb(251 248 242 / 22%) 100%),
+    url('/images/generated/pages/zhipet-product-closeup-scene.png') center / cover no-repeat;
+  content: '';
+  opacity: 0.16;
 }
 
 .product-hero__inner,
@@ -213,7 +245,7 @@ useSeoMeta({
 
 .product-hero h1 {
   max-width: 760px;
-  font-size: 56px;
+  font-size: 64px;
   line-height: 1.08;
   letter-spacing: 0;
   text-wrap: balance;
@@ -233,14 +265,40 @@ useSeoMeta({
 }
 
 .product-hero__visual {
-  position: relative;
-  min-width: 0;
-  padding: var(--space-5);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-media);
-  background:
-    linear-gradient(180deg, rgb(255 255 255 / 86%), rgb(246 241 233 / 72%)),
-    var(--color-surface-soft);
+  min-height: 430px;
+}
+
+.product-points {
+  position: absolute;
+  left: var(--space-5);
+  bottom: var(--space-5);
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  width: min(430px, calc(100% - 32px));
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.product-points li {
+  display: inline-flex;
+  gap: var(--space-2);
+  align-items: center;
+  min-height: 42px;
+  padding: 0 12px;
+  border: 1px solid rgb(255 255 255 / 68%);
+  border-radius: var(--radius-pill);
+  color: var(--color-brand-900);
+  background: rgb(255 255 255 / 82%);
+  font-size: 13px;
+  font-weight: 750;
+  box-shadow: 0 12px 28px rgb(47 36 27 / 8%);
+}
+
+.product-points .base-icon {
+  color: var(--color-sage-700);
+  font-size: 18px;
 }
 
 .module-card {
@@ -271,6 +329,43 @@ useSeoMeta({
 
 .module-card p {
   font-size: 13px;
+}
+
+.core-scene {
+  min-height: 360px;
+}
+
+.collar-spec-card {
+  position: absolute;
+  right: var(--space-5);
+  bottom: var(--space-5);
+  display: grid;
+  gap: var(--space-2);
+  width: min(320px, calc(100% - 32px));
+  padding: var(--space-4);
+  border: 1px solid rgb(255 255 255 / 72%);
+  border-radius: var(--radius-button);
+  background: rgb(255 255 255 / 86%);
+  box-shadow: 0 14px 34px rgb(47 36 27 / 8%);
+  backdrop-filter: blur(12px);
+}
+
+.collar-spec-card span {
+  color: var(--color-text-secondary);
+  font-size: 13px;
+  font-weight: 750;
+}
+
+.collar-spec-card strong {
+  color: var(--color-brand-900);
+  font-size: 20px;
+  line-height: 1.3;
+}
+
+.collar-spec-card p {
+  color: var(--color-text-secondary);
+  font-size: 13px;
+  line-height: 1.6;
 }
 
 .products-section {
@@ -405,17 +500,30 @@ useSeoMeta({
     width: 100%;
   }
 
-  .product-hero__visual,
   .variant-card,
   .value-card,
   .boundary-panel {
     padding: var(--space-4);
   }
 
-  .module-card {
-    position: static;
+  .product-hero__visual,
+  .core-scene {
+    min-height: 420px;
+  }
+
+  .module-card,
+  .collar-spec-card {
+    right: var(--space-4);
+    bottom: var(--space-4);
+    width: min(300px, calc(100% - 32px));
     max-width: none;
-    margin-top: var(--space-3);
+  }
+
+  .product-points {
+    top: var(--space-4);
+    bottom: auto;
+    left: var(--space-4);
+    width: min(320px, calc(100% - 32px));
   }
 
   .boundary-panel {

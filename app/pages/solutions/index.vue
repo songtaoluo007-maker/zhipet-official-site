@@ -2,9 +2,9 @@
 import BaseButton from '~/components/base/BaseButton.vue'
 import BaseContainer from '~/components/base/BaseContainer.vue'
 import BaseIcon from '~/components/base/BaseIcon.vue'
-import BaseImage from '~/components/base/BaseImage.vue'
 import BaseTag from '~/components/base/BaseTag.vue'
 import CTASection from '~/components/common/CTASection.vue'
+import SceneFrame from '~/components/common/SceneFrame.vue'
 import SectionHeading from '~/components/common/SectionHeading.vue'
 import { solutionScenarios, trustStrip } from '~/data/v2'
 
@@ -42,22 +42,24 @@ useSeoMeta({
             </template>
           </BaseButton>
         </div>
-        <div class="solutions-hero__visual">
-          <BaseImage
-            src="/images/concepts/family-solution.svg"
-            alt="知宠家庭、医院和门店协同场景概念视觉"
-            aspect-ratio="16 / 10"
-            radius="lg"
-            priority
-            concept
-            label-placement="below"
-          />
+        <SceneFrame
+          class="solutions-hero__visual"
+          src="/images/generated/pages/zhipet-family-care-scene.png"
+          alt="家庭、宠物与智能设备协同照护概念场景"
+          aspect-ratio="16 / 10"
+          object-position="center"
+        >
+          <div class="scenario-orbit" aria-hidden="true">
+            <span />
+            <span />
+            <span />
+          </div>
           <div class="solutions-hero__card">
             <span>公开边界</span>
             <strong>不展示未确认客户或资质</strong>
             <p>合作机构、覆盖城市和上线节奏均待项目方确认。</p>
           </div>
-        </div>
+        </SceneFrame>
       </BaseContainer>
     </section>
 
@@ -76,14 +78,15 @@ useSeoMeta({
       />
       <div class="scenario-grid">
         <article v-for="scenario in solutionScenarios" :key="scenario.id" class="scenario-card">
-          <BaseImage
+          <SceneFrame
+            class="scenario-card__media"
             :src="scenario.image"
             :alt="scenario.alt"
-            aspect-ratio="4 / 3"
-            radius="lg"
-            concept
-            label-placement="below"
-          />
+            aspect-ratio="16 / 6"
+            :object-position="scenario.imagePosition"
+          >
+            <span class="scenario-card__badge">{{ scenario.audience }}</span>
+          </SceneFrame>
           <div class="scenario-card__body">
             <div class="scenario-card__head">
               <span class="icon-shell" aria-hidden="true">
@@ -168,7 +171,23 @@ useSeoMeta({
 }
 
 .solutions-hero {
+  position: relative;
+  isolation: isolate;
   padding-block: var(--space-8) var(--space-7);
+  background:
+    linear-gradient(180deg, rgb(255 255 255 / 58%), rgb(251 248 242 / 0) 78%),
+    radial-gradient(circle at 74% 18%, rgb(86 130 103 / 16%), transparent 32%);
+}
+
+.solutions-hero::before {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    linear-gradient(90deg, var(--color-bg) 0%, rgb(251 248 242 / 72%) 42%, rgb(251 248 242 / 26%) 100%),
+    url('/images/generated/pages/zhipet-family-care-scene.png') center / cover no-repeat;
+  content: '';
+  opacity: 0.16;
 }
 
 .solutions-hero__inner {
@@ -203,7 +222,7 @@ useSeoMeta({
 
 .solutions-hero h1 {
   max-width: 760px;
-  font-size: 56px;
+  font-size: 64px;
   line-height: 1.08;
   letter-spacing: 0;
   text-wrap: balance;
@@ -217,14 +236,41 @@ useSeoMeta({
 }
 
 .solutions-hero__visual {
-  position: relative;
-  min-width: 0;
-  padding: var(--space-5);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-media);
-  background:
-    linear-gradient(180deg, rgb(255 255 255 / 86%), rgb(246 241 233 / 72%)),
-    var(--color-surface-soft);
+  min-height: 430px;
+}
+
+.scenario-orbit {
+  position: absolute;
+  inset: 16% 12% 18% auto;
+  width: 42%;
+  border: 1px solid rgb(255 255 255 / 55%);
+  border-radius: 999px;
+  transform: rotate(-18deg);
+}
+
+.scenario-orbit span {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border: 2px solid var(--color-surface);
+  border-radius: 999px;
+  background: var(--color-accent-600);
+  box-shadow: 0 0 0 6px rgb(255 255 255 / 32%);
+}
+
+.scenario-orbit span:nth-child(1) {
+  top: 8%;
+  left: 26%;
+}
+
+.scenario-orbit span:nth-child(2) {
+  right: 8%;
+  top: 42%;
+}
+
+.scenario-orbit span:nth-child(3) {
+  bottom: 14%;
+  left: 48%;
 }
 
 .solutions-hero__card {
@@ -267,12 +313,35 @@ useSeoMeta({
 }
 
 .scenario-card {
+  @include subtle-lift(-3px);
+
   display: grid;
   grid-template-rows: auto 1fr;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-media);
-  background: var(--color-surface);
+  border: 1px solid rgb(255 255 255 / 68%);
+  border-radius: 18px;
+  background: rgb(255 255 255 / 72%);
+  box-shadow: 0 14px 34px rgb(47 36 27 / 5%);
+  backdrop-filter: blur(12px);
   overflow: hidden;
+}
+
+.scenario-card__media {
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.scenario-card__badge {
+  position: absolute;
+  left: var(--space-4);
+  top: var(--space-4);
+  padding: 6px 10px;
+  border: 1px solid rgb(255 255 255 / 68%);
+  border-radius: var(--radius-pill);
+  color: var(--color-brand-900);
+  background: rgb(255 255 255 / 82%);
+  font-size: 12px;
+  font-weight: 750;
 }
 
 .scenario-card__body {
@@ -406,7 +475,6 @@ useSeoMeta({
     font-size: 15px;
   }
 
-  .solutions-hero__visual,
   .scenario-card__body,
   .trust-card,
   .boundary-panel {
@@ -414,9 +482,18 @@ useSeoMeta({
   }
 
   .solutions-hero__card {
-    position: static;
+    right: var(--space-4);
+    bottom: var(--space-4);
+    width: min(300px, calc(100% - 32px));
     max-width: none;
-    margin-top: var(--space-3);
+  }
+
+  .solutions-hero__visual {
+    min-height: 420px;
+  }
+
+  .scenario-orbit {
+    display: none;
   }
 
   .scenario-card__head,

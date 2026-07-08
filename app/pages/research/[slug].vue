@@ -3,9 +3,9 @@ import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
 import BaseButton from '~/components/base/BaseButton.vue'
 import BaseContainer from '~/components/base/BaseContainer.vue'
 import BaseIcon from '~/components/base/BaseIcon.vue'
-import BaseImage from '~/components/base/BaseImage.vue'
 import BaseTag from '~/components/base/BaseTag.vue'
 import CTASection from '~/components/common/CTASection.vue'
+import SceneFrame from '~/components/common/SceneFrame.vue'
 import type { SeoBreadcrumbItem } from '~/utils/site-seo'
 
 const route = useRoute()
@@ -124,14 +124,11 @@ useHead({
     </section>
 
     <BaseContainer class="article-visual" tag="section" width="narrow" aria-label="文章概念视觉">
-      <BaseImage
-        src="/images/concepts/team-lab.svg"
+      <SceneFrame
+        src="/images/generated/pages/zhipet-research-observation-scene.png"
         alt="知宠健康研究院安静阅读场景概念视觉"
         aspect-ratio="16 / 8"
-        radius="lg"
-        priority
-        concept
-        label-placement="below"
+        object-position="center"
       />
     </BaseContainer>
 
@@ -226,7 +223,23 @@ useHead({
 }
 
 .research-detail-hero {
+  position: relative;
+  isolation: isolate;
   padding-block: var(--space-8) var(--space-6);
+  background:
+    linear-gradient(180deg, rgb(255 255 255 / 64%), rgb(251 248 242 / 0) 78%),
+    radial-gradient(circle at 76% 20%, rgb(232 200 148 / 16%), transparent 30%);
+}
+
+.research-detail-hero::before {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    linear-gradient(90deg, var(--color-bg) 0%, rgb(251 248 242 / 82%) 48%, rgb(251 248 242 / 34%) 100%),
+    url('/images/generated/pages/zhipet-research-observation-scene.png') center / cover no-repeat;
+  content: '';
+  opacity: 0.14;
 }
 
 .research-detail-hero__inner {
@@ -254,7 +267,7 @@ useHead({
 
 .research-detail-hero h1 {
   max-width: 860px;
-  font-size: 50px;
+  font-size: 58px;
   line-height: 1.1;
   letter-spacing: 0;
   text-wrap: balance;

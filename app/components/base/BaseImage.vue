@@ -4,7 +4,18 @@
     :class="[`base-image--${radius}`, `base-image--label-${labelPlacement}`]"
   >
     <div class="base-image__frame" :style="frameStyle">
+      <img
+        v-if="useRawImage"
+        :src="src"
+        :alt="alt"
+        :width="width"
+        :height="height"
+        :loading="priority ? 'eager' : 'lazy'"
+        class="base-image__media"
+        :style="mediaStyle"
+      >
       <NuxtImg
+        v-else
         :src="src"
         :alt="alt"
         :width="width"
@@ -12,20 +23,15 @@
         :loading="priority ? 'eager' : 'lazy'"
         :preload="priority"
         class="base-image__media"
+        :style="mediaStyle"
       />
-      <figcaption v-if="concept && labelPlacement === 'inside'" class="base-image__label">
-        AI 概念图，仅供参考
-      </figcaption>
     </div>
-    <figcaption v-if="concept && labelPlacement === 'below'" class="base-image__label base-image__label--below">
-      AI 概念图，仅供参考
-    </figcaption>
   </figure>
 </template>
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import type { ImageLabelPlacement, ImageRadius } from '~/types/ui'
+import type { ImageFit, ImageLabelPlacement, ImageRadius } from '~/types/ui'
 
 const props = withDefaults(
   defineProps<{
@@ -34,25 +40,38 @@ const props = withDefaults(
     width?: number
     height?: number
     aspectRatio?: string
+    fit?: ImageFit
+    objectPosition?: string
     radius?: ImageRadius
     labelPlacement?: ImageLabelPlacement
     priority?: boolean
     concept?: boolean
+    unoptimized?: boolean
   }>(),
   {
     width: undefined,
     height: undefined,
     aspectRatio: undefined,
+    fit: 'cover',
+    objectPosition: 'center',
     radius: 'md',
     labelPlacement: 'inside',
     priority: false,
     concept: false,
+    unoptimized: false,
   },
 )
 
 const frameStyle = computed(() => ({
   aspectRatio: props.aspectRatio,
 }))
+
+const mediaStyle = computed(() => ({
+  objectFit: props.fit,
+  objectPosition: props.objectPosition,
+}))
+
+const useRawImage = computed(() => props.unoptimized || props.src.startsWith('/images/generated/'))
 </script>
 
 <style scoped lang="scss">

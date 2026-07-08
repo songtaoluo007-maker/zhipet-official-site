@@ -177,23 +177,24 @@ const handleClick = (event: MouseEvent) => {
 
 .base-button--primary {
   color: var(--color-surface);
-  background: var(--color-accent-600);
-  border-color: var(--color-accent-600);
+  background: var(--color-brand-900);
+  border-color: var(--color-brand-900);
 
   &:not(.is-disabled):hover {
-    background: var(--color-accent-500);
-    border-color: var(--color-accent-500);
-    box-shadow: 0 12px 28px rgb(183 121 43 / 20%);
+    background: var(--color-brand-800);
+    border-color: var(--color-brand-800);
+    box-shadow: 0 14px 30px rgb(20 63 50 / 18%);
   }
 }
 
 .base-button--secondary {
   color: var(--color-brand-900);
   background: transparent;
-  border-color: var(--color-brand-700);
+  border-color: rgb(47 36 27 / 26%);
 
   &:not(.is-disabled):hover {
-    background: rgb(47 36 27 / 5%);
+    border-color: rgb(20 63 50 / 42%);
+    background: rgb(20 63 50 / 4%);
   }
 }
 
@@ -210,7 +211,7 @@ const handleClick = (event: MouseEvent) => {
 .base-button--text {
   min-height: 0;
   padding: 0;
-  color: var(--color-accent-600);
+  color: var(--color-brand-900);
   background: transparent;
   border-color: transparent;
 

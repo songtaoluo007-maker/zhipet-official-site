@@ -51,7 +51,7 @@ useSeoMeta({
         </div>
         <div class="cases-hero__visual">
           <BaseImage
-            src="/images/concepts/family-solution.svg"
+            src="/images/generated/pages/zhipet-family-care-scene.png"
             alt="知宠客户案例与场景验证概念视觉"
             aspect-ratio="16 / 10"
             radius="lg"

@@ -30,8 +30,43 @@ export interface SolutionScenario {
   abilities: string[]
   boundary?: string
   image: string
+  imagePosition?: string
   alt: string
   href: string
+}
+
+export interface HomeStoryPanelMetric {
+  id: string
+  label: string
+  value: string
+}
+
+export interface HomeStoryAppPanel {
+  title: string
+  score: string
+  summary: string
+  progress: number
+  metrics: HomeStoryPanelMetric[]
+}
+
+export interface HomeStorySignal extends IconTextItem {
+  panel: HomeStoryAppPanel
+}
+
+export interface HomeStoryStage {
+  id: string
+  eyebrow: string
+  icon: IconName
+  title: string
+  description: string
+  asset: string
+  assetAlt: string
+  tone: 'light' | 'warm' | 'deep'
+  phoneTitle: string
+  phoneScore: string
+  phoneSummary: string
+  signals: HomeStorySignal[]
+  metrics: HomeStoryPanelMetric[]
 }
 
 export interface FaqItem {
@@ -62,6 +97,205 @@ export const homeMetricCards: TextItem[] = [
     id: 'archive',
     title: '健康档案',
     description: '记录字段、同步范围和授权规则待确认',
+  },
+]
+
+export const homeStoryStages: HomeStoryStage[] = [
+  {
+    id: 'companionship',
+    eyebrow: '01 / 陪伴守护',
+    icon: 'heart-pulse',
+    title: '宠物不会说话，但日常会留下线索',
+    description:
+      '首页以犬猫、智能项圈和 App 面板组成一个连续场景，让用户先看到“陪伴被记录下来”的故事，而不是先看参数表。',
+    asset: '/images/generated/zhipet-home-companion.png',
+    assetAlt: '知宠犬猫陪伴与 App 概念视觉',
+    tone: 'light',
+    phoneTitle: '今日观察',
+    phoneScore: '96',
+    phoneSummary: '依据活动、休息和照护记录形成趋势提示，具体字段待项目方确认。',
+    signals: [
+      {
+        id: 'heart',
+        icon: 'heart-pulse',
+        title: '健康趋势',
+        description: '可能平稳',
+        panel: {
+          title: '健康趋势',
+          score: '96',
+          summary: '依据活动、休息和照护记录形成趋势提示，仍需结合主人反馈确认。',
+          progress: 76,
+          metrics: [
+            { id: 'activity', label: '活动', value: '趋势平稳' },
+            { id: 'care', label: '照护', value: '记录同步' },
+            { id: 'sleep', label: '睡眠', value: '片段观察' },
+            { id: 'basis', label: '依据', value: '主人反馈' },
+          ],
+        },
+      },
+      {
+        id: 'sleep',
+        icon: 'sparkles',
+        title: '睡眠分析',
+        description: '片段待观察',
+        panel: {
+          title: '睡眠分析',
+          score: '8h 24m',
+          summary: '夜间休息片段可能变短，建议观察环境噪声、作息变化与近期活动量。',
+          progress: 64,
+          metrics: [
+            { id: 'rest', label: '休息', value: '片段变短' },
+            { id: 'basis', label: '依据', value: '连续记录' },
+            { id: 'environment', label: '环境', value: '待确认' },
+            { id: 'advice', label: '建议', value: '继续观察' },
+          ],
+        },
+      },
+      {
+        id: 'location',
+        icon: 'map-pin',
+        title: '位置线索',
+        description: '范围待确认',
+        panel: {
+          title: '位置线索',
+          score: '附近',
+          summary: '位置展示为规划方向，定位方式、刷新频率和误差范围待样机验证。',
+          progress: 58,
+          metrics: [
+            { id: 'range', label: '围栏', value: '规则待确认' },
+            { id: 'refresh', label: '刷新', value: '频率待确认' },
+            { id: 'share', label: '共享', value: '授权后' },
+            { id: 'basis', label: '依据', value: '设备回传' },
+          ],
+        },
+      },
+      {
+        id: 'shield',
+        icon: 'shield-check',
+        title: '风险提醒',
+        description: '需主人复核',
+        panel: {
+          title: '风险提醒',
+          score: '待定',
+          summary: '提醒仅作为风险提示，阈值、触达方式和通知对象仍需项目方确认。',
+          progress: 52,
+          metrics: [
+            { id: 'trigger', label: '触发', value: '阈值待确认' },
+            { id: 'review', label: '复核', value: '主人确认' },
+            { id: 'evidence', label: '依据', value: '多项记录' },
+            { id: 'boundary', label: '边界', value: '非诊断' },
+          ],
+        },
+      },
+    ],
+    metrics: [
+      { id: 'activity', label: '活动', value: '趋势观察' },
+      { id: 'care', label: '照护', value: '记录同步' },
+    ],
+  },
+  {
+    id: 'safety',
+    eyebrow: '02 / 安全边界',
+    icon: 'map-pin',
+    title: '从一次佩戴，到一次安心出门',
+    description:
+      '产品叙事围绕安全范围、异常提醒和触达规则展开。定位方式、刷新频率和提醒规则仍需样机与项目方确认。',
+    asset: '/images/generated/zhipet-safety-collar.png',
+    assetAlt: '知宠智能项圈模块概念视觉',
+    tone: 'warm',
+    phoneTitle: '安全范围',
+    phoneScore: '待定',
+    phoneSummary: '围栏、定位和触达策略为规划展示，不写成已验证承诺。',
+    signals: [
+      {
+        id: 'location',
+        icon: 'map-pin',
+        title: '位置线索',
+        description: '规则待确认',
+        panel: {
+          title: '位置线索',
+          score: '附近',
+          summary: '位置展示为规划方向，定位方式、刷新频率和误差范围待样机验证。',
+          progress: 58,
+          metrics: [
+            { id: 'range', label: '围栏', value: '规则待确认' },
+            { id: 'refresh', label: '刷新', value: '频率待确认' },
+          ],
+        },
+      },
+      {
+        id: 'shield',
+        icon: 'shield-check',
+        title: '异常提醒',
+        description: '需主人复核',
+        panel: {
+          title: '异常提醒',
+          score: '待定',
+          summary: '提醒仅作为风险提示，触达方式、阈值和通知对象需由项目方确认。',
+          progress: 52,
+          metrics: [
+            { id: 'trigger', label: '触发', value: '阈值待确认' },
+            { id: 'review', label: '复核', value: '主人确认' },
+          ],
+        },
+      },
+    ],
+    metrics: [
+      { id: 'range', label: '围栏', value: '规则待确认' },
+      { id: 'notify', label: '触达', value: '方式待确认' },
+    ],
+  },
+  {
+    id: 'health',
+    eyebrow: '03 / 长期健康',
+    icon: 'chart',
+    title: '健康不是单次结论，而是长期趋势',
+    description:
+      '下滑切换到 App 与档案视角，强调持续观察、依据和不确定性，避免把 AI 提示包装成诊断。',
+    asset: '/images/generated/zhipet-health-archive.png',
+    assetAlt: '知宠 App 健康档案平台概念视觉',
+    tone: 'deep',
+    phoneTitle: '趋势档案',
+    phoneScore: '观察',
+    phoneSummary: '健康趋势只作为风险提示和沟通线索，不替代执业兽医判断。',
+    signals: [
+      {
+        id: 'archive',
+        icon: 'phone',
+        title: '健康档案',
+        description: '字段待确认',
+        panel: {
+          title: '健康档案',
+          score: '观察',
+          summary: '围绕活动、休息、照护记录建立长期档案，字段范围待项目方确认。',
+          progress: 70,
+          metrics: [
+            { id: 'evidence', label: '依据', value: '连续记录' },
+            { id: 'export', label: '共享', value: '授权前提' },
+          ],
+        },
+      },
+      {
+        id: 'privacy',
+        icon: 'lock',
+        title: '隐私授权',
+        description: '规则待确认',
+        panel: {
+          title: '隐私授权',
+          score: '待确认',
+          summary: '原始音频、家庭环境音频和宠物数据均按敏感数据处理，删除与共享规则需确认。',
+          progress: 48,
+          metrics: [
+            { id: 'permission', label: '授权', value: '规则待确认' },
+            { id: 'delete', label: '删除', value: '路径待确认' },
+          ],
+        },
+      },
+    ],
+    metrics: [
+      { id: 'evidence', label: '依据', value: '连续记录' },
+      { id: 'uncertainty', label: '不确定性', value: '明确展示' },
+    ],
   },
 ]
 
@@ -154,7 +388,8 @@ export const solutionScenarios: SolutionScenario[] = [
     audience: '家庭养宠',
     description: '把防走失、异常提醒、长期趋势和家庭共享放在同一套照护路径里。',
     abilities: ['防走失方向', '异常提醒规划', '长期趋势', '家庭共享待确认'],
-    image: '/images/concepts/family-solution.svg',
+    image: '/images/generated/pages/zhipet-family-care-scene.png',
+    imagePosition: 'center',
     alt: '知宠家庭养宠解决方案概念视觉',
     href: '/solutions/family',
   },
@@ -166,7 +401,8 @@ export const solutionScenarios: SolutionScenario[] = [
     description: '整理院外连续记录、授权共享和就诊前摘要 Beta，用于辅助沟通。',
     abilities: ['院外记录', '授权共享待确认', '健康档案', '就诊前摘要 Beta'],
     boundary: '辅助沟通，不替代诊断',
-    image: '/images/concepts/clinic-workflow.svg',
+    image: '/images/generated/pages/zhipet-hospital-collab-scene.png',
+    imagePosition: 'center',
     alt: '宠物医院健康管理协同概念视觉',
     href: '/solutions/hospital',
   },
@@ -177,7 +413,8 @@ export const solutionScenarios: SolutionScenario[] = [
     audience: '宠物门店 / 机构',
     description: '围绕会员健康服务、回访提醒、行为趋势和服务记录建立长期连接。',
     abilities: ['会员健康服务', '回访提醒规划', '行为趋势', '服务记录归档'],
-    image: '/images/concepts/app-platform.svg',
+    image: '/images/generated/pages/zhipet-store-service-scene.png',
+    imagePosition: 'center',
     alt: '宠物门店服务连接概念视觉',
     href: '/solutions/store',
   },

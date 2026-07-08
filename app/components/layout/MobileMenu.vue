@@ -19,16 +19,29 @@
           </BaseIconButton>
         </div>
         <ul class="mobile-menu__list">
-          <li v-for="item in items" :key="item.href">
+          <li v-for="item in items" :key="item.href" class="mobile-menu__item">
             <NuxtLink
               class="mobile-menu__link"
               :class="{ 'is-active': isActive(item.href) }"
               :to="item.href"
-              :aria-current="isActive(item.href) ? 'page' : undefined"
+              :aria-current="isCurrent(item.href) ? 'page' : undefined"
               @click="$emit('close')"
             >
               {{ item.label }}
             </NuxtLink>
+            <ul v-if="hasChildLinks(item)" class="mobile-menu__children">
+              <li v-for="child in childLinks(item)" :key="child.href">
+                <NuxtLink
+                  class="mobile-menu__sub-link"
+                  :class="{ 'is-active': isChildActive(child.href, item.href) }"
+                  :to="child.href"
+                  :aria-current="isCurrent(child.href) ? 'page' : undefined"
+                  @click="$emit('close')"
+                >
+                  <span>{{ child.label }}</span>
+                </NuxtLink>
+              </li>
+            </ul>
           </li>
         </ul>
         <div class="mobile-menu__actions" aria-label="账号入口">
@@ -87,6 +100,20 @@ const isActive = (href: string) => {
 
   return route.path.startsWith(href)
 }
+
+const isCurrent = (href: string) => route.path === href
+
+const isChildActive = (href: string, parentHref: string) => {
+  if (href === parentHref) {
+    return isCurrent(href)
+  }
+
+  return isActive(href)
+}
+
+const childLinks = (item: NavigationItem) => item.children?.filter((child) => child.href !== item.href) ?? []
+
+const hasChildLinks = (item: NavigationItem) => childLinks(item).length > 0
 
 const focusCloseButton = async () => {
   await nextTick()
@@ -205,12 +232,14 @@ onBeforeUnmount(() => {
   width: min(88vw, 360px);
   flex-direction: column;
   gap: var(--space-6);
+  overflow-y: auto;
   padding: var(--space-5);
   border-left: 1px solid rgb(232 224 213 / 78%);
   background:
-    linear-gradient(180deg, rgb(255 255 255 / 82%), rgb(246 241 233 / 94%)),
+    linear-gradient(180deg, rgb(255 253 248 / 98%), rgb(246 241 233 / 98%)),
     var(--color-bg);
   box-shadow: -20px 0 60px rgb(47 36 27 / 15%);
+  overscroll-behavior: contain;
 }
 
 .mobile-menu__head {
@@ -270,6 +299,37 @@ onBeforeUnmount(() => {
 
 .mobile-menu__link.is-active::after {
   opacity: 1;
+}
+
+.mobile-menu__children {
+  display: grid;
+  gap: 4px;
+  padding: 6px 0 10px var(--space-4);
+  margin: 0;
+  border-left: 1px solid rgb(226 216 203 / 82%);
+  list-style: none;
+}
+
+.mobile-menu__sub-link {
+  display: grid;
+  gap: 2px;
+  min-height: 36px;
+  padding: 7px 10px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  color: var(--color-brand-900);
+  background: rgb(255 253 248 / 54%);
+}
+
+.mobile-menu__sub-link span {
+  font-size: 13px;
+  font-weight: 760;
+  line-height: 1.35;
+}
+
+.mobile-menu__sub-link.is-active {
+  border-color: rgb(200 138 56 / 32%);
+  background: rgb(255 253 248 / 60%);
 }
 
 .mobile-menu__actions {

@@ -18,7 +18,7 @@ GitHub Pages 地址：[知宠 ZHIPET 官网](https://songtaoluo007-maker.github.
 - 已新增帮助中心与静态登录注册页：客服、反馈、账号体系和鉴权接口均为前端占位。
 - 已保留旧入口兼容：`/news`、旧资讯详情、`/partners`、`/contact` 等旧路由会引导至 V2 页面。
 - 已补充上线基础能力：动态 `robots.txt`、动态 `sitemap.xml`、品牌化 404/错误页、安全响应头、Canonical、分享图、结构化数据、favicon 与 manifest。
-- 当前使用概念视觉资产，页面均标注“AI 概念图，仅供参考”。真实产品图、Logo、团队、资质、联系方式、备案信息和业务接口仍需项目方确认。
+- 当前使用概念视觉资产；真实产品图、Logo、团队、资质、联系方式、备案信息和业务接口仍需项目方确认。
 
 ## 本地运行
 
@@ -47,16 +47,34 @@ pnpm build
 
 ```text
 app/
-├── assets/styles
-├── components/base
-├── components/common
-├── components/forms
-├── components/layout
-├── composables
-├── data
-├── layouts
-├── pages
-└── types
+├── app.vue
+├── error.vue
+├── assets/styles/          # 全站 SCSS 变量、排版、布局和动效基础样式
+├── components/
+│   ├── base/               # Button、Icon、Image 等基础组件
+│   ├── common/             # 跨页面通用展示组件
+│   ├── corporate/          # 隐私政策、服务条款等企业文本页面组件
+│   ├── forms/              # 预约、表单控件
+│   ├── home/               # 首页 V2 叙事与生态模块
+│   ├── layout/             # 顶部导航、页脚、移动菜单、返回顶部
+│   ├── products/           # 产品详情页模块
+│   └── solutions/          # 解决方案详情页模块
+├── composables/            # SEO、页面数据等组合式逻辑
+├── data/                   # 官网结构化内容、导航、产品、方案和 V2 数据
+├── layouts/                # Nuxt 页面布局
+├── pages/                  # 文件路由：首页、产品、方案、研究院、帮助、登录等
+├── types/                  # 站点内容和 UI 类型定义
+└── utils/                  # 站点辅助函数
+
+content/research/           # 健康研究院 Markdown 内容
+public/                     # favicon、manifest、图片和生成素材
+server/routes/              # robots.txt、sitemap.xml 等动态路由
+tests/
+├── unit/                   # Vitest 单元测试
+└── e2e/                    # Playwright 冒烟测试
+
+docs/                       # 项目说明和设计/上线文档
+.github/workflows/          # GitHub Pages 校验流程
 ```
 
 ## 健康研究院内容运营

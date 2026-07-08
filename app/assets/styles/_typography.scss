@@ -15,12 +15,14 @@ h1,
 h2,
 h3 {
   color: var(--color-brand-900);
-  font-weight: 700;
+  font-weight: 720;
   letter-spacing: 0;
   line-height: 1.16;
 }
 
 h1 {
+  font-family: var(--font-display);
+  font-weight: 700;
   font-size: clamp(36px, 6vw, 56px);
 }
 

@@ -21,6 +21,11 @@
         <path d="m13 6 6 6-6 6" />
       </template>
 
+      <template v-else-if="name === 'arrow-up'">
+        <path d="M12 19V5" />
+        <path d="m6 11 6-6 6 6" />
+      </template>
+
       <template v-else-if="name === 'building'">
         <path d="M4 21V5.8A1.8 1.8 0 0 1 5.8 4h7.4A1.8 1.8 0 0 1 15 5.8V21" />
         <path d="M15 9h3.2A1.8 1.8 0 0 1 20 10.8V21" />
@@ -51,6 +56,13 @@
         <path d="M10.5 19h3" />
       </template>
 
+      <template v-else-if="name === 'headset'">
+        <path d="M4.5 13.5v-1.2a7.5 7.5 0 0 1 15 0v1.2" />
+        <path d="M6.8 18h-1A1.8 1.8 0 0 1 4 16.2v-1.4A1.8 1.8 0 0 1 5.8 13h1.4v5Z" />
+        <path d="M17.2 18h1a1.8 1.8 0 0 0 1.8-1.8v-1.4a1.8 1.8 0 0 0-1.8-1.8h-1.4v5Z" />
+        <path d="M16.8 18c-.6 1.2-1.7 2-3.2 2H12" />
+      </template>
+
       <template v-else-if="name === 'heart-pulse'">
         <path
           d="M20.8 8.6c0 5.1-8.8 10.1-8.8 10.1S3.2 13.7 3.2 8.6A4.4 4.4 0 0 1 11 5.8a4.4 4.4 0 0 1 9.8 2.8Z"
@@ -72,11 +84,22 @@
         <path d="M3 21h18" />
       </template>
 
+      <template v-else-if="name === 'lock'">
+        <path d="M7 10V7.8a5 5 0 0 1 10 0V10" />
+        <path d="M6.8 10h10.4A1.8 1.8 0 0 1 19 11.8v6.4a1.8 1.8 0 0 1-1.8 1.8H6.8A1.8 1.8 0 0 1 5 18.2v-6.4A1.8 1.8 0 0 1 6.8 10Z" />
+        <path d="M12 14v2.5" />
+      </template>
+
       <template v-else-if="name === 'mail'">
         <path
           d="M4.8 6h14.4A1.8 1.8 0 0 1 21 7.8v8.4a1.8 1.8 0 0 1-1.8 1.8H4.8A1.8 1.8 0 0 1 3 16.2V7.8A1.8 1.8 0 0 1 4.8 6Z"
         />
         <path d="m4 7 8 6 8-6" />
+      </template>
+
+      <template v-else-if="name === 'map-pin'">
+        <path d="M12 21s6.5-5.3 6.5-11a6.5 6.5 0 0 0-13 0c0 5.7 6.5 11 6.5 11Z" />
+        <path d="M12 12.2a2.2 2.2 0 1 0 0-4.4 2.2 2.2 0 0 0 0 4.4Z" />
       </template>
 
       <template v-else-if="name === 'menu'">
@@ -90,6 +113,11 @@
           d="M8 3.5h8A2.5 2.5 0 0 1 18.5 6v12A2.5 2.5 0 0 1 16 20.5H8A2.5 2.5 0 0 1 5.5 18V6A2.5 2.5 0 0 1 8 3.5Z"
         />
         <path d="M10 17.5h4" />
+      </template>
+
+      <template v-else-if="name === 'search'">
+        <path d="m20 20-4.6-4.6" />
+        <path d="M11 17a6 6 0 1 0 0-12 6 6 0 0 0 0 12Z" />
       </template>
 
       <template v-else-if="name === 'shield-check'">

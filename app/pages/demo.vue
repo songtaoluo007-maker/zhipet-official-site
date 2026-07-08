@@ -3,10 +3,10 @@ import { computed, reactive, ref, watch } from 'vue'
 import BaseButton from '~/components/base/BaseButton.vue'
 import BaseContainer from '~/components/base/BaseContainer.vue'
 import BaseIcon from '~/components/base/BaseIcon.vue'
-import BaseImage from '~/components/base/BaseImage.vue'
 import BaseInput from '~/components/base/BaseInput.vue'
 import BaseTag from '~/components/base/BaseTag.vue'
 import BaseTextarea from '~/components/base/BaseTextarea.vue'
+import SceneFrame from '~/components/common/SceneFrame.vue'
 import SectionHeading from '~/components/common/SectionHeading.vue'
 import FormField from '~/components/forms/FormField.vue'
 import type { IconName } from '~/types/ui'
@@ -143,15 +143,20 @@ useSeoMeta({
             <BaseButton to="/help" variant="text" size="lg">查看帮助中心</BaseButton>
           </div>
         </div>
-        <BaseImage
-          src="/images/concepts/app-platform.svg"
-          alt="知宠 App 与健康管理平台演示概念视觉"
-          aspect-ratio="16 / 10"
-          radius="lg"
-          priority
-          concept
-          label-placement="below"
-        />
+        <SceneFrame
+          class="demo-hero__visual"
+          src="/images/generated/pages/zhipet-demo-consult-scene.png"
+          alt="犬猫与预约演示场景概念图"
+          aspect-ratio="4 / 5"
+          object-position="center"
+        >
+          <div class="demo-card">
+            <span>预约演示</span>
+            <strong>了解下一步方案</strong>
+            <p>姓名、联系方式和身份角色将在正式接口确认后提交。</p>
+            <BaseButton to="#demo-form" size="sm">填写信息</BaseButton>
+          </div>
+        </SceneFrame>
       </BaseContainer>
     </section>
 
@@ -301,7 +306,23 @@ useSeoMeta({
 }
 
 .demo-hero {
+  position: relative;
+  isolation: isolate;
   padding-block: var(--space-8) var(--space-7);
+  background:
+    linear-gradient(180deg, rgb(255 255 255 / 58%), rgb(251 248 242 / 0) 78%),
+    radial-gradient(circle at 72% 20%, rgb(232 200 148 / 18%), transparent 32%);
+}
+
+.demo-hero::before {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    linear-gradient(90deg, var(--color-bg) 0%, rgb(251 248 242 / 74%) 42%, rgb(251 248 242 / 26%) 100%),
+    url('/images/generated/pages/zhipet-demo-consult-scene.png') center / cover no-repeat;
+  content: '';
+  opacity: 0.16;
 }
 
 .demo-hero__inner,
@@ -337,7 +358,7 @@ useSeoMeta({
 }
 
 .demo-hero h1 {
-  font-size: 52px;
+  font-size: 72px;
   line-height: 1.08;
   letter-spacing: 0;
   text-wrap: balance;
@@ -348,6 +369,43 @@ useSeoMeta({
   color: var(--color-text-secondary);
   font-size: 18px;
   line-height: 1.72;
+}
+
+.demo-hero__visual {
+  min-height: 560px;
+}
+
+.demo-card {
+  position: absolute;
+  right: var(--space-5);
+  bottom: var(--space-5);
+  display: grid;
+  gap: var(--space-3);
+  width: min(320px, calc(100% - 32px));
+  padding: var(--space-5);
+  border: 1px solid rgb(255 255 255 / 72%);
+  border-radius: 20px;
+  background: rgb(255 255 255 / 86%);
+  box-shadow: 0 18px 46px rgb(47 36 27 / 10%);
+  backdrop-filter: blur(16px);
+}
+
+.demo-card span {
+  color: var(--color-text-secondary);
+  font-size: 13px;
+  font-weight: 750;
+}
+
+.demo-card strong {
+  color: var(--color-brand-900);
+  font-size: 24px;
+  line-height: 1.25;
+}
+
+.demo-card p {
+  color: var(--color-text-secondary);
+  font-size: 14px;
+  line-height: 1.6;
 }
 
 .demo-hero__actions {

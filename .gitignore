@@ -13,3 +13,6 @@ test-results
 *.log
 .nuxt-dev-check.*
 output
+.tmp
+.pytest_cache
+--port

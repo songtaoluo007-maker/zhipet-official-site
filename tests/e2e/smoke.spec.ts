@@ -13,19 +13,38 @@ const gotoReady = async (page: import('@playwright/test').Page, path: string) =>
   await page.waitForLoadState('networkidle')
 }
 
-test('home route presents V2 brand homepage safely', async ({ page }) => {
+test('home route presents V2 brand homepage safely', async ({ page }, testInfo) => {
   await gotoReady(page, '/')
 
   await expect(page).toHaveTitle(/更懂陪伴，更守护健康/)
   await expect(page.getByRole('banner')).toBeVisible()
   await expect(page.getByRole('contentinfo')).toBeVisible()
-  await expect(page.getByRole('heading', { level: 1 })).toContainText('更懂陪伴')
-  await expect(page.getByText('知宠智能项圈 · App · 健康档案生态')).toBeVisible()
-  await expect(page.getByRole('link', { name: /了解产品/ })).toHaveAttribute('href', '/products')
+  await expect(page.getByRole('heading', { level: 1 })).toBeVisible()
+
+  if (testInfo.project.name === 'mobile') {
+    await expect(page.getByRole('button', { name: '打开导航' })).toBeVisible()
+  } else {
+    await expect(
+      page.getByRole('navigation', { name: '主导航' }).getByRole('link', { name: '产品' }),
+    ).toHaveAttribute('href', '/products')
+  }
+
   await expect(page.getByRole('link', { name: /预约演示/ }).first()).toHaveAttribute('href', '/demo')
-  await expect(page.getByText('宠物不会说话，但健康会留下痕迹')).toBeVisible()
-  await expect(page.getByText('不做逐字翻译')).toBeVisible()
-  await expect(page.getByText('AI 概念图，仅供参考').first()).toBeVisible()
+  await expect(page.getByRole('heading', { name: '知宠智能生态系统' })).toBeVisible()
+  await expect(page.getByRole('link', { name: /安全边界/ }).first()).toHaveAttribute(
+    'href',
+    '/products/smart-collar',
+  )
+  await expect(page.getByRole('link', { name: /健康趋势/ }).first()).toHaveAttribute(
+    'href',
+    '/research',
+  )
+  await expect(page.getByRole('link', { name: /专业协同/ }).first()).toHaveAttribute(
+    'href',
+    '/solutions',
+  )
+  await expect(page.getByRole('heading', { name: '因信任而设计，为陪伴而守护' })).toBeVisible()
+  await expect(page.locator('body')).not.toContainText(/AI 概念图，仅供参考|AI 生成|ai生成/i)
   await expect(page.locator('body')).not.toContainText(/百分百听懂|宠物语言翻译器|医疗级/)
 
   await expectNoHorizontalOverflow(page)

@@ -7,7 +7,7 @@ export const smartCollarProduct: ProductDetail = {
   summary:
     '知宠智能挂件面向家庭日常陪伴和安全提醒场景，探索宠物声音采集、动作与活动趋势记录、行为姿态感知、定位与安全提醒，并与知宠 App 和 PetSense 多模态宠物理解引擎协同。当前产品形态、最终商业名称和硬件参数仍待项目方确认。',
   status: '样机与产品定义阶段',
-  cover: '/images/concepts/smart-collar.svg',
+  cover: '/images/generated/pages/zhipet-product-closeup-scene.png',
   coverAlt: '知宠智能挂件样机概念视觉',
   values: [
     {
@@ -144,7 +144,7 @@ export const zhipetAppProduct: ProductDetail = {
   summary:
     '知宠 App 面向家庭日常照护和机构服务连接场景，规划健康档案、趋势记录、提醒协作与复诊资料整理。当前内容用于体验流程展示，最终功能以项目方确认资料为准。',
   status: '体验流程规划中',
-  cover: '/images/concepts/app-platform.svg',
+  cover: '/images/generated/pages/zhipet-app-profile-scene.png',
   coverAlt: '知宠 App 体验流程概念视觉',
   values: [
     {
@@ -271,7 +271,7 @@ export const healthPlatformProduct: ProductDetail = {
   summary:
     '健康管理平台面向宠物医院、门店与合作机构，探索设备数据接入、服务流程记录和运营辅助能力。当前内容用于场景验证展示，真实部署方式和接口范围以项目方确认为准。',
   status: '场景验证阶段',
-  cover: '/images/concepts/clinic-workflow.svg',
+  cover: '/images/generated/pages/zhipet-hospital-collab-scene.png',
   coverAlt: '知宠健康管理平台场景验证概念视觉',
   values: [
     {

@@ -8,7 +8,7 @@ const NuxtImgStub = {
 }
 
 describe('BaseImage', () => {
-  it('renders concept labels inside the image by default', () => {
+  it('does not render visible concept labels inside the image', () => {
     const wrapper = mount(BaseImage, {
       props: {
         src: '/images/concepts/hero-care-scene.svg',
@@ -22,11 +22,11 @@ describe('BaseImage', () => {
       },
     })
 
-    expect(wrapper.find('.base-image__frame .base-image__label').exists()).toBe(true)
+    expect(wrapper.find('.base-image__frame .base-image__label').exists()).toBe(false)
     expect(wrapper.find('.base-image__label--below').exists()).toBe(false)
   })
 
-  it('can place concept labels below the image', () => {
+  it('does not render visible concept labels below the image', () => {
     const wrapper = mount(BaseImage, {
       props: {
         src: '/images/concepts/hero-care-scene.svg',
@@ -42,6 +42,6 @@ describe('BaseImage', () => {
     })
 
     expect(wrapper.find('.base-image__frame .base-image__label').exists()).toBe(false)
-    expect(wrapper.find('.base-image__label--below').text()).toBe('AI 概念图，仅供参考')
+    expect(wrapper.find('.base-image__label--below').exists()).toBe(false)
   })
 })

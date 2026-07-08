@@ -155,8 +155,8 @@ const productSignalFlow = [
             </ol>
           </div>
           <BaseImage
-            src="/images/concepts/collar-ecosystem.svg"
-            alt="知宠设备、App 与健康管理平台协同概念视觉"
+            :src="product.cover"
+            :alt="product.coverAlt"
             aspect-ratio="16 / 10"
             radius="lg"
             concept

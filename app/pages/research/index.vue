@@ -3,10 +3,10 @@ import { computed, ref } from 'vue'
 import BaseButton from '~/components/base/BaseButton.vue'
 import BaseContainer from '~/components/base/BaseContainer.vue'
 import BaseIcon from '~/components/base/BaseIcon.vue'
-import BaseImage from '~/components/base/BaseImage.vue'
 import BaseInput from '~/components/base/BaseInput.vue'
 import BaseTag from '~/components/base/BaseTag.vue'
 import CTASection from '~/components/common/CTASection.vue'
+import SceneFrame from '~/components/common/SceneFrame.vue'
 import SectionHeading from '~/components/common/SectionHeading.vue'
 
 const { register } = useScrollReveal()
@@ -120,22 +120,20 @@ useSeoMeta({
             </template>
           </BaseButton>
         </div>
-        <div class="research-hero__visual">
-          <BaseImage
-            src="/images/concepts/family-solution.svg"
-            alt="知宠健康研究院家庭观察与研究内容概念视觉"
-            aspect-ratio="16 / 10"
-            radius="lg"
-            priority
-            concept
-            label-placement="below"
-          />
+        <SceneFrame
+          class="research-hero__visual"
+          src="/images/generated/pages/zhipet-research-observation-scene.png"
+          alt="犬只户外健康观察研究院概念图"
+          aspect-ratio="16 / 10"
+          object-position="center"
+          tone="dark"
+        >
           <div class="research-hero__card">
             <span>研究边界</span>
             <strong>观察趋势，不替代诊疗</strong>
             <p>异常情况请及时咨询执业兽医。</p>
           </div>
-        </div>
+        </SceneFrame>
       </BaseContainer>
     </section>
 
@@ -153,13 +151,11 @@ useSeoMeta({
         description="先建立健康观察的基础认知，再理解产品为什么强调长期记录。"
       />
       <article class="featured-card">
-        <BaseImage
-          src="/images/concepts/collar-ecosystem.svg"
-          alt="知宠连续健康观察与产品生态概念视觉"
+        <SceneFrame
+          src="/images/generated/pages/zhipet-research-observation-scene.png"
+          alt="犬猫休息状态与健康观察文章概念图"
           aspect-ratio="4 / 3"
-          radius="lg"
-          concept
-          label-placement="below"
+          object-position="center"
         />
         <div class="featured-card__copy">
           <BaseTag>{{ featuredArticle.category }}</BaseTag>
@@ -273,7 +269,23 @@ useSeoMeta({
 }
 
 .research-hero {
+  position: relative;
+  isolation: isolate;
   padding-block: var(--space-8) var(--space-7);
+  background:
+    linear-gradient(180deg, rgb(255 255 255 / 58%), rgb(251 248 242 / 0) 78%),
+    radial-gradient(circle at 72% 20%, rgb(86 130 103 / 14%), transparent 32%);
+}
+
+.research-hero::before {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    linear-gradient(90deg, var(--color-bg) 0%, rgb(251 248 242 / 74%) 42%, rgb(251 248 242 / 26%) 100%),
+    url('/images/generated/pages/zhipet-research-observation-scene.png') center / cover no-repeat;
+  content: '';
+  opacity: 0.16;
 }
 
 .research-hero__inner {
@@ -307,7 +319,7 @@ useSeoMeta({
 }
 
 .research-hero h1 {
-  font-size: 52px;
+  font-size: 72px;
   line-height: 1.08;
   letter-spacing: 0;
   text-wrap: balance;
@@ -321,15 +333,7 @@ useSeoMeta({
 }
 
 .research-hero__visual {
-  position: relative;
-  overflow: hidden;
-  min-width: 0;
-  padding: var(--space-5);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-media);
-  background:
-    linear-gradient(180deg, rgb(255 255 255 / 86%), rgb(246 241 233 / 72%)),
-    var(--color-surface-soft);
+  min-height: 430px;
 }
 
 .research-hero__card {
@@ -377,9 +381,10 @@ useSeoMeta({
   gap: var(--space-6);
   align-items: center;
   padding: var(--space-6);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-media);
-  background: var(--color-surface);
+  border: 1px solid rgb(255 255 255 / 68%);
+  border-radius: 22px;
+  background: rgb(255 255 255 / 74%);
+  box-shadow: 0 18px 46px rgb(47 36 27 / 6%);
 }
 
 .featured-card__copy,
@@ -538,7 +543,6 @@ useSeoMeta({
     font-size: 15px;
   }
 
-  .research-hero__visual,
   .featured-card,
   .article-card,
   .sidebar-panel {
@@ -546,9 +550,10 @@ useSeoMeta({
   }
 
   .research-hero__card {
-    position: static;
+    right: var(--space-4);
+    bottom: var(--space-4);
+    width: min(280px, calc(100% - 32px));
     max-width: none;
-    margin-top: var(--space-3);
   }
 }
 </style>

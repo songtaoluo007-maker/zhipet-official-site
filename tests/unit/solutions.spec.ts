@@ -57,7 +57,7 @@ describe('solution content', () => {
         .join(' ')
 
       expect(solution.summary).toMatch(/待项目方确认|以项目方确认为准/)
-      expect(solution.cover).toContain('/images/concepts/')
+      expect(solution.cover).toMatch(/^\/images\/(generated|concepts)\//)
       expect(confirmationValues).toContain('待项目方确认')
       expect(guardrailText).toMatch(/不替代专业诊疗|授权|待项目方确认/)
     }

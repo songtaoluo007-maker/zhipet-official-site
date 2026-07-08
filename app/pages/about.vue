@@ -2,9 +2,9 @@
 import BaseButton from '~/components/base/BaseButton.vue'
 import BaseContainer from '~/components/base/BaseContainer.vue'
 import BaseIcon from '~/components/base/BaseIcon.vue'
-import BaseImage from '~/components/base/BaseImage.vue'
 import BaseTag from '~/components/base/BaseTag.vue'
 import CTASection from '~/components/common/CTASection.vue'
+import SceneFrame from '~/components/common/SceneFrame.vue'
 import SectionHeading from '~/components/common/SectionHeading.vue'
 import { homeTimeline } from '~/data/home'
 import { aboutAbilities, productBoundaries } from '~/data/v2'
@@ -49,22 +49,19 @@ useSeoMeta({
             </template>
           </BaseButton>
         </div>
-        <div class="about-hero__visual">
-          <BaseImage
-            src="/images/concepts/team-lab.svg"
-            alt="知宠人与宠物信任关系概念视觉"
-            aspect-ratio="3 / 2"
-            radius="lg"
-            priority
-            concept
-            label-placement="below"
-          />
+        <SceneFrame
+          class="about-hero__visual"
+          src="/images/generated/pages/zhipet-family-care-scene.png"
+          alt="人与犬猫在居家场景中互动的知宠品牌概念图"
+          aspect-ratio="3 / 2"
+          object-position="center"
+        >
           <div class="about-hero__card">
             <span>资料状态</span>
             <strong>品牌方向已整理，正式信息待确认</strong>
             <p>不虚构团队、客户、资质、电话、地址或备案号。</p>
           </div>
-        </div>
+        </SceneFrame>
       </BaseContainer>
     </section>
 
@@ -170,7 +167,23 @@ useSeoMeta({
 }
 
 .about-hero {
+  position: relative;
+  isolation: isolate;
   padding-block: var(--space-8) var(--space-7);
+  background:
+    linear-gradient(180deg, rgb(255 255 255 / 54%), rgb(251 248 242 / 0) 78%),
+    radial-gradient(circle at 72% 22%, rgb(232 200 148 / 18%), transparent 30%);
+}
+
+.about-hero::before {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    linear-gradient(90deg, var(--color-bg) 0%, rgb(251 248 242 / 72%) 42%, rgb(251 248 242 / 24%) 100%),
+    url('/images/generated/pages/zhipet-family-care-scene.png') center / cover no-repeat;
+  content: '';
+  opacity: 0.16;
 }
 
 .about-hero__inner {
@@ -205,7 +218,7 @@ useSeoMeta({
 
 .about-hero h1 {
   max-width: 760px;
-  font-size: 56px;
+  font-size: 64px;
   line-height: 1.08;
   letter-spacing: 0;
   text-wrap: balance;
@@ -219,14 +232,7 @@ useSeoMeta({
 }
 
 .about-hero__visual {
-  position: relative;
-  min-width: 0;
-  padding: var(--space-5);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-media);
-  background:
-    linear-gradient(180deg, rgb(255 255 255 / 86%), rgb(246 241 233 / 72%)),
-    var(--color-surface-soft);
+  min-height: 430px;
 }
 
 .about-hero__card {
@@ -395,16 +401,16 @@ useSeoMeta({
     font-size: 15px;
   }
 
-  .about-hero__visual,
   .ability-card,
   .boundary-card {
     padding: var(--space-4);
   }
 
   .about-hero__card {
-    position: static;
+    right: var(--space-4);
+    bottom: var(--space-4);
+    width: min(300px, calc(100% - 32px));
     max-width: none;
-    margin-top: var(--space-3);
   }
 
   .confirmation-row,
