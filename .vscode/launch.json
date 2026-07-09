@@ -3,7 +3,7 @@
   "configurations": [
     {
       "name": "Nuxt: 启动并调试 Chrome",
-      "type": "pwa-chrome",
+      "type": "chrome",
       "request": "launch",
       "url": "http://127.0.0.1:3000/",
       "webRoot": "${workspaceFolder}",

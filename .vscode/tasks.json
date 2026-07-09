@@ -4,11 +4,12 @@
     {
       "label": "nuxt: dev",
       "type": "shell",
-      "command": "pnpm",
+      "command": "C:\\Users\\Administrator\\nodejs\\pnpm.CMD",
       "args": ["dev", "--port", "3000"],
       "options": {
         "cwd": "${workspaceFolder}",
         "env": {
+          "Path": "C:\\Users\\Administrator\\nodejs;${env:Path}",
           "NO_COLOR": "1",
           "FORCE_COLOR": "0"
         }
@@ -34,30 +35,39 @@
     {
       "label": "nuxt: lint",
       "type": "shell",
-      "command": "pnpm",
+      "command": "C:\\Users\\Administrator\\nodejs\\pnpm.CMD",
       "args": ["lint"],
       "options": {
-        "cwd": "${workspaceFolder}"
+        "cwd": "${workspaceFolder}",
+        "env": {
+          "Path": "C:\\Users\\Administrator\\nodejs;${env:Path}"
+        }
       },
       "problemMatcher": "$eslint-stylish"
     },
     {
       "label": "nuxt: typecheck",
       "type": "shell",
-      "command": "pnpm",
+      "command": "C:\\Users\\Administrator\\nodejs\\pnpm.CMD",
       "args": ["typecheck"],
       "options": {
-        "cwd": "${workspaceFolder}"
+        "cwd": "${workspaceFolder}",
+        "env": {
+          "Path": "C:\\Users\\Administrator\\nodejs;${env:Path}"
+        }
       },
       "problemMatcher": "$tsc"
     },
     {
       "label": "nuxt: test",
       "type": "shell",
-      "command": "pnpm",
+      "command": "C:\\Users\\Administrator\\nodejs\\pnpm.CMD",
       "args": ["test"],
       "options": {
-        "cwd": "${workspaceFolder}"
+        "cwd": "${workspaceFolder}",
+        "env": {
+          "Path": "C:\\Users\\Administrator\\nodejs;${env:Path}"
+        }
       },
       "problemMatcher": []
     }

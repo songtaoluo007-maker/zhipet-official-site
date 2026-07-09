@@ -1,0 +1,6 @@
+{
+  "npm.packageManager": "pnpm",
+  "terminal.integrated.env.windows": {
+    "Path": "C:\\Users\\Administrator\\nodejs;${env:Path}"
+  }
+}
