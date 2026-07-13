@@ -1,37 +1,40 @@
-# 知宠 ZHIPET 企业官网
+# 知宠 ZHIPET 官网
 
-基于 Nuxt 4、Vue 3、TypeScript 和 SCSS 的知宠企业级官方网站工程。
+基于 Nuxt 4、Vue 3、TypeScript、SCSS、Prisma 和 PostgreSQL 的知宠宠物健康科技官网。
 
-## 在线预览
+官网用于介绍知宠的产品、解决方案、研究内容与使用边界，对外保留两种联络方式：
 
-GitHub Pages 地址：[知宠 ZHIPET 官网](https://songtaoluo007-maker.github.io/zhipet-official-site/)
+- 邮箱联系我们：`petSense@126.com`
+- 意见问题反馈：`/help#feedback`
 
-> 当前仓库使用 `gh-pages` 分支发布静态官网。推送源码到 `main` 后，需要将 `.output/public` 的静态产物同步到 `gh-pages` 分支。
+官网不提供用户注册或登录。软件 App 如后续上线，其账号体系、数据规则和用户协议将独立建设，避免用户在官网二次登录。
 
-## 当前进度
+- 维护团队：知宠团队
+- 在线预览：[知宠 ZHIPET 官网](https://songtaoluo007-maker.github.io/zhipet-official-site/)
 
-- 已升级为 V2 官网结构：首页、产品、解决方案、健康研究院、关于我们、帮助中心、预约演示、登录注册、隐私政策和服务条款。
-- 已重构首页叙事：围绕“更懂陪伴，更守护健康”，强调安全防走失、健康趋势观察和 AI 状态解释边界。
-- 已重构产品中心：一个核心主模块，两种安装方式，四类产品形态均以“待项目方确认”标记未确认参数。
-- 已重构解决方案：家庭养宠、宠物医院、宠物门店/机构三类场景，不展示未确认客户、合作 Logo 或落地数据。
-- 已新增健康研究院：文章列表、分类筛选、文章详情、风险边界提示和相关阅读。
-- 已新增帮助中心与静态登录注册页：客服、反馈、账号体系和鉴权接口均为前端占位。
-- 已保留旧入口兼容：`/news`、旧资讯详情、`/partners`、`/contact` 等旧路由会引导至 V2 页面。
-- 已补充上线基础能力：动态 `robots.txt`、动态 `sitemap.xml`、品牌化 404/错误页、安全响应头、Canonical、分享图、结构化数据、favicon 与 manifest。
-- 当前使用概念视觉资产；真实产品图、Logo、团队、资质、联系方式、备案信息和业务接口仍需项目方确认。
+## 功能概览
+
+- 首页、产品、解决方案、健康研究院、项目介绍、联系页、帮助中心、隐私说明和使用条款。
+- 响应式导航、移动菜单、返回顶部、Canonical、分享图、结构化数据、动态 `robots.txt` 与 `sitemap.xml`。
+- 健康研究院 Markdown 内容、分类筛选、文章详情、风险边界提示和相关阅读。
+- 意见反馈经 Nuxt Server API 校验后写入 PostgreSQL，并与邮件通知一起事务化写入 `email_outbox`。
+- 独立邮件投递任务使用 SMTP 客户端授权码发送反馈通知，失败时重试，成功后清除邮件正文和收件地址。
+- 数据到期清理任务只处理反馈记录和邮件出站记录。
 
 ## 本地运行
 
-推荐使用 Node.js 22 或更高版本。当前 Codex 环境使用内置 Node `v24.14.0`。
-
-[打开本地预览页面](http://127.0.0.1:3000/)
-
-> 该链接需要先在本机启动开发服务。若要分享给其他人直接访问，需要先部署到公网预览环境。
+推荐使用 Node.js 22 或更高版本。首次运行先从 `.env.example` 创建 `.env`，并确保 Docker Desktop 已启动。
 
 ```bash
 pnpm install
+pnpm db:dev
+pnpm db:migrate
 pnpm dev
 ```
+
+本地地址：[http://127.0.0.1:3000/](http://127.0.0.1:3000/)
+
+`dev`、`typecheck`、`build` 和 `generate` 使用彼此隔离的 Nuxt 构建目录，避免并行任务改写开发服务正在使用的 Nuxt Content 索引。
 
 ## 常用命令
 
@@ -41,6 +44,16 @@ pnpm typecheck
 pnpm test
 pnpm test:e2e
 pnpm build
+pnpm generate
+
+pnpm db:dev
+pnpm db:down
+pnpm db:generate
+pnpm db:migrate
+pnpm db:migrate:deploy
+pnpm db:studio
+pnpm db:purge-expired
+pnpm mail:deliver
 ```
 
 ## 项目结构
@@ -49,72 +62,61 @@ pnpm build
 app/
 ├── app.vue
 ├── error.vue
-├── assets/styles/          # 全站 SCSS 变量、排版、布局和动效基础样式
+├── assets/styles/          # 全站 Token、排版、布局和动效样式
 ├── components/
-│   ├── base/               # Button、Icon、Image 等基础组件
-│   ├── common/             # 跨页面通用展示组件
-│   ├── corporate/          # 隐私政策、服务条款等企业文本页面组件
-│   ├── forms/              # 预约、表单控件
-│   ├── home/               # 首页 V2 叙事与生态模块
-│   ├── layout/             # 顶部导航、页脚、移动菜单、返回顶部
-│   ├── products/           # 产品详情页模块
-│   └── solutions/          # 解决方案详情页模块
-├── composables/            # SEO、页面数据等组合式逻辑
-├── data/                   # 官网结构化内容、导航、产品、方案和 V2 数据
+│   ├── base/               # Button、Icon、Image、Input 等基础组件
+│   ├── common/             # 跨页面展示组件
+│   ├── corporate/          # 隐私说明与使用条款组件
+│   ├── forms/              # 反馈表单字段组件
+│   ├── home/               # 首页叙事模块
+│   ├── layout/             # 导航、页脚、移动菜单、返回顶部
+│   ├── products/           # 产品详情模块
+│   └── solutions/          # 解决方案详情模块
+├── composables/            # SEO、页面行为与配置组合式逻辑
+├── data/                   # 导航、产品、方案和官网结构化内容
 ├── layouts/                # Nuxt 页面布局
-├── pages/                  # 文件路由：首页、产品、方案、研究院、帮助、登录等
-├── types/                  # 站点内容和 UI 类型定义
-└── utils/                  # 站点辅助函数
+├── pages/                  # 官网文件路由，不包含账号或后台页面
+├── types/                  # 站点内容和 UI 类型
+└── utils/                  # 前端辅助函数
 
 content/research/           # 健康研究院 Markdown 内容
-public/                     # favicon、manifest、图片和生成素材
-server/routes/              # robots.txt、sitemap.xml 等动态路由
+prisma/                     # Feedback、EmailOutbox 模型与版本化迁移
+public/                     # favicon、manifest 和视觉素材
+server/
+├── api/                    # 反馈、健康检查等 Nitro 接口
+├── domain/                 # 反馈输入校验与通用验证规则
+├── middleware/             # 请求追踪与结构化日志
+├── routes/                 # robots.txt 与 sitemap.xml
+└── utils/                  # Prisma、限流、邮件队列等基础设施
+shared/                     # 前后端共享常量和反馈类型
+scripts/                    # 数据清理与邮件投递任务
 tests/
 ├── unit/                   # Vitest 单元测试
 └── e2e/                    # Playwright 冒烟测试
 
-docs/                       # 项目说明和设计/上线文档
-.github/workflows/          # GitHub Pages 校验流程
+docs/                       # 项目说明和生产运营文档
+.github/workflows/          # GitHub Pages 检查与部署
 ```
 
-## 健康研究院内容运营
+## 数据边界
 
-研究院内容放在 `content/research/`，每篇 Markdown 会生成一个 `/research/文件名` 页面，并出现在健康研究院列表。
+- 在线反馈仅采集反馈分类、正文、可选联系方式和隐私说明确认信息。
+- 反馈最多保存 365 天，待发送邮件最多保存 30 天。
+- 邮件发送成功后立即清除队列中的收件地址、主题和正文，只保留不含反馈内容的投递状态最多 7 天。
+- `pnpm db:purge-expired` 删除到期反馈和邮件记录。
+- 官网不保存账号、密码、会话、家庭成员、宠物档案、订阅邮箱或产品交流申请。
+- 个人信息权利请求通过公开邮箱受理，一般在 15 个工作日内完成处理或说明进度。
 
-```markdown
----
-title: 文章标题待项目方确认
-description: 文章摘要待项目方确认。
-category: 产品动态
-publishedLabel: 发布日期待项目方确认
-status: 正文待项目方确认
-tags:
-  - 标签待项目方确认
-order: 4
----
+## 部署边界
 
-## 内容定位
+GitHub Pages 只能托管静态页面，不能运行 `server/api` 或连接 PostgreSQL。Pages 构建使用 `NUXT_PUBLIC_FEEDBACK_ENABLED=false`，访客仍可通过公开邮箱联系知宠团队。
 
-正文待项目方确认。
+需要开放在线反馈时，应部署完整 Nuxt Server、PostgreSQL、邮件投递任务和数据清理任务。仓库根目录 `render.yaml` 提供首个部署模板，生产环境确认数据库备份、HTTPS、SMTP 客户端授权码与监控后，再设置：
+
+```bash
+NUXT_PUBLIC_FEEDBACK_ENABLED=true
 ```
 
-正式发布前不要填写未经确认的发布日期、作者、客户、合作机构、模型准确率、数据规模、资质编号、联系方式或备案信息。
+生产迁移、备份、邮件和发布检查见 [生产部署与运营手册](docs/PRODUCTION_OPERATIONS.md)。
 
-## 内容规范
-
-- 不编造企业、客户、团队、地址、电话、资质、备案和业务数据。
-- 缺失内容使用“待项目方确认”。
-- AI 图片或概念图必须标注“AI 概念图，仅供参考”。
-- 示范案例和概念验证项目不得冒充真实客户案例。
-- 联系、预约、隐私政策和服务条款当前均为占位状态，不代表正式业务接口或法律文本。
-
-## 部署
-
-当前仓库已配置 GitHub Pages 自动部署：
-
-- Source：`gh-pages` 分支根目录
-- 静态产物：`.output/public`
-- 构建命令：`pnpm generate`
-- GitHub Pages 子路径：`/zhipet-official-site/`
-
-正式域名确认后填写 `NUXT_PUBLIC_SITE_URL`，并同步调整 GitHub Pages 域名配置；`robots.txt` 和 `sitemap.xml` 会优先使用该配置生成 Canonical URL。正式国内上线前需要确认域名备案和合规信息。
+腾讯云 Linux CVM 的 Nginx、systemd、定时任务和环境变量模板见 [腾讯云部署模板](deploy/tencent-cloud/README.md)。

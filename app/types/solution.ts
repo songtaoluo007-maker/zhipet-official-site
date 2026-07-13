@@ -1,18 +1,5 @@
 import type { IconName } from './ui'
 
-export interface SolutionCard {
-  id: string
-  icon: IconName
-  title: string
-  audience: string
-  status: string
-  summary: string
-  image: string
-  alt: string
-  features: string[]
-  href?: string
-}
-
 export interface SolutionPainPoint {
   id: string
   icon: IconName
@@ -40,19 +27,11 @@ export interface SolutionGuardrail {
   description: string
 }
 
-export interface SolutionConfirmationItem {
-  label: string
-  value: string
-  note?: string
-}
-
 export interface SolutionDetailSections {
   painTitle: string
   painDescription: string
   workflowTitle: string
   workflowDescription: string
-  workflowImage: string
-  workflowImageAlt: string
   modulesTitle: string
   modulesDescription: string
   boundaryTitle: string
@@ -72,7 +51,6 @@ export interface SolutionDetail {
   breadcrumbLabel: string
   headline: string
   summary: string
-  status: string
   cover: string
   coverAlt: string
   painPoints: SolutionPainPoint[]
@@ -80,6 +58,5 @@ export interface SolutionDetail {
   modules: SolutionModule[]
   secondaryAction?: SolutionDetailAction
   guardrails: SolutionGuardrail[]
-  confirmationItems: SolutionConfirmationItem[]
   sections: SolutionDetailSections
 }

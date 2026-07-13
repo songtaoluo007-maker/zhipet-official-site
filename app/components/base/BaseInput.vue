@@ -22,7 +22,7 @@ withDefaults(
   defineProps<{
     id?: string
     name?: string
-    type?: 'text' | 'email' | 'tel' | 'url' | 'search' | 'password'
+    type?: 'text' | 'email' | 'tel' | 'url' | 'search' | 'password' | 'date'
     placeholder?: string
     autocomplete?: string
     disabled?: boolean

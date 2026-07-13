@@ -1,0 +1,76 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum FeedbackCategory {
+  PRODUCT
+  DEVICE
+  APP
+  CONTENT
+  PRIVACY
+  OTHER
+}
+
+enum FeedbackStatus {
+  PENDING
+  REVIEWING
+  INVALID
+  CLOSED
+}
+
+enum EmailOutboxStatus {
+  PENDING
+  PROCESSING
+  SENT
+  FAILED
+}
+
+enum EmailTemplate {
+  OPERATOR_FEEDBACK
+}
+
+model Feedback {
+  id                   String           @id @default(cuid())
+  category             FeedbackCategory
+  message              String           @db.VarChar(2000)
+  contact              String?          @db.VarChar(160)
+  sourcePage           String           @default("/help") @db.VarChar(200)
+  status               FeedbackStatus   @default(PENDING)
+  acceptedPrivacyAt    DateTime
+  privacyPolicyVersion String           @db.VarChar(80)
+  retentionExpiresAt   DateTime
+  handledAt            DateTime?
+  createdAt            DateTime         @default(now())
+  updatedAt            DateTime         @updatedAt
+
+  @@index([status, createdAt])
+  @@index([retentionExpiresAt])
+  @@map("feedback")
+}
+
+model EmailOutbox {
+  id                 String            @id @default(cuid())
+  deduplicationKey   String            @unique @db.VarChar(180)
+  template           EmailTemplate
+  recipient          String            @db.VarChar(320)
+  subject            String            @db.VarChar(200)
+  textBody           String            @db.Text
+  status             EmailOutboxStatus @default(PENDING)
+  attemptCount       Int               @default(0)
+  nextAttemptAt      DateTime          @default(now())
+  lastAttemptAt      DateTime?
+  sentAt             DateTime?
+  lastErrorCode      String?           @db.VarChar(80)
+  retentionExpiresAt DateTime
+  createdAt          DateTime          @default(now())
+  updatedAt          DateTime          @updatedAt
+
+  @@index([status, nextAttemptAt, createdAt])
+  @@index([retentionExpiresAt])
+  @@map("email_outbox")
+}

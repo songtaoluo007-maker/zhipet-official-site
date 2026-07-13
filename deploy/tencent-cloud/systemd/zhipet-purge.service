@@ -1,0 +1,16 @@
+[Unit]
+Description=Purge expired ZHIPET feedback data
+After=network-online.target
+
+[Service]
+Type=oneshot
+User=zhipet
+Group=zhipet
+WorkingDirectory=/srv/zhipet/current
+EnvironmentFile=/etc/zhipet/zhipet.env
+ExecStart=/usr/bin/node /srv/zhipet/current/scripts/purge-expired-data.mjs
+UMask=0077
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=full
+ProtectHome=true

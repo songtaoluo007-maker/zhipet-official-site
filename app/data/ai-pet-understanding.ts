@@ -15,7 +15,7 @@ export const aiPetUnderstandingPage: AiPetUnderstandingPageData = {
       href: '#scenarios',
     },
     image: {
-      src: '/images/generated/pages/zhipet-family-care-scene.png',
+      src: '/images/generated/pages/zhipet-family-care-scene.webp',
       alt: '知宠 AI 宠物理解场景概念视觉',
     },
     visualLabels: ['短促叫声', '门口徘徊', '可能焦虑', '持续观察'],
@@ -25,7 +25,7 @@ export const aiPetUnderstandingPage: AiPetUnderstandingPageData = {
     description:
       '宠物不会只通过一种信号表达状态。叫声、姿态、活动节律、当前环境和个体历史需要放在一起理解，才能减少误判。',
     image: {
-      src: '/images/generated/pages/zhipet-family-care-scene.png',
+      src: '/images/generated/pages/zhipet-family-care-scene.webp',
       alt: '宠物声音、动作与场景信息融合的概念视觉',
     },
     dimensions: [
@@ -117,7 +117,7 @@ export const aiPetUnderstandingPage: AiPetUnderstandingPageData = {
     description:
       'PetSense 会在用户授权范围内学习每只宠物的长期特征。它关注的是个体差异，而不是把所有宠物套进同一个固定标签。',
     image: {
-      src: '/images/generated/pages/zhipet-research-observation-scene.png',
+      src: '/images/generated/pages/zhipet-research-observation-scene.webp',
       alt: '知宠 App 记录宠物个体画像的概念视觉',
     },
     attributes: ['品种和年龄', '日常作息', '常见叫声', '行为习惯', '主人反馈', '个体异常阈值'],

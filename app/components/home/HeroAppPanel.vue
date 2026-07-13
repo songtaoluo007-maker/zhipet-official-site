@@ -28,7 +28,7 @@ const statusText = computed(() => {
 
 const petStatus = computed(() => {
   if (props.stage.id === 'safety') {
-    return '范围待确认'
+    return '安全范围'
   }
 
   if (props.stage.id === 'health') {
@@ -40,14 +40,14 @@ const petStatus = computed(() => {
 
 const petProfileLine = computed(() => {
   if (props.stage.id === 'safety') {
-    return '定位规则 · 样机待验证'
+    return '位置线索 · 环境相关'
   }
 
   if (props.stage.id === 'health') {
-    return '健康档案 · 字段待确认'
+    return '健康档案 · 趋势观察'
   }
 
-  return '示例宠物 · 状态待确认'
+  return '宠物档案 · 结合观察'
 })
 
 const metrics = computed<HomeStoryPanelMetric[]>(() => {

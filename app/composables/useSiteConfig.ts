@@ -1,14 +1,10 @@
 import type { SiteConfig } from '~/types/site'
+import { projectContact } from '~~/shared/constants/project-contact'
 
 export const useSiteConfig = (): SiteConfig => ({
   name: '知宠',
   brand: 'ZHIPET',
-  description: '以温暖、专业、可信的宠物健康科技能力，连接家庭、医院、门店与合作机构。',
-  contact: {
-    phone: '待项目方确认',
-    email: '待项目方确认',
-    address: '待项目方确认',
-    registrationNumber: '待项目方确认',
-    qrCode: '待项目方确认',
-  },
+  descriptor: '宠物健康科技团队',
+  description: '围绕宠物安全、健康趋势与状态理解，连接设备、App 与专业服务。',
+  contact: projectContact,
 })

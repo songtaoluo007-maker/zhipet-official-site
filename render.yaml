@@ -1,0 +1,68 @@
+services:
+  - type: web
+    name: zhipet-web
+    runtime: node
+    plan: free
+    autoDeploy: true
+    healthCheckPath: /api/health
+    buildCommand: corepack enable && pnpm install --frozen-lockfile --prod=false && pnpm db:generate && pnpm build
+    startCommand: pnpm db:migrate:deploy && node .output/server/index.mjs
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        fromDatabase:
+          name: zhipet-postgres
+          property: connectionString
+      - key: NUXT_PUBLIC_SITE_URL
+        sync: false
+      - key: NUXT_PUBLIC_FEEDBACK_ENABLED
+        value: "false"
+      - key: MAIL_NOTIFICATION_TO
+        value: petSense@126.com
+
+  - type: cron
+    name: zhipet-data-retention
+    runtime: node
+    schedule: "15 18 * * *"
+    buildCommand: corepack enable && pnpm install --frozen-lockfile --prod=false && pnpm db:generate
+    startCommand: pnpm db:purge-expired
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: zhipet-postgres
+          property: connectionString
+
+  - type: cron
+    name: zhipet-mail-delivery
+    runtime: node
+    schedule: "*/5 * * * *"
+    buildCommand: corepack enable && pnpm install --frozen-lockfile --prod=false && pnpm db:generate
+    startCommand: pnpm mail:deliver
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: zhipet-postgres
+          property: connectionString
+      - key: MAIL_ENABLED
+        value: "false"
+      - key: SMTP_HOST
+        value: smtp.126.com
+      - key: SMTP_PORT
+        value: "465"
+      - key: SMTP_SECURE
+        value: "true"
+      - key: SMTP_USER
+        value: petSense@126.com
+      - key: SMTP_PASSWORD
+        sync: false
+      - key: MAIL_FROM
+        value: petSense@126.com
+
+databases:
+  - name: zhipet-postgres
+    databaseName: zhipet
+    user: zhipet
+    plan: free
+    postgresMajorVersion: "16"
+    ipAllowList: []

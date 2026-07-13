@@ -1,0 +1,28 @@
+[Unit]
+Description=ZHIPET Nuxt production server
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=zhipet
+Group=zhipet
+WorkingDirectory=/srv/zhipet/current
+EnvironmentFile=/etc/zhipet/zhipet.env
+ExecStart=/usr/bin/node /srv/zhipet/current/.output/server/index.mjs
+Restart=always
+RestartSec=5
+TimeoutStopSec=20
+KillSignal=SIGTERM
+UMask=0077
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=full
+ProtectHome=true
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+RestrictSUIDSGID=true
+
+[Install]
+WantedBy=multi-user.target

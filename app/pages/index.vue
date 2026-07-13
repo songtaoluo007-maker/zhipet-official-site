@@ -58,7 +58,7 @@ const ecosystemCards: EcosystemCard[] = [
     icon: 'shield-check',
     title: '安全边界',
     description: '设定活动范围与停留区域，异常离界即时提醒',
-    image: '/images/generated/home-ecosystem/ecosystem-card-safety.png',
+    image: '/images/generated/home-ecosystem/ecosystem-card-safety.webp',
     alt: '金毛在户外活动场景中的安全边界卡片',
     href: '/products/smart-collar',
   },
@@ -67,7 +67,7 @@ const ecosystemCards: EcosystemCard[] = [
     icon: 'chart',
     title: '健康趋势',
     description: '长期数据趋势分析，发现潜在变化',
-    image: '/images/generated/home-ecosystem/ecosystem-card-health.png',
+    image: '/images/generated/home-ecosystem/ecosystem-card-health.webp',
     alt: '猫咪休息场景中的健康趋势卡片',
     href: '/research',
   },
@@ -76,7 +76,7 @@ const ecosystemCards: EcosystemCard[] = [
     icon: 'users',
     title: '专业协同',
     description: '连接家庭、宠物医院与伙伴，协同守护更安心',
-    image: '/images/generated/home-ecosystem/ecosystem-card-collab.png',
+    image: '/images/generated/home-ecosystem/ecosystem-card-collab.webp',
     alt: '宠物医生检查猫咪场景中的专业协同卡片',
     href: '/solutions',
   },
@@ -108,7 +108,7 @@ const trustItems: TrustItem[] = [
   },
 ]
 
-let heroAutoRotateTimer: ReturnType<typeof window.setInterval> | undefined
+let heroAutoRotateTimer: number | undefined
 let reducedMotionQuery: MediaQueryList | undefined
 
 
@@ -212,7 +212,7 @@ useSeoMeta({
                     <BaseIcon name="arrow-right" />
                   </template>
                 </BaseButton>
-                <BaseButton to="/demo" variant="secondary" size="lg">预约演示</BaseButton>
+                <BaseButton to="/contact" variant="secondary" size="lg">邮件联系我们</BaseButton>
               </div>
             </div>
           </Transition>
@@ -265,7 +265,7 @@ useSeoMeta({
             aria-label="查看知宠智能项圈"
           >
             <img
-              src="/images/generated/home-ecosystem/ecosystem-collar.png"
+              src="/images/generated/home-ecosystem/ecosystem-collar.webp"
               alt="知宠智能项圈产品近景"
               loading="lazy"
             >
@@ -273,8 +273,8 @@ useSeoMeta({
 
           <div class="ecosystem-replica__bridge ecosystem-replica__bridge--connect" aria-hidden="true">
             <span><BaseIcon name="phone" /></span>
-            <strong>稳定连接</strong>
-            <em>全天候健康监测</em>
+            <strong>设备连接</strong>
+            <em>持续记录与趋势观察</em>
           </div>
 
           <NuxtLink
@@ -283,7 +283,7 @@ useSeoMeta({
             aria-label="查看知宠 App"
           >
             <img
-              src="/images/generated/home-ecosystem/ecosystem-phone.png"
+              src="/images/generated/home-ecosystem/ecosystem-phone.webp"
               alt="知宠 App 健康评分界面"
               loading="lazy"
             >
@@ -301,12 +301,14 @@ useSeoMeta({
             aria-label="查看健康管理平台"
           >
             <img
-              src="/images/generated/home-ecosystem/ecosystem-desktop.png"
+              src="/images/generated/home-ecosystem/ecosystem-desktop.webp"
               alt="健康档案面板示意"
               loading="lazy"
             >
           </NuxtLink>
         </div>
+
+        <p class="ecosystem-replica__concept-note">本模块视觉为 AI 概念图，仅供参考</p>
 
         <div class="ecosystem-replica__cards" aria-label="知宠核心场景">
           <NuxtLink
@@ -352,6 +354,13 @@ useSeoMeta({
 .home-page {
   overflow: hidden;
   background: var(--color-bg);
+}
+
+.ecosystem-replica__concept-note {
+  margin: var(--space-3) 0 0;
+  color: var(--color-text-secondary);
+  font-size: 12px;
+  text-align: right;
 }
 
 .home-hero {

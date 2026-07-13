@@ -2,127 +2,73 @@
 import BaseButton from '~/components/base/BaseButton.vue'
 import BaseContainer from '~/components/base/BaseContainer.vue'
 import BaseIcon from '~/components/base/BaseIcon.vue'
-import BaseTag from '~/components/base/BaseTag.vue'
-import CTASection from '~/components/common/CTASection.vue'
-import SceneFrame from '~/components/common/SceneFrame.vue'
+import EditorialHero from '~/components/common/EditorialHero.vue'
 import SectionHeading from '~/components/common/SectionHeading.vue'
-import { homeTimeline } from '~/data/home'
 import { aboutAbilities, productBoundaries } from '~/data/v2'
 
 const { register } = useScrollReveal()
-
-const confirmationItems = [
-  { label: '公司主体信息', value: '待项目方确认' },
-  { label: '团队成员资料', value: '待项目方确认' },
-  { label: '资质与荣誉证明', value: '待项目方确认' },
-  { label: '办公地址与联系方式', value: '待项目方确认' },
-]
+const site = useSiteConfig()
 
 useSeoMeta({
-  title: '关于我们 | 知宠 ZHIPET',
-  description: '了解知宠 ZHIPET 的项目愿景、核心能力、产品边界和当前里程碑。真实公司主体与资质待项目方确认。',
-  ogTitle: '关于我们 | 知宠 ZHIPET',
-  ogDescription: '因为懂你，所以更懂它。知宠当前资料以项目方确认为准。',
+  title: '项目介绍 | 知宠 ZHIPET',
+  description: '了解知宠团队关于宠物安全、健康趋势、状态理解与专业协作的产品理念。',
+  ogTitle: '项目介绍 | 知宠 ZHIPET',
+  ogDescription: '因为懂你，所以更懂它。了解知宠的品牌信念与产品边界。',
   ogType: 'website',
 })
 </script>
 
 <template>
-  <div class="about-page">
-    <section class="about-hero" aria-labelledby="about-title">
-      <BaseContainer class="about-hero__inner" width="wide">
-        <div class="about-hero__copy">
-          <nav class="breadcrumb" aria-label="面包屑">
-            <NuxtLink to="/">首页</NuxtLink>
-            <span aria-hidden="true">/</span>
-            <span>关于我们</span>
-          </nav>
-          <BaseTag tone="concept">项目阶段</BaseTag>
-          <h1 id="about-title">因为懂你，所以更懂它</h1>
+  <main class="about-page">
+    <EditorialHero
+      eyebrow="项目介绍"
+      title="因为懂你，所以更懂它"
+      description="知宠关注的不只是设备记录了什么，更是家庭如何理解变化、保留判断边界，并在需要时与专业服务建立更有依据的沟通。"
+      image="/images/generated/pages/zhipet-family-care-scene.webp"
+      image-alt="宠物主人与犬猫在家庭环境中温暖互动"
+      object-position="center"
+      :crumbs="[{ label: '首页', to: '/' }, { label: '项目介绍' }]"
+      primary-label="了解解决方案"
+      primary-to="/solutions"
+      secondary-label="联系知宠团队"
+      secondary-to="/contact"
+      priority
+    />
+
+    <BaseContainer
+      :ref="register"
+      tag="section"
+      class="belief-section"
+      width="wide"
+      aria-labelledby="belief-title"
+    >
+      <p class="section-kicker">我们的信念</p>
+      <div class="belief-section__layout">
+        <h2 id="belief-title">让科技成为陪伴的一部分，而不是制造焦虑的另一块屏幕。</h2>
+        <div class="belief-section__copy">
           <p>
-            知宠希望用更克制、更可信的宠物健康科技能力，帮助家庭理解日常变化，也帮助专业服务沟通更有依据。
+            宠物健康往往藏在微小、连续的日常变化里。知宠希望把设备、App 与健康档案组织成容易理解的观察路径，让主人看见趋势，也知道何时应该停止猜测并寻求专业帮助。
           </p>
-          <BaseButton to="/demo" size="lg">
-            预约演示
-            <template #iconRight>
-              <BaseIcon name="arrow-right" />
-            </template>
-          </BaseButton>
-        </div>
-        <SceneFrame
-          class="about-hero__visual"
-          src="/images/generated/pages/zhipet-family-care-scene.png"
-          alt="人与犬猫在居家场景中互动的知宠品牌概念图"
-          aspect-ratio="3 / 2"
-          object-position="center"
-        >
-          <div class="about-hero__card">
-            <span>资料状态</span>
-            <strong>品牌方向已整理，正式信息待确认</strong>
-            <p>不虚构团队、客户、资质、电话、地址或备案号。</p>
-          </div>
-        </SceneFrame>
-      </BaseContainer>
-    </section>
-
-    <BaseContainer
-      :ref="register"
-      tag="section"
-      class="about-section info-section"
-      width="wide"
-      aria-labelledby="info-title"
-    >
-      <SectionHeading
-        id="info-title"
-        title="当前公开信息"
-        description="官网优先呈现产品方向和边界，真实主体资料确认后再补齐。"
-      />
-      <div class="confirmation-panel">
-        <div v-for="item in confirmationItems" :key="item.label" class="confirmation-row">
-          <span>{{ item.label }}</span>
-          <strong>{{ item.value }}</strong>
+          <p>
+            我们坚持克制表达：不把概率写成结论，不把状态解释包装成宠物语言翻译，也不让产品替代执业兽医的诊断与治疗建议。
+          </p>
         </div>
       </div>
     </BaseContainer>
 
-    <BaseContainer
-      :ref="register"
-      tag="section"
-      class="about-section"
-      width="wide"
-      aria-labelledby="ability-title"
-    >
-      <SectionHeading
-        id="ability-title"
-        title="核心能力"
-        description="知宠 V2 用安全、健康和状态解读三件事组织产品能力，而不是堆砌后台模块。"
-      />
-      <div class="ability-grid">
-        <article v-for="item in aboutAbilities" :key="item.id" class="ability-card">
-          <span class="icon-shell" aria-hidden="true">
-            <BaseIcon :name="item.icon" />
-          </span>
-          <h2>{{ item.title }}</h2>
-          <p>{{ item.description }}</p>
-        </article>
-      </div>
-    </BaseContainer>
-
-    <section
-      :ref="register"
-      class="about-section boundary-section"
-      aria-labelledby="boundary-title"
-    >
+    <section :ref="register" class="ability-section" aria-labelledby="ability-title">
       <BaseContainer width="wide">
         <SectionHeading
-          id="boundary-title"
-          title="产品边界"
-          description="边界不是限制表达，而是让用户知道什么是可参考信息，什么需要专业判断。"
+          id="ability-title"
+          title="三个长期关注的方向"
+          description="从安全到健康，再到可解释的状态提示，每一步都围绕真实照护场景展开。"
+          align="left"
         />
-        <div class="boundary-grid">
-          <article v-for="item in productBoundaries" :key="item.id" class="boundary-card">
-            <BaseIcon name="shield-check" aria-hidden="true" />
-            <h2>{{ item.title }}</h2>
+        <div class="ability-list">
+          <article v-for="(item, index) in aboutAbilities" :key="item.id">
+            <span class="ability-list__index">0{{ index + 1 }}</span>
+            <BaseIcon :name="item.icon" aria-hidden="true" />
+            <h3>{{ item.title }}</h3>
             <p>{{ item.description }}</p>
           </article>
         </div>
@@ -132,291 +78,237 @@ useSeoMeta({
     <BaseContainer
       :ref="register"
       tag="section"
-      class="about-section timeline-section"
+      class="boundary-section"
       width="wide"
-      aria-labelledby="timeline-title"
+      aria-labelledby="boundary-title"
     >
       <SectionHeading
-        id="timeline-title"
-        title="发展里程碑"
-        description="只展示已确认的项目阶段，后续节点以项目方资料为准。"
+        id="boundary-title"
+        title="可信，先从说清边界开始"
+        description="我们希望每一条提示都让用户知道它能做什么，也知道它不能替代什么。"
+        align="left"
       />
-      <ol class="timeline-list" aria-label="知宠项目阶段">
-        <li v-for="item in homeTimeline" :key="item.date + item.title">
-          <span>{{ item.date }}</span>
-          <div>
-            <h2>{{ item.title }}</h2>
-            <p>{{ item.description }}</p>
-          </div>
-        </li>
-      </ol>
+      <div class="boundary-list">
+        <article v-for="(item, index) in productBoundaries" :key="item.id">
+          <span>0{{ index + 1 }}</span>
+          <h3>{{ item.title }}</h3>
+          <p>{{ item.description }}</p>
+        </article>
+      </div>
     </BaseContainer>
 
-    <CTASection
-      title="想进一步了解知宠当前阶段？"
-      description="预约演示，确认产品规划、合作方式和可公开展示的真实资料清单。"
-    />
-  </div>
+    <section :ref="register" class="team-section" aria-labelledby="team-title">
+      <BaseContainer class="team-section__inner" width="wide">
+        <div>
+          <p>知宠团队</p>
+          <h2 id="team-title">围绕真实问题持续交流</h2>
+        </div>
+        <p class="team-section__description">
+          官网内容由知宠团队维护。关于产品、内容、隐私或合作的意见，可以通过公开邮箱或反馈页面告诉我们。
+        </p>
+        <div class="team-section__actions">
+          <BaseButton :href="`mailto:${site.contact.email}`" variant="secondary">
+            {{ site.contact.email }}
+          </BaseButton>
+          <BaseButton to="/help#feedback">
+            意见问题反馈
+            <template #iconRight><BaseIcon name="arrow-right" /></template>
+          </BaseButton>
+        </div>
+      </BaseContainer>
+    </section>
+  </main>
 </template>
 
 <style scoped lang="scss">
-@use '~/assets/styles/mixins' as *;
-
 .about-page {
   overflow: hidden;
 }
 
-.about-hero {
-  position: relative;
-  isolation: isolate;
-  padding-block: var(--space-8) var(--space-7);
-  background:
-    linear-gradient(180deg, rgb(255 255 255 / 54%), rgb(251 248 242 / 0) 78%),
-    radial-gradient(circle at 72% 22%, rgb(232 200 148 / 18%), transparent 30%);
+.belief-section,
+.boundary-section {
+  padding-block: clamp(96px, 11vw, 144px);
 }
 
-.about-hero::before {
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  background:
-    linear-gradient(90deg, var(--color-bg) 0%, rgb(251 248 242 / 72%) 42%, rgb(251 248 242 / 24%) 100%),
-    url('/images/generated/pages/zhipet-family-care-scene.png') center / cover no-repeat;
-  content: '';
-  opacity: 0.16;
-}
-
-.about-hero__inner {
-  display: grid;
-  grid-template-columns: minmax(0, 0.86fr) minmax(360px, 0.78fr);
-  gap: var(--space-8);
-  align-items: center;
-}
-
-.about-hero__copy {
-  display: grid;
-  gap: var(--space-4);
-}
-
-.breadcrumb {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-2);
-  align-items: center;
-  color: var(--color-text-secondary);
-  font-size: 14px;
-  font-weight: 650;
-}
-
-.breadcrumb a {
-  color: var(--color-text-secondary);
-}
-
-.breadcrumb a:hover {
+.section-kicker {
+  margin-bottom: var(--space-5);
   color: var(--color-accent-600);
+  font-size: 13px;
+  font-weight: 800;
 }
 
-.about-hero h1 {
+.belief-section__layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(320px, 0.7fr);
+  gap: clamp(48px, 9vw, 120px);
+  align-items: start;
+}
+
+.belief-section h2 {
   max-width: 760px;
-  font-size: 64px;
-  line-height: 1.08;
-  letter-spacing: 0;
+  font-size: clamp(38px, 4.4vw, 58px);
+  line-height: 1.18;
   text-wrap: balance;
 }
 
-.about-hero p {
-  max-width: 720px;
-  color: var(--color-text-secondary);
-  font-size: 18px;
-  line-height: 1.72;
-}
-
-.about-hero__visual {
-  min-height: 430px;
-}
-
-.about-hero__card {
-  position: absolute;
-  right: var(--space-7);
-  bottom: var(--space-8);
+.belief-section__copy {
   display: grid;
-  max-width: 300px;
-  gap: var(--space-2);
-  padding: var(--space-4);
-  border: 1px solid rgb(200 138 56 / 24%);
-  border-radius: var(--radius-button);
-  background: rgb(255 255 255 / 90%);
-}
-
-.about-hero__card span {
-  color: var(--color-text-secondary);
-  font-size: 13px;
-  font-weight: 750;
-}
-
-.about-hero__card strong {
-  color: var(--color-brand-900);
-  font-size: 18px;
-}
-
-.about-hero__card p {
-  font-size: 13px;
-}
-
-.about-section {
-  @include section-spacing;
-}
-
-.info-section {
-  padding-top: var(--space-6);
-}
-
-.confirmation-panel {
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-media);
-  background: var(--color-surface);
-  overflow: hidden;
-}
-
-.confirmation-row {
-  display: grid;
-  grid-template-columns: minmax(180px, 0.45fr) minmax(0, 1fr);
   gap: var(--space-4);
-  padding: var(--space-4) var(--space-5);
-  border-top: 1px solid var(--color-border);
+  padding-top: var(--space-2);
 }
 
-.confirmation-row:first-child {
-  border-top: 0;
-}
-
-.confirmation-row span {
-  color: var(--color-brand-900);
-  font-weight: 750;
-}
-
-.confirmation-row strong {
-  color: var(--color-accent-600);
-}
-
-.ability-grid,
-.boundary-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: var(--space-5);
-}
-
-.ability-card,
-.boundary-card {
-  display: grid;
-  gap: var(--space-3);
-  padding: var(--space-5);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-card);
-  background: var(--color-surface);
-}
-
-.ability-card h2,
-.boundary-card h2 {
-  font-size: 22px;
-}
-
-.ability-card p,
-.boundary-card p,
-.timeline-list p {
+.belief-section__copy p,
+.ability-list p,
+.boundary-list p,
+.team-section__description {
   color: var(--color-text-secondary);
-  line-height: 1.72;
+  line-height: 1.8;
 }
 
-.icon-shell {
-  display: inline-flex;
-  width: 44px;
-  height: 44px;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid rgb(86 130 103 / 22%);
-  border-radius: var(--radius-button);
-  color: var(--color-sage-700);
-  background: var(--color-sage-100);
-  font-size: 22px;
-}
-
-.boundary-section {
+.ability-section {
+  padding-block: clamp(96px, 10vw, 128px);
   background: var(--color-surface-soft);
 }
 
-.boundary-card .base-icon {
-  color: var(--color-sage-500);
-  font-size: 24px;
+.ability-list {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin-top: var(--space-7);
+  border-top: 1px solid var(--color-border-strong);
 }
 
-.timeline-list {
+.ability-list article {
   display: grid;
-  gap: var(--space-4);
-  padding: 0;
-  margin: 0;
-  list-style: none;
+  min-height: 310px;
+  gap: var(--space-3);
+  align-content: start;
+  padding: var(--space-5);
+  border-right: 1px solid var(--color-border);
 }
 
-.timeline-list li {
+.ability-list article:last-child {
+  border-right: 0;
+}
+
+.ability-list__index {
+  color: var(--color-accent-600);
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.ability-list .base-icon {
+  margin-top: var(--space-5);
+  color: var(--color-sage-700);
+  font-size: 34px;
+}
+
+.ability-list h3 {
+  margin-top: var(--space-2);
+  font-size: 28px;
+}
+
+.boundary-list {
+  margin-top: var(--space-7);
+  border-top: 1px solid var(--color-border-strong);
+}
+
+.boundary-list article {
   display: grid;
-  grid-template-columns: 120px minmax(0, 1fr);
+  grid-template-columns: 72px minmax(180px, 0.42fr) minmax(0, 1fr);
   gap: var(--space-5);
-  padding-bottom: var(--space-5);
+  align-items: baseline;
+  padding-block: var(--space-5);
   border-bottom: 1px solid var(--color-border);
 }
 
-.timeline-list span {
+.boundary-list span {
   color: var(--color-accent-600);
-  font-weight: 850;
+  font-size: 13px;
+  font-weight: 800;
 }
 
-.timeline-list h2 {
-  margin-bottom: var(--space-1);
-  font-size: 20px;
+.boundary-list h3 {
+  font-size: 24px;
 }
 
-@media (max-width: 1000px) {
-  .about-hero__inner,
-  .ability-grid,
-  .boundary-grid {
+.team-section {
+  color: #fff;
+  background: var(--color-brand-900);
+}
+
+.team-section__inner {
+  display: grid;
+  grid-template-columns: minmax(240px, 0.72fr) minmax(320px, 1fr) auto;
+  gap: var(--space-7);
+  align-items: end;
+  padding-block: clamp(72px, 8vw, 96px);
+}
+
+.team-section__inner > div:first-child p {
+  margin-bottom: var(--space-2);
+  color: var(--color-accent-300);
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.team-section h2 {
+  color: #fff;
+  font-size: 34px;
+}
+
+.team-section__description {
+  color: rgb(255 255 255 / 70%);
+}
+
+.team-section__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  justify-content: flex-end;
+}
+
+.team-section__actions :deep(.base-button--secondary) {
+  color: #fff;
+  border-color: rgb(255 255 255 / 36%);
+  background: transparent;
+}
+
+@media (max-width: 960px) {
+  .belief-section__layout,
+  .team-section__inner {
     grid-template-columns: 1fr;
   }
 
-  .about-hero h1 {
-    font-size: 46px;
+  .team-section__actions {
+    justify-content: flex-start;
+  }
+}
+
+@media (max-width: 760px) {
+  .ability-list {
+    grid-template-columns: 1fr;
+  }
+
+  .ability-list article {
+    min-height: auto;
+    padding-inline: 0;
+    border-right: 0;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .boundary-list article {
+    grid-template-columns: 48px minmax(0, 1fr);
+  }
+
+  .boundary-list p {
+    grid-column: 2;
   }
 }
 
 @media (max-width: 560px) {
-  .about-hero {
-    padding-block: var(--space-6) var(--space-5);
-  }
-
-  .about-hero h1 {
-    font-size: 36px;
-  }
-
-  .about-hero p {
-    font-size: 15px;
-  }
-
-  .ability-card,
-  .boundary-card {
-    padding: var(--space-4);
-  }
-
-  .about-hero__card {
-    right: var(--space-4);
-    bottom: var(--space-4);
-    width: min(300px, calc(100% - 32px));
-    max-width: none;
-  }
-
-  .confirmation-row,
-  .timeline-list li {
-    grid-template-columns: 1fr;
-    gap: var(--space-2);
+  .team-section__actions,
+  .team-section__actions :deep(.base-button) {
+    width: 100%;
   }
 }
 </style>

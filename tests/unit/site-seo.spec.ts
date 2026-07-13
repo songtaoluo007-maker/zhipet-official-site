@@ -25,7 +25,7 @@ describe('site seo helpers', () => {
   it('creates bounded WebPage JSON-LD without fake organization details', () => {
     const jsonLd = createWebPageJsonLd({
       name: '健康研究院',
-      description: '内容待项目方确认。',
+      description: '围绕宠物健康观察与科学照护方法展开。',
       path: '/research',
       siteOrigin: 'https://example.com/zhipet',
     })

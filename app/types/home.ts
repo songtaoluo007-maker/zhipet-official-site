@@ -81,9 +81,3 @@ export interface HomeTrustPrinciple {
   title: string
   description: string
 }
-
-export interface HomeTimelineItem {
-  date: string
-  title: string
-  description: string
-}

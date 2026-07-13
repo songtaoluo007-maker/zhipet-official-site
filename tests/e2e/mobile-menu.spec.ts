@@ -22,13 +22,13 @@ test('mobile menu focuses the close button, locks page scroll, and restores trig
     .toBe('hidden')
 
   const brandLink = dialog.getByRole('link', { name: '知宠 ZHIPET' })
-  const registerLink = dialog.getByRole('link', { name: '注册', exact: true })
+  const feedbackLink = dialog.getByRole('link', { name: '意见问题反馈', exact: true }).last()
 
   await page.keyboard.press('Shift+Tab')
   await expect(brandLink).toBeFocused()
 
   await page.keyboard.press('Shift+Tab')
-  await expect(registerLink).toBeFocused()
+  await expect(feedbackLink).toBeFocused()
 
   await page.keyboard.press('Tab')
   await expect(brandLink).toBeFocused()

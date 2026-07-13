@@ -26,6 +26,13 @@
         :style="mediaStyle"
       />
     </div>
+    <figcaption
+      v-if="isConceptImage"
+      class="base-image__label"
+      :class="{ 'base-image__label--below': labelPlacement === 'below' }"
+    >
+      AI 概念图，仅供参考
+    </figcaption>
   </figure>
 </template>
 
@@ -72,10 +79,12 @@ const mediaStyle = computed(() => ({
 }))
 
 const useRawImage = computed(() => props.unoptimized || props.src.startsWith('/images/generated/'))
+const isConceptImage = computed(() => props.concept || props.src.startsWith('/images/generated/'))
 </script>
 
 <style scoped lang="scss">
 .base-image {
+  position: relative;
   margin: 0;
 }
 
@@ -111,6 +120,7 @@ const useRawImage = computed(() => props.unoptimized || props.src.startsWith('/i
   position: absolute;
   right: var(--space-3);
   bottom: var(--space-3);
+  z-index: 2;
   padding: 6px 10px;
   border: 1px solid rgb(232 200 148 / 70%);
   border-radius: var(--radius-pill);

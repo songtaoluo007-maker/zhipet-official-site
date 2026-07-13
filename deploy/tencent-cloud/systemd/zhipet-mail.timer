@@ -1,0 +1,12 @@
+[Unit]
+Description=Run the ZHIPET email outbox worker every minute
+
+[Timer]
+OnBootSec=2min
+OnUnitActiveSec=1min
+AccuracySec=10s
+Persistent=true
+Unit=zhipet-mail.service
+
+[Install]
+WantedBy=timers.target

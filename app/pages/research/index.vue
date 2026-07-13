@@ -1,264 +1,180 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
-import BaseButton from '~/components/base/BaseButton.vue'
 import BaseContainer from '~/components/base/BaseContainer.vue'
 import BaseIcon from '~/components/base/BaseIcon.vue'
-import BaseInput from '~/components/base/BaseInput.vue'
-import BaseTag from '~/components/base/BaseTag.vue'
 import CTASection from '~/components/common/CTASection.vue'
-import SceneFrame from '~/components/common/SceneFrame.vue'
+import EditorialHero from '~/components/common/EditorialHero.vue'
 import SectionHeading from '~/components/common/SectionHeading.vue'
-
-const { register } = useScrollReveal()
+import { resolveResearchVisual } from '~/data/research-visuals'
 
 interface ResearchArticleCard {
   path: string
   title: string
   description: string
   category: string
-  publishedLabel: string
-  status: string
   order: number
   tags: string[]
+  image: string
 }
 
+const { register } = useScrollReveal()
 const selectedCategory = ref('全部')
-const subscribeEmail = ref('')
-const subscribeTouched = ref(false)
 
 const toResearchArticleCard = (entry: {
   path: string
   title: string
   description?: string
   category?: string
-  publishedLabel?: string
-  status?: string
   order?: number
   tags?: string[]
 }): ResearchArticleCard => ({
   path: entry.path,
   title: entry.title,
-  description: entry.description ?? '正文待项目方确认。',
-  category: entry.category ?? '内容规划',
-  publishedLabel: entry.publishedLabel ?? '发布日期待项目方确认',
-  status: entry.status ?? '正文待项目方确认',
+  description: entry.description ?? '围绕宠物健康观察与照护方法展开。',
+  category: entry.category ?? '健康观察',
   order: entry.order ?? 999,
   tags: entry.tags ?? [],
+  image: resolveResearchVisual(entry.path).src,
 })
 
 const { data: researchArticles } = await useAsyncData('research-list', async () => {
   const entries = await queryCollection('research').order('order', 'ASC').all()
-
   return entries.map(toResearchArticleCard)
 })
 
 const articleCards = computed(() => researchArticles.value ?? [])
-const featuredArticle = computed(() => articleCards.value[0])
 const categories = computed(() => [
   '全部',
   ...Array.from(new Set(articleCards.value.map((article) => article.category))),
 ])
-const filteredArticles = computed(() => {
-  if (selectedCategory.value === '全部') {
-    return articleCards.value
-  }
-
-  return articleCards.value.filter((article) => article.category === selectedCategory.value)
-})
-const allTags = computed(() =>
-  Array.from(new Set(articleCards.value.flatMap((article) => article.tags))).slice(0, 8),
+const filteredArticles = computed(() =>
+  selectedCategory.value === '全部'
+    ? articleCards.value
+    : articleCards.value.filter((article) => article.category === selectedCategory.value),
 )
-const subscribeMessage = computed(() => {
-  if (!subscribeTouched.value) {
-    return '订阅入口为前端占位，正式通知接口待项目方确认。'
-  }
-
-  if (!subscribeEmail.value.trim()) {
-    return '请输入邮箱后再记录订阅意向。'
-  }
-
-  return '订阅意向已在前端记录，正式接口接入后再完成通知。'
-})
-
-const selectCategory = (category: string) => {
-  selectedCategory.value = category
-}
-
-const handleSubscribe = () => {
-  subscribeTouched.value = true
-}
 
 useSeoMeta({
   title: '健康研究院 | 知宠 ZHIPET',
-  description:
-    '知宠健康研究院用于发布宠物健康趋势、AI 状态解释、产品思考与养护指南。正式发布时间和资料来源待项目方确认。',
+  description: '阅读知宠团队关于宠物健康趋势、连续观察、AI 状态解释与养护方法的专题内容。',
   ogTitle: '健康研究院 | 知宠 ZHIPET',
-  ogDescription: '展示知宠健康研究院的内容方向、研究边界和文章草稿。',
+  ogDescription: '用科学、克制的方式理解宠物日常变化。',
   ogType: 'website',
 })
 </script>
 
 <template>
-  <div class="research-page">
-    <section class="research-hero" aria-labelledby="research-title">
-      <BaseContainer class="research-hero__inner" width="wide">
-        <div class="research-hero__copy">
-          <nav class="breadcrumb" aria-label="面包屑">
-            <NuxtLink to="/">首页</NuxtLink>
-            <span aria-hidden="true">/</span>
-            <span>健康研究院</span>
-          </nav>
-          <BaseTag tone="concept">内容资料待确认</BaseTag>
-          <h1 id="research-title">健康研究院</h1>
-          <p>
-            用连续观察、状态解释和安全边界，帮助更多家庭理解宠物健康管理。研究院内容不提供医疗诊断或治疗建议。
-          </p>
-          <BaseButton to="#research-articles" size="lg">
-            阅读文章
-            <template #iconRight>
-              <BaseIcon name="arrow-right" />
-            </template>
-          </BaseButton>
-        </div>
-        <SceneFrame
-          class="research-hero__visual"
-          src="/images/generated/pages/zhipet-research-observation-scene.png"
-          alt="犬只户外健康观察研究院概念图"
-          aspect-ratio="16 / 10"
-          object-position="center"
-          tone="dark"
-        >
-          <div class="research-hero__card">
-            <span>研究边界</span>
-            <strong>观察趋势，不替代诊疗</strong>
-            <p>异常情况请及时咨询执业兽医。</p>
-          </div>
-        </SceneFrame>
-      </BaseContainer>
-    </section>
+  <main class="research-page">
+    <EditorialHero
+      eyebrow="健康研究院"
+      title="宠物不会说话，变化会留下线索"
+      description="我们从日常活动、休息节律、行为变化与照护记录出发，讨论如何更科学地理解宠物，同时始终保留专业判断边界。"
+      image="/images/generated/pages/zhipet-research-observation-scene.webp"
+      image-alt="犬猫与健康观察记录同框的真实研究场景"
+      object-position="center"
+      :crumbs="[{ label: '首页', to: '/' }, { label: '健康研究院' }]"
+      primary-label="阅读文章"
+      primary-to="#research-articles"
+      secondary-label="了解使用边界"
+      secondary-to="/research/ai-state-boundary"
+      priority
+    />
 
     <BaseContainer
-      v-if="featuredArticle"
-      :ref="register"
-      tag="section"
-      class="research-section featured-section"
-      width="wide"
-      aria-labelledby="featured-title"
-    >
-      <SectionHeading
-        id="featured-title"
-        title="精选文章"
-        description="先建立健康观察的基础认知，再理解产品为什么强调长期记录。"
-      />
-      <article class="featured-card">
-        <SceneFrame
-          src="/images/generated/pages/zhipet-research-observation-scene.png"
-          alt="犬猫休息状态与健康观察文章概念图"
-          aspect-ratio="4 / 3"
-          object-position="center"
-        />
-        <div class="featured-card__copy">
-          <BaseTag>{{ featuredArticle.category }}</BaseTag>
-          <h2>{{ featuredArticle.title }}</h2>
-          <p>{{ featuredArticle.description }}</p>
-          <div class="tag-list" aria-label="文章标签">
-            <span v-for="tag in featuredArticle.tags" :key="tag">{{ tag }}</span>
-          </div>
-          <BaseButton :to="featuredArticle.path" variant="text">
-            查看文章
-            <template #iconRight>
-              <BaseIcon name="arrow-right" />
-            </template>
-          </BaseButton>
-        </div>
-      </article>
-    </BaseContainer>
-
-    <section
       id="research-articles"
       :ref="register"
-      class="research-section article-section"
-      aria-labelledby="article-title"
+      tag="section"
+      class="research-index"
+      width="wide"
+      aria-labelledby="research-index-title"
     >
-      <BaseContainer width="wide">
-        <div class="article-layout">
-          <div class="article-layout__main">
-            <SectionHeading
-              id="article-title"
-              title="研究与养护内容"
-              description="分类筛选仅在前端完成，正式文章发布日期、作者和引用来源待确认。"
-              align="left"
-            />
-            <div class="category-tabs" role="tablist" aria-label="研究院分类">
-              <button
-                v-for="category in categories"
-                :key="category"
-                type="button"
-                role="tab"
-                :aria-selected="selectedCategory === category"
-                :class="{ 'is-active': selectedCategory === category }"
-                @click="selectCategory(category)"
-              >
-                {{ category }}
-              </button>
-            </div>
-            <div class="article-grid">
-              <article v-for="article in filteredArticles" :key="article.path" class="article-card">
-                <div class="article-card__meta">
-                  <BaseTag>{{ article.category }}</BaseTag>
-                  <span>{{ article.publishedLabel }}</span>
-                </div>
-                <h2>{{ article.title }}</h2>
-                <p>{{ article.description }}</p>
-                <div class="tag-list" aria-label="文章标签">
-                  <span v-for="tag in article.tags" :key="tag">{{ tag }}</span>
-                </div>
-                <div class="article-card__footer">
-                  <BaseTag tone="concept">{{ article.status }}</BaseTag>
-                  <BaseButton :to="article.path" variant="text">
-                    阅读
-                    <template #iconRight>
-                      <BaseIcon name="arrow-right" />
-                    </template>
-                  </BaseButton>
-                </div>
-              </article>
+      <div class="research-index__head">
+        <SectionHeading
+          id="research-index-title"
+          title="精选文章"
+          description="按主题浏览健康观察、产品方法和 AI 使用边界。"
+          align="left"
+        />
+        <div class="category-tabs" role="tablist" aria-label="研究院分类">
+          <button
+            v-for="category in categories"
+            :key="category"
+            type="button"
+            role="tab"
+            :aria-selected="selectedCategory === category"
+            :class="{ 'is-active': selectedCategory === category }"
+            @click="selectedCategory = category"
+          >
+            {{ category }}
+          </button>
+        </div>
+      </div>
+
+      <div class="article-feed">
+        <NuxtLink
+          v-for="(article, index) in filteredArticles"
+          :key="article.path"
+          :to="article.path"
+          class="article-row"
+        >
+          <div class="article-row__media">
+            <img :src="article.image" :alt="`${article.title} 文章配图`" loading="lazy">
+            <span>AI 概念图，仅供参考</span>
+          </div>
+          <div class="article-row__copy">
+            <span>{{ String(index + 1).padStart(2, '0') }} / {{ article.category }}</span>
+            <h2>{{ article.title }}</h2>
+            <p>{{ article.description }}</p>
+            <div class="article-row__meta">
+              <ul aria-label="文章标签">
+                <li v-for="tag in article.tags" :key="tag">{{ tag }}</li>
+              </ul>
+              <strong>
+                阅读全文
+                <BaseIcon name="arrow-right" />
+              </strong>
             </div>
           </div>
+        </NuxtLink>
+      </div>
+    </BaseContainer>
 
-          <aside class="research-sidebar" aria-label="研究院侧栏">
-            <section class="sidebar-panel">
-              <h2>研究标签</h2>
-              <div class="tag-cloud">
-                <button v-for="tag in allTags" :key="tag" type="button">{{ tag }}</button>
-              </div>
-            </section>
-            <section class="sidebar-panel">
-              <h2>重要提示</h2>
-              <p>研究院内容仅供参考，不构成医疗诊断、治疗建议或替代兽医判断。</p>
-            </section>
-            <form class="sidebar-panel subscribe-card" aria-label="研究院订阅" @submit.prevent="handleSubscribe">
-              <h2>订阅更新</h2>
-              <BaseInput
-                v-model="subscribeEmail"
-                type="email"
-                name="email"
-                placeholder="邮箱待项目方确认接口"
-                autocomplete="email"
-              />
-              <p>{{ subscribeMessage }}</p>
-              <BaseButton type="submit" variant="secondary">记录订阅意向</BaseButton>
-            </form>
-          </aside>
+    <section :ref="register" class="research-principles" aria-labelledby="principles-title">
+      <BaseContainer width="wide">
+        <SectionHeading
+          id="principles-title"
+          title="我们的内容原则"
+          description="每一篇内容都应让读者知道信息从哪里来、能说明什么，以及不能替代什么。"
+          align="left"
+        />
+        <div class="principle-line">
+          <article>
+            <span>01</span>
+            <h2>关注长期趋势</h2>
+            <p>用连续记录理解变化，避免从单次信号直接下结论。</p>
+          </article>
+          <article>
+            <span>02</span>
+            <h2>保留不确定性</h2>
+            <p>使用“可能、趋势、风险提示”等表达，说明其他解释。</p>
+          </article>
+          <article>
+            <span>03</span>
+            <h2>尊重专业判断</h2>
+            <p>健康内容仅用于辅助观察，不替代执业兽医诊疗。</p>
+          </article>
         </div>
       </BaseContainer>
     </section>
 
     <CTASection
-      title="想把研究内容转化为产品演示？"
-      description="预约演示，了解知宠如何把安全防走失、健康趋势和状态解释放进同一套官网产品叙事。"
+      title="对研究内容有意见或问题？"
+      description="通过反馈告诉知宠团队您关心的主题，也可以使用公开邮箱联系我们。"
+      primary-label="意见问题反馈"
+      primary-to="/help#feedback"
+      secondary-label="邮件联系我们"
+      secondary-to="/contact"
     />
-  </div>
+  </main>
 </template>
 
 <style scoped lang="scss">
@@ -268,292 +184,219 @@ useSeoMeta({
   overflow: hidden;
 }
 
-.research-hero {
-  position: relative;
-  isolation: isolate;
-  padding-block: var(--space-8) var(--space-7);
-  background:
-    linear-gradient(180deg, rgb(255 255 255 / 58%), rgb(251 248 242 / 0) 78%),
-    radial-gradient(circle at 72% 20%, rgb(86 130 103 / 14%), transparent 32%);
-}
-
-.research-hero::before {
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  background:
-    linear-gradient(90deg, var(--color-bg) 0%, rgb(251 248 242 / 74%) 42%, rgb(251 248 242 / 26%) 100%),
-    url('/images/generated/pages/zhipet-research-observation-scene.png') center / cover no-repeat;
-  content: '';
-  opacity: 0.16;
-}
-
-.research-hero__inner {
-  display: grid;
-  grid-template-columns: minmax(0, 0.84fr) minmax(360px, 0.8fr);
-  gap: var(--space-8);
-  align-items: center;
-}
-
-.research-hero__copy {
-  display: grid;
-  gap: var(--space-4);
-}
-
-.breadcrumb {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-2);
-  align-items: center;
-  color: var(--color-text-secondary);
-  font-size: 14px;
-  font-weight: 650;
-}
-
-.breadcrumb a {
-  color: var(--color-text-secondary);
-}
-
-.breadcrumb a:hover {
-  color: var(--color-accent-600);
-}
-
-.research-hero h1 {
-  font-size: 72px;
-  line-height: 1.08;
-  letter-spacing: 0;
-  text-wrap: balance;
-}
-
-.research-hero p {
-  max-width: 720px;
-  color: var(--color-text-secondary);
-  font-size: 18px;
-  line-height: 1.72;
-}
-
-.research-hero__visual {
-  min-height: 430px;
-}
-
-.research-hero__card {
-  position: absolute;
-  right: var(--space-7);
-  bottom: var(--space-8);
-  display: grid;
-  max-width: 280px;
-  gap: var(--space-2);
-  padding: var(--space-4);
-  border: 1px solid rgb(200 138 56 / 24%);
-  border-radius: var(--radius-button);
-  background: rgb(255 255 255 / 90%);
-  backdrop-filter: blur(10px);
-}
-
-.research-hero__card span,
-.article-card__meta,
-.sidebar-panel h2 {
-  color: var(--color-text-secondary);
-  font-size: 13px;
-  font-weight: 750;
-}
-
-.research-hero__card strong {
-  color: var(--color-brand-900);
-  font-size: 18px;
-}
-
-.research-hero__card p {
-  font-size: 13px;
-}
-
-.research-section {
+.research-index {
   @include section-spacing;
 }
 
-.featured-section {
-  padding-top: var(--space-6);
-}
-
-.featured-card {
+.research-index__head {
   display: grid;
-  grid-template-columns: minmax(320px, 0.78fr) minmax(0, 0.9fr);
-  gap: var(--space-6);
-  align-items: center;
-  padding: var(--space-6);
-  border: 1px solid rgb(255 255 255 / 68%);
-  border-radius: 22px;
-  background: rgb(255 255 255 / 74%);
-  box-shadow: 0 18px 46px rgb(47 36 27 / 6%);
-}
-
-.featured-card__copy,
-.article-card,
-.research-sidebar,
-.sidebar-panel {
-  display: grid;
-  gap: var(--space-4);
-}
-
-.featured-card h2 {
-  font-size: 32px;
-  line-height: 1.2;
-}
-
-.featured-card p,
-.article-card p,
-.sidebar-panel p {
-  color: var(--color-text-secondary);
-  line-height: 1.72;
-}
-
-.article-section {
-  background: var(--color-surface-soft);
-}
-
-.article-layout {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(280px, 0.32fr);
-  gap: var(--space-7);
-  align-items: start;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: var(--space-5);
+  align-items: end;
 }
 
 .category-tabs {
   display: flex;
   flex-wrap: wrap;
   gap: var(--space-2);
-  margin-bottom: var(--space-5);
+  justify-content: flex-end;
 }
 
-.category-tabs button,
-.tag-cloud button {
-  min-height: 36px;
-  padding: 0 12px;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-pill);
-  color: var(--color-brand-900);
-  background: var(--color-surface);
-  font-size: 14px;
-  font-weight: 650;
+.category-tabs button {
+  min-height: 38px;
+  padding: 0 14px;
+  border: 0;
+  border-bottom: 1px solid var(--color-border);
+  color: var(--color-text-secondary);
+  background: transparent;
+  font-size: 13px;
+  font-weight: 700;
 }
 
-.category-tabs button.is-active,
 .category-tabs button:hover,
-.tag-cloud button:hover {
-  border-color: rgb(183 121 43 / 42%);
-  background: var(--color-accent-100);
+.category-tabs button.is-active {
+  color: var(--color-brand-900);
+  border-color: var(--color-accent-600);
 }
 
-.category-tabs button:focus-visible,
-.tag-cloud button:focus-visible {
+.category-tabs button:focus-visible {
   box-shadow: var(--focus-ring);
   outline: 2px solid transparent;
-  outline-offset: 2px;
 }
 
-.article-grid {
+.article-feed {
+  margin-top: var(--space-7);
+  border-top: 1px solid var(--color-border);
+}
+
+.article-row {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: var(--space-5);
+  grid-template-columns: minmax(320px, 0.7fr) minmax(0, 1fr);
+  min-height: 300px;
+  border-bottom: 1px solid var(--color-border);
+  color: var(--color-brand-900);
 }
 
-.article-card,
-.sidebar-panel {
-  padding: var(--space-5);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-card);
-  background: var(--color-surface);
+.article-row__media {
+  position: relative;
+  min-height: 300px;
+  overflow: hidden;
 }
 
-.article-card h2 {
-  font-size: 22px;
-  line-height: 1.28;
+.article-row__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 500ms var(--motion-ease-out);
 }
 
-.article-card__meta,
-.article-card__footer,
-.tag-list {
+.article-row:hover .article-row__media img {
+  transform: scale(1.02);
+}
+
+.article-row__media > span {
+  position: absolute;
+  right: var(--space-3);
+  bottom: var(--space-3);
+  color: rgb(255 255 255 / 72%);
+  font-size: 11px;
+  text-shadow: 0 1px 4px rgb(0 0 0 / 44%);
+}
+
+.article-row__copy {
+  display: grid;
+  align-content: center;
+  gap: var(--space-3);
+  padding: clamp(28px, 5vw, 64px);
+}
+
+.article-row__copy > span {
+  color: var(--color-accent-600);
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.article-row h2 {
+  max-width: 640px;
+  font-size: 30px;
+  line-height: 1.22;
+}
+
+.article-row p {
+  max-width: 680px;
+  color: var(--color-text-secondary);
+  line-height: 1.72;
+}
+
+.article-row__meta {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--space-2);
+  gap: var(--space-4);
   align-items: center;
-}
-
-.article-card__meta,
-.article-card__footer {
   justify-content: space-between;
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--color-border);
 }
 
-.tag-list span {
-  padding: 6px 9px;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-pill);
+.article-row ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  padding: 0;
+  margin: 0;
   color: var(--color-text-secondary);
   font-size: 12px;
-  font-weight: 650;
+  list-style: none;
 }
 
-.research-sidebar {
-  position: sticky;
-  top: 104px;
-}
-
-.tag-cloud {
-  display: flex;
-  flex-wrap: wrap;
+.article-row strong {
+  display: inline-flex;
   gap: var(--space-2);
+  align-items: center;
+  font-size: 13px;
 }
 
-.subscribe-card :deep(.base-button) {
-  width: 100%;
+.research-principles {
+  @include section-spacing;
+
+  background: #eef2ec;
 }
 
-@media (max-width: 1050px) {
-  .research-hero__inner,
-  .featured-card,
-  .article-layout {
+.principle-line {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin-top: var(--space-7);
+  border-block: 1px solid rgb(33 72 55 / 18%);
+}
+
+.principle-line article {
+  display: grid;
+  gap: var(--space-3);
+  padding: var(--space-5);
+  border-left: 1px solid rgb(33 72 55 / 18%);
+}
+
+.principle-line article:first-child {
+  border-left: 0;
+}
+
+.principle-line span {
+  color: var(--color-sage-700);
+  font-size: 13px;
+  font-weight: 850;
+}
+
+.principle-line h2 {
+  font-size: 20px;
+}
+
+.principle-line p {
+  color: var(--color-text-secondary);
+  line-height: 1.7;
+}
+
+@media (max-width: 860px) {
+  .research-index__head,
+  .article-row {
     grid-template-columns: 1fr;
   }
 
-  .research-sidebar {
-    position: static;
+  .category-tabs {
+    justify-content: flex-start;
   }
 }
 
-@media (max-width: 760px) {
-  .article-grid {
+@media (max-width: 620px) {
+  .article-row__media {
+    min-height: 0;
+    aspect-ratio: 4 / 3;
+  }
+
+  .article-row__copy {
+    padding: var(--space-5) var(--space-3) var(--space-7);
+  }
+
+  .article-row h2 {
+    font-size: 25px;
+  }
+
+  .principle-line {
     grid-template-columns: 1fr;
   }
 
-  .research-hero h1 {
-    font-size: 42px;
+  .principle-line article {
+    border-top: 1px solid rgb(33 72 55 / 18%);
+    border-left: 0;
+  }
+
+  .principle-line article:first-child {
+    border-top: 0;
   }
 }
 
-@media (max-width: 560px) {
-  .research-hero {
-    padding-block: var(--space-6) var(--space-5);
-  }
-
-  .research-hero h1 {
-    font-size: 36px;
-  }
-
-  .research-hero p {
-    font-size: 15px;
-  }
-
-  .featured-card,
-  .article-card,
-  .sidebar-panel {
-    padding: var(--space-4);
-  }
-
-  .research-hero__card {
-    right: var(--space-4);
-    bottom: var(--space-4);
-    width: min(280px, calc(100% - 32px));
-    max-width: none;
+@media (prefers-reduced-motion: reduce) {
+  .article-row__media img {
+    transition: none;
   }
 }
 </style>

@@ -5,10 +5,10 @@ export const smartCollarProduct: ProductDetail = {
   name: '知宠智能挂件',
   headline: '记录声音、动作和安全变化，让陪伴更有依据',
   summary:
-    '知宠智能挂件面向家庭日常陪伴和安全提醒场景，探索宠物声音采集、动作与活动趋势记录、行为姿态感知、定位与安全提醒，并与知宠 App 和 PetSense 多模态宠物理解引擎协同。当前产品形态、最终商业名称和硬件参数仍待项目方确认。',
-  status: '样机与产品定义阶段',
-  cover: '/images/generated/pages/zhipet-product-closeup-scene.png',
-  coverAlt: '知宠智能挂件样机概念视觉',
+    '知宠智能挂件面向家庭日常陪伴和安全提醒场景，记录宠物声音、动作与活动趋势，辅助理解行为变化、位置线索和安全风险，并与知宠 App 和 PetSense 多模态宠物理解引擎协同。',
+  status: '智能感知设备',
+  cover: '/images/generated/pages/zhipet-product-closeup-scene.webp',
+  coverAlt: '知宠智能挂件产品概念视觉',
   values: [
     {
       id: 'sound-capture',
@@ -26,7 +26,7 @@ export const smartCollarProduct: ProductDetail = {
       id: 'posture-safety',
       icon: 'shield-check',
       title: '行为姿态感知与安全提醒',
-      description: '探索行为姿态感知、定位与安全提醒能力，具体定位、通信和提醒规则待项目方确认。',
+      description: '结合行为姿态、位置线索与安全提醒，具体表现会受到设备、网络和环境条件影响。',
     },
   ],
   ecosystemTitle: '设备、App 与 AI 引擎协同',
@@ -41,7 +41,7 @@ export const smartCollarProduct: ProductDetail = {
       id: 'device',
       icon: 'collar',
       title: '智能设备',
-      description: '智能设备负责感知宠物声音、动作、活动趋势和安全位置变化，具体传感器、定位与通信参数待项目方确认。',
+      description: '智能设备负责记录宠物声音、动作、活动趋势和位置变化，参数以正式产品说明为准。',
     },
     {
       id: 'app',
@@ -67,7 +67,7 @@ export const smartCollarProduct: ProductDetail = {
       id: 'safety',
       icon: 'shield-check',
       title: '定位与安全提醒',
-      description: '围绕走失风险、活动区域和安全提醒探索能力，定位方式和通信参数待项目方确认。',
+      description: '围绕走失风险、活动区域和安全提醒提供辅助线索，实际表现受网络与环境影响。',
     },
     {
       id: 'service',
@@ -79,42 +79,42 @@ export const smartCollarProduct: ProductDetail = {
   specifications: [
     {
       label: '产品状态',
-      value: '样机与产品定义阶段',
-      note: '样机参数，仅供展示',
+      value: '智能感知设备',
+      note: '面向家庭陪伴与安全提醒',
     },
     {
       label: '产品命名',
       value: '知宠智能挂件',
-      note: '最终商业名称待项目方确认',
+      note: '连接设备、App 与健康档案',
     },
     {
       label: '核心能力',
       value: '宠物声音采集 / 动作与活动趋势记录 / 行为姿态感知 / 定位与安全提醒 / 与 App 和 AI 引擎协同',
-      note: '能力范围待真实样机验证',
+      note: '具体能力以正式产品说明为准',
     },
     {
       label: '定位与通信',
-      value: '待项目方确认',
+      value: '依使用与网络环境而异',
       note: '不展示未确认参数',
     },
     {
       label: '供电与续航',
-      value: '待项目方确认',
+      value: '以正式产品说明为准',
       note: '不展示未确认数据',
     },
     {
       label: '防护能力',
-      value: '待项目方确认',
+      value: '以正式产品说明为准',
       note: '不声明未确认等级',
     },
   ],
-  specificationsCaption: '知宠智能挂件样机参数，仅供展示',
+  specificationsCaption: '知宠智能挂件产品信息',
   process: [
     {
       id: 'wear',
       order: '01',
       title: '佩戴或安装设备',
-      description: '根据宠物体型、舒适度和实际样机形态完成佩戴或安装，具体形态待项目方确认。',
+      description: '根据宠物体型、舒适度和产品说明完成佩戴，并持续观察皮肤与活动状态。',
     },
     {
       id: 'bind',
@@ -143,8 +143,8 @@ export const zhipetAppProduct: ProductDetail = {
   headline: '把宠物健康档案装进口袋',
   summary:
     '知宠 App 面向家庭日常照护和机构服务连接场景，规划健康档案、趋势记录、提醒协作与复诊资料整理。当前内容用于体验流程展示，最终功能以项目方确认资料为准。',
-  status: '体验流程规划中',
-  cover: '/images/generated/pages/zhipet-app-profile-scene.png',
+  status: '家庭端应用',
+  cover: '/images/generated/pages/zhipet-app-profile-scene.webp',
   coverAlt: '知宠 App 体验流程概念视觉',
   values: [
     {
@@ -171,7 +171,7 @@ export const zhipetAppProduct: ProductDetail = {
       id: 'device',
       icon: 'collar',
       title: '智能挂件',
-      description: '作为数据入口之一，采集能力、连接方式和同步频率待项目方确认。',
+      description: '作为数据入口之一，连接方式和同步节奏以设备及正式产品说明为准。',
     },
     {
       id: 'app',
@@ -183,7 +183,7 @@ export const zhipetAppProduct: ProductDetail = {
       id: 'platform',
       icon: 'building',
       title: '健康管理平台',
-      description: '为后续医院、门店或合作机构连接预留能力，具体协作流程待确认。',
+      description: '在用户授权前提下，为医院、门店或专业服务连接提供沟通入口。',
     },
   ],
   scenarios: [
@@ -209,13 +209,13 @@ export const zhipetAppProduct: ProductDetail = {
   specifications: [
     {
       label: '产品状态',
-      value: '体验流程规划中',
+      value: '家庭端应用',
       note: '规划参数，仅供展示',
     },
     {
       label: '适用对象',
       value: '家庭用户、宠物医院和宠物门店',
-      note: '具体开放范围待项目方确认',
+      note: '按照用户授权范围展示',
     },
     {
       label: '核心能力',
@@ -224,15 +224,15 @@ export const zhipetAppProduct: ProductDetail = {
     },
     {
       label: '上线版本',
-      value: '待项目方确认',
+      value: '以 App 产品说明为准',
     },
     {
       label: '账号体系',
-      value: '待项目方确认',
+      value: '由用户自主管理',
     },
     {
       label: '数据授权规则',
-      value: '待项目方确认',
+      value: '遵循最小必要原则',
     },
   ],
   specificationsCaption: '知宠 App 规划参数，仅供展示',
@@ -270,8 +270,8 @@ export const healthPlatformProduct: ProductDetail = {
   headline: '连接设备数据与机构服务流程',
   summary:
     '健康管理平台面向宠物医院、门店与合作机构，探索设备数据接入、服务流程记录和运营辅助能力。当前内容用于场景验证展示，真实部署方式和接口范围以项目方确认为准。',
-  status: '场景验证阶段',
-  cover: '/images/generated/pages/zhipet-hospital-collab-scene.png',
+  status: '专业服务平台',
+  cover: '/images/generated/pages/zhipet-hospital-collab-scene.webp',
   coverAlt: '知宠健康管理平台场景验证概念视觉',
   values: [
     {
@@ -298,13 +298,13 @@ export const healthPlatformProduct: ProductDetail = {
       id: 'device',
       icon: 'collar',
       title: '智能挂件',
-      description: '作为设备数据来源之一，接入范围、频率和数据字段待项目方确认。',
+      description: '作为设备数据来源之一，接入范围、频率和数据字段遵循最小必要原则。',
     },
     {
       id: 'app',
       icon: 'phone',
       title: '知宠 App',
-      description: '承接用户授权、家庭记录和服务触达，具体授权流程待确认。',
+      description: '承接用户授权、家庭记录和服务触达，并提供清晰的数据管理路径。',
     },
     {
       id: 'platform',
@@ -330,19 +330,19 @@ export const healthPlatformProduct: ProductDetail = {
       id: 'partner',
       icon: 'users',
       title: '合作机构',
-      description: '为后续合作伙伴的数据授权和服务连接预留结构，具体范围待确认。',
+      description: '为合作伙伴的数据授权和服务连接提供结构，范围由用户与服务关系共同决定。',
     },
   ],
   specifications: [
     {
       label: '产品状态',
-      value: '场景验证阶段',
+      value: '专业服务平台',
       note: '规划参数，仅供展示',
     },
     {
       label: '服务对象',
       value: '宠物医院、门店与合作机构',
-      note: '具体开放范围待项目方确认',
+      note: '按角色和用户授权范围开放',
     },
     {
       label: '核心能力',
@@ -351,15 +351,15 @@ export const healthPlatformProduct: ProductDetail = {
     },
     {
       label: '部署方式',
-      value: '待项目方确认',
+      value: '按最小必要范围接入',
     },
     {
       label: '权限体系',
-      value: '待项目方确认',
+      value: '由用户授权管理',
     },
     {
       label: '接口范围',
-      value: '待项目方确认',
+      value: '以服务协议为准',
     },
   ],
   specificationsCaption: '健康管理平台规划参数，仅供展示',
@@ -386,7 +386,7 @@ export const healthPlatformProduct: ProductDetail = {
       id: 'review',
       order: '04',
       title: '复盘趋势与运营',
-      description: '查看健康服务趋势和运营辅助信息，具体指标待项目方确认。',
+      description: '查看健康服务趋势和运营辅助信息，指标范围以授权与服务目标为准。',
     },
   ],
 }

@@ -17,8 +17,8 @@ describe('safe href utilities', () => {
   })
 
   it('recognizes only same-site path and hash links as internal', () => {
-    expect(isInternalHref('/demo')).toBe(true)
-    expect(isInternalHref('#demo-form')).toBe(true)
+    expect(isInternalHref('/contact')).toBe(true)
+    expect(isInternalHref('#feedback')).toBe(true)
     expect(isInternalHref('https://example.com')).toBe(false)
     expect(isInternalHref('//evil.example')).toBe(false)
   })

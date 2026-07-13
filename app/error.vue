@@ -15,7 +15,7 @@ const pageTitle = computed(() => (isNotFound.value ? '页面暂未找到' : '页
 const pageDescription = computed(() =>
   isNotFound.value
     ? '当前访问的页面可能已调整、暂未发布，或链接地址有误。可以回到首页继续了解知宠。'
-    : '当前页面暂时无法正常显示，请稍后再试，或联系知宠确认项目资料。',
+    : '当前页面暂时无法正常显示，请稍后再试，或通过咨询与反馈页面告知项目成员。',
 )
 
 useSeoMeta({
@@ -45,7 +45,7 @@ useSeoMeta({
             查看产品中心
           </BaseButton>
           <BaseButton to="/help" variant="ghost" size="lg" @click="clearError()">
-            帮助中心
+            咨询与反馈
           </BaseButton>
         </div>
         <ul class="error-page__quick-links" aria-label="推荐访问">
@@ -59,7 +59,7 @@ useSeoMeta({
           </li>
           <li>
             <BaseIcon name="mail" aria-hidden="true" />
-            <span>帮助与演示</span>
+            <span>咨询与交流</span>
           </li>
         </ul>
       </BaseContainer>

@@ -7,7 +7,6 @@ import type {
   HomePillar,
   HomeProduct,
   HomeSolution,
-  HomeTimelineItem,
   HomeTrustPrinciple,
 } from '~/types/home'
 
@@ -41,7 +40,7 @@ export const homePillars: HomePillar[] = [
     id: 'industry-solution',
     icon: 'building',
     title: '行业数字化解决方案',
-    description: '面向宠物医院、门店与合作机构，探索设备、数据与服务流程协同。',
+    description: '面向宠物医院、门店与合作机构，连接设备、数据与服务流程。',
   },
 ]
 
@@ -51,7 +50,7 @@ export const homeAiUnderstanding: HomeAiUnderstanding = {
     '知宠将声音、行为、活动和长期记录放在同一条分析链里，输出可能状态、依据、不确定性和建议动作。',
   linkLabel: '了解 PetSense 多模态理解引擎',
   linkTo: '/ai-pet-understanding',
-  image: '/images/generated/pages/zhipet-family-care-scene.png',
+  image: '/images/generated/pages/zhipet-family-care-scene.webp',
   alt: '知宠 AI 宠物理解家庭陪伴场景概念视觉',
   statusLabel: '当前可能状态',
   statusValue: '可能处于轻度不安',
@@ -99,37 +98,37 @@ export const homeFeaturedProducts: HomeFeaturedProduct[] = [
     id: 'smart-sensing-device',
     icon: 'collar',
     name: '知宠智能挂件 / 感知设备',
-    status: '样机与产品定义阶段',
-    summary: '面向日常佩戴与家庭陪伴场景，探索宠物声音、活动和行为变化的连续感知。',
-    image: '/images/generated/pages/zhipet-product-closeup-scene.png',
+    status: '智能感知设备',
+    summary: '面向日常佩戴与家庭陪伴场景，记录宠物声音、活动和行为变化。',
+    image: '/images/generated/pages/zhipet-product-closeup-scene.webp',
     alt: '知宠智能挂件和感知设备概念视觉',
     features: ['声音与活动采集', '行为变化提示', '设备状态提醒'],
     detailTo: '/products/smart-collar',
-    detailLabel: '查看硬件方向',
+    detailLabel: '了解智能挂件',
   },
   {
     id: 'zhipet-app',
     icon: 'phone',
     name: '知宠 App',
-    status: '体验流程规划中',
+    status: '家庭端应用',
     summary: '承接状态提示、照护建议、长期记录和主人反馈，让家庭成员更容易协同照护。',
-    image: '/images/generated/pages/zhipet-app-profile-scene.png',
+    image: '/images/generated/pages/zhipet-app-profile-scene.webp',
     alt: '知宠 App 和宠物理解结果概念视觉',
     features: ['状态提示', '照护建议', '长期记录'],
     detailTo: '/products/app',
-    detailLabel: '查看 App 规划',
+    detailLabel: '了解知宠 App',
   },
   {
     id: 'health-platform',
     icon: 'chart',
     name: '健康管理平台',
-    status: '场景验证阶段',
-    summary: '面向医院、门店与合作机构，探索设备数据接入、客户服务记录和长期健康管理流程。',
-    image: '/images/generated/pages/zhipet-hospital-collab-scene.png',
+    status: '专业服务平台',
+    summary: '面向医院、门店与合作机构，连接设备数据、客户服务记录和长期健康管理流程。',
+    image: '/images/generated/pages/zhipet-hospital-collab-scene.webp',
     alt: '宠物健康管理平台概念视觉',
     features: ['设备数据接入', '服务流程记录', '长期趋势协同'],
     detailTo: '/products/health-platform',
-    detailLabel: '查看平台方向',
+    detailLabel: '了解健康平台',
   },
 ]
 
@@ -138,9 +137,9 @@ export const homeProducts: HomeProduct[] = [
     id: 'smart-collar',
     icon: 'collar',
     name: '知宠智能挂件',
-    status: '样机与产品定义阶段',
-    summary: '面向家庭日常陪伴和安全提醒场景，探索宠物声音采集、动作与活动趋势记录和行为姿态感知。',
-    image: '/images/generated/pages/zhipet-product-closeup-scene.png',
+    status: '智能感知设备',
+    summary: '面向家庭日常陪伴和安全提醒场景，记录宠物声音、动作、活动趋势与行为姿态。',
+    image: '/images/generated/pages/zhipet-product-closeup-scene.webp',
     alt: '知宠智能挂件概念视觉',
     features: ['宠物声音采集', '动作与活动趋势记录', '定位与安全提醒'],
   },
@@ -148,9 +147,9 @@ export const homeProducts: HomeProduct[] = [
     id: 'zhipet-app',
     icon: 'phone',
     name: '知宠 App',
-    status: '体验流程规划中',
+    status: '家庭端应用',
     summary: '沉淀健康档案、趋势记录、提醒通知和家庭成员协作，减少分散记录。',
-    image: '/images/generated/pages/zhipet-app-profile-scene.png',
+    image: '/images/generated/pages/zhipet-app-profile-scene.webp',
     alt: '知宠 App 和健康管理平台概念视觉',
     features: ['健康档案', '趋势记录', '提醒协作'],
   },
@@ -158,9 +157,9 @@ export const homeProducts: HomeProduct[] = [
     id: 'health-platform',
     icon: 'chart',
     name: '健康管理平台',
-    status: '场景验证阶段',
+    status: '专业服务平台',
     summary: '为医院、门店与合作机构提供设备数据接入、客户服务和运营辅助能力。',
-    image: '/images/generated/pages/zhipet-hospital-collab-scene.png',
+    image: '/images/generated/pages/zhipet-hospital-collab-scene.webp',
     alt: '宠物健康管理平台概念视觉',
     features: ['设备数据接入', '服务流程记录', '运营辅助看板'],
   },
@@ -187,7 +186,7 @@ export const homeSolutions: HomeSolution[] = [
     title: '宠物医院',
     audience: '医疗机构',
     description:
-      '围绕复诊、健康档案、院外行为变化和专业服务平台，探索更完整的健康管理链路。',
+      '围绕复诊、健康档案、院外行为变化和专业服务平台，建立更完整的健康管理链路。',
   },
   {
     id: 'store',
@@ -202,35 +201,35 @@ export const homeSolutions: HomeSolution[] = [
 export const homeCases: HomeCase[] = [
   {
     id: 'clinic-proof',
-    label: '概念验证项目',
-    title: '宠物医院健康档案协同示范',
+    label: '场景示意',
+    title: '宠物医院健康档案协同',
     clientType: '宠物医院场景',
-    summary: '用于展示设备数据、复诊记录与院外提醒如何协同，不代表真实客户案例。',
+    summary: '说明设备数据、复诊记录与院外提醒如何在用户授权下形成连续沟通线索。',
     results: ['流程标准化', '数据连续化', '服务触达清晰化'],
   },
   {
     id: 'store-proof',
-    label: '示范案例',
-    title: '门店会员健康服务示范',
+    label: '场景示意',
+    title: '门店会员健康服务连接',
     clientType: '宠物门店场景',
-    summary: '用于展示门店如何围绕健康提醒与服务记录建立长期关系，待真实授权后替换。',
+    summary: '说明门店如何围绕健康提醒与服务记录，为会员家庭提供连贯的照护体验。',
     results: ['会员服务数字化', '照护记录归档', '运营决策可视化'],
   },
 ]
 
 export const brandNotes: HomeBrandNote[] = [
   {
-    title: '项目愿景',
+    title: '品牌愿景',
     description: '让宠物健康信息更容易被理解、被记录、被行动，减少养宠过程中的不确定感。',
   },
   {
     title: '技术路线',
     description:
-      '围绕感知设备、知宠 App、PetSense 多模态理解引擎和专业服务平台，逐步验证产品闭环。',
+      '围绕感知设备、知宠 App、PetSense 多模态理解引擎和专业服务平台，构建完整产品链路。',
   },
   {
-    title: '发展状态',
-    description: '当前处于官网、需求验证与产品定义阶段，真实团队、资质和案例资料待项目方确认。',
+    title: '责任边界',
+    description: '所有状态提示均保留依据与不确定性，不替代专业诊疗或用户自主判断。',
   },
 ]
 
@@ -250,23 +249,5 @@ export const homeTrustPrinciples: HomeTrustPrinciple[] = [
   {
     title: '尊重敏感数据',
     description: '原始音频、家庭环境音频和宠物数据均按敏感数据处理。',
-  },
-]
-
-export const homeTimeline: HomeTimelineItem[] = [
-  {
-    date: '2026.06',
-    title: '项目正式启动',
-    description: '梳理品牌定位、核心场景和第一阶段官网需求。',
-  },
-  {
-    date: '2026.07',
-    title: '官网与需求验证',
-    description: '建立工程底座、设计系统和首页内容框架。',
-  },
-  {
-    date: '待补充',
-    title: '产品与合作节点',
-    description: '后续节点以项目方确认资料为准。',
   },
 ]

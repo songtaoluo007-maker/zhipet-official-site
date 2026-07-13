@@ -19,6 +19,9 @@ withDefaults(
   <figure class="scene-frame" :class="`scene-frame--${tone}`" :style="{ aspectRatio }">
     <img class="scene-frame__image" :src="src" :alt="alt" :style="{ objectPosition }">
     <slot />
+    <figcaption v-if="src.startsWith('/images/generated/')" class="scene-frame__label">
+      AI 概念图，仅供参考
+    </figcaption>
   </figure>
 </template>
 

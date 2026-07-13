@@ -4,7 +4,7 @@ import type { ComponentPublicInstance, Ref } from 'vue'
 export const useScrollReveal = () => {
   const elements: Ref<HTMLElement[]> = ref([])
   const isReducedMotion = ref(false)
-  let revealFallbackTimer: ReturnType<typeof window.setTimeout> | undefined
+  let revealFallbackTimer: number | undefined
   let observer: IntersectionObserver | undefined
 
   const resolveElement = (element: Element | ComponentPublicInstance | null) => {

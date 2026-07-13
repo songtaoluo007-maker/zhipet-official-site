@@ -3,11 +3,22 @@
   "type": "module",
   "private": true,
   "packageManager": "pnpm@11.7.0",
+  "engines": {
+    "node": ">=20.19.0"
+  },
   "scripts": {
     "build": "nuxt build",
+    "db:dev": "docker compose up -d database",
+    "db:down": "docker compose down",
+    "db:generate": "prisma generate",
+    "db:migrate": "prisma migrate dev",
+    "db:migrate:deploy": "prisma migrate deploy",
+    "db:purge-expired": "node scripts/purge-expired-data.mjs",
+    "db:studio": "prisma studio",
     "dev": "nuxt dev --host 127.0.0.1",
     "generate": "nuxt generate",
     "lint": "eslint .",
+    "mail:deliver": "node scripts/deliver-email-outbox.mjs",
     "postinstall": "nuxt prepare",
     "preview": "nuxt preview",
     "test": "vitest run",
@@ -18,8 +29,11 @@
     "@nuxt/content": "^3.6.3",
     "@nuxt/fonts": "^0.11.4",
     "@nuxt/image": "^1.11.0",
+    "@prisma/client": "^6.19.3",
+    "nodemailer": "^9.0.3",
     "nuxt": "^4.0.0",
     "sass": "^1.89.2",
+    "valibot": "^1.4.2",
     "vue": "^3.5.17"
   },
   "devDependencies": {
@@ -31,6 +45,7 @@
     "jsdom": "^26.1.0",
     "playwright": "^1.53.1",
     "prettier": "^3.6.2",
+    "prisma": "^6.19.3",
     "typescript": "^5.8.3",
     "vitest": "^3.2.4",
     "vue-tsc": "^2.2.12"

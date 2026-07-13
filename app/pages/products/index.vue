@@ -12,8 +12,7 @@ const { register } = useScrollReveal()
 
 useSeoMeta({
   title: '产品 | 知宠 ZHIPET',
-  description:
-    '知宠产品页展示一个核心主模块、两种安装方式和安全、健康、状态解读三层价值。参数与上市状态待项目方确认。',
+  description: '知宠产品页展示一个核心主模块、两种安装方式和安全、健康、状态解读三层价值。',
   ogTitle: '产品 | 知宠 ZHIPET',
   ogDescription: '一个核心主模块，两种安装方式，探索宠物安全与健康趋势管理。',
   ogType: 'website',
@@ -30,10 +29,10 @@ useSeoMeta({
             <span aria-hidden="true">/</span>
             <span>产品</span>
           </nav>
-          <BaseTag tone="concept">产品形态待项目方确认</BaseTag>
+          <BaseTag tone="concept">模块化佩戴</BaseTag>
           <h1 id="products-title">一个核心主模块，两种安装方式</h1>
           <p>
-            知宠 V2 以智能项圈核心模块为中心，围绕项圈一体与夹扣安装拓展体验。真实参数、量产节奏和能力范围以项目方确认为准。
+            知宠 V2 以智能项圈核心模块为中心，通过项圈一体与夹扣安装适配不同佩戴场景。具体能力与参数以正式产品说明为准。
           </p>
           <div class="product-hero__actions">
             <BaseButton to="#variants" size="lg">
@@ -42,12 +41,12 @@ useSeoMeta({
                 <BaseIcon name="arrow-right" />
               </template>
             </BaseButton>
-            <BaseButton to="/demo" variant="secondary" size="lg">预约演示</BaseButton>
+            <BaseButton to="/contact" variant="secondary" size="lg">邮件联系我们</BaseButton>
           </div>
         </div>
         <SceneFrame
           class="product-hero__visual"
-          src="/images/generated/pages/zhipet-product-closeup-scene.png"
+          src="/images/generated/pages/zhipet-product-closeup-scene.webp"
           alt="犬猫与知宠智能项圈核心模块概念场景"
           aspect-ratio="16 / 10"
           object-position="center"
@@ -69,7 +68,7 @@ useSeoMeta({
           <div class="module-card">
             <span>核心主模块</span>
             <strong>安全 + 健康趋势 + 状态解释</strong>
-            <p>硬件参数、传感器范围和上市节奏待项目方确认。</p>
+            <p>具体参数与传感能力以正式产品说明为准。</p>
           </div>
         </SceneFrame>
       </BaseContainer>
@@ -86,7 +85,7 @@ useSeoMeta({
       <SectionHeading
         id="variants-title"
         title="产品形态"
-        description="先展示 V2 的产品组合逻辑，不把未确认硬件形态写成已发布商品。"
+        description="围绕不同佩戴需求，呈现核心模块与配件之间的组合逻辑。"
       />
       <div class="variant-grid">
         <article v-for="variant in productVariants" :key="variant.id" class="variant-card">
@@ -110,7 +109,7 @@ useSeoMeta({
         <div class="core-layout">
           <SceneFrame
             class="core-scene"
-            src="/images/generated/pages/zhipet-app-profile-scene.png"
+            src="/images/generated/pages/zhipet-app-profile-scene.webp"
             alt="知宠智能项圈模块与安装形态概念图"
             aspect-ratio="16 / 9"
             object-position="center"
@@ -118,7 +117,7 @@ useSeoMeta({
             <div class="collar-spec-card">
               <span>模块化设计</span>
               <strong>一体佩戴 / 夹扣适配</strong>
-              <p>材质、重量、防水等级和续航均待项目方确认。</p>
+              <p>材质、重量、防护能力与续航以正式产品说明为准。</p>
             </div>
           </SceneFrame>
           <div>
@@ -169,16 +168,16 @@ useSeoMeta({
     >
       <BaseIcon name="shield-check" aria-hidden="true" />
       <div>
-        <h2 id="product-boundary-title">产品发布边界</h2>
+        <h2 id="product-boundary-title">产品信息边界</h2>
         <p>
-          未确认前，不展示未验证生命体征指标、真实续航、防水等级、上市时间或价格。猫端体验将强调轻量、安全脱扣和低打扰，具体设计待项目方确认。
+          页面不把趋势观察写成医疗级生命体征监测，也不对续航、防护能力或价格作超出正式产品说明的承诺。猫端体验强调轻量、安全脱扣和低打扰。
         </p>
       </div>
     </BaseContainer>
 
     <CTASection
       title="想确认哪种产品形态适合您的场景？"
-      description="预约演示，了解核心模块、安装方式和当前样机验证边界。"
+      description="通过公开邮箱了解核心模块、安装方式和产品使用边界。"
       secondary-label="阅读产品思考"
       secondary-to="/research/safety-first"
     />
@@ -207,7 +206,7 @@ useSeoMeta({
   z-index: -1;
   background:
     linear-gradient(90deg, var(--color-bg) 0%, rgb(251 248 242 / 72%) 44%, rgb(251 248 242 / 22%) 100%),
-    url('/images/generated/pages/zhipet-product-closeup-scene.png') center / cover no-repeat;
+    url('/images/generated/pages/zhipet-product-closeup-scene.webp') center / cover no-repeat;
   content: '';
   opacity: 0.16;
 }

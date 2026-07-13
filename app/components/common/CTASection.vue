@@ -30,12 +30,12 @@ withDefaults(
     showSecondary?: boolean
   }>(),
   {
-    title: '携手知宠，为更多宠物带来健康守护',
-    description: '预约产品演示，了解适合您的合作方案。',
-    primaryLabel: '预约演示',
-    primaryTo: '/demo',
-    secondaryLabel: '帮助中心',
-    secondaryTo: '/help',
+    title: '了解知宠当前的产品方向',
+    description: '通过公开邮箱联系项目组，或提交意见和问题反馈。',
+    primaryLabel: '邮件联系我们',
+    primaryTo: '/contact',
+    secondaryLabel: '意见问题反馈',
+    secondaryTo: '/help#feedback',
     showSecondary: true,
   },
 )

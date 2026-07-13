@@ -1,10 +1,8 @@
 <script setup lang="ts">
-import BaseButton from '~/components/base/BaseButton.vue'
 import BaseContainer from '~/components/base/BaseContainer.vue'
 import BaseIcon from '~/components/base/BaseIcon.vue'
-import BaseImage from '~/components/base/BaseImage.vue'
-import BaseTag from '~/components/base/BaseTag.vue'
 import CTASection from '~/components/common/CTASection.vue'
+import EditorialHero from '~/components/common/EditorialHero.vue'
 import SectionHeading from '~/components/common/SectionHeading.vue'
 import type { SolutionDetail } from '~/types/solution'
 
@@ -13,69 +11,34 @@ const props = defineProps<{
 }>()
 
 const { register } = useScrollReveal()
-
 const solution = props.solution
 </script>
 
 <template>
-  <div class="solution-detail-page">
-    <section class="solution-hero" aria-labelledby="solution-title">
-      <BaseContainer class="solution-hero__inner" width="wide">
-        <div class="solution-hero__copy">
-          <nav class="breadcrumb" aria-label="面包屑">
-            <NuxtLink to="/">首页</NuxtLink>
-            <span aria-hidden="true">/</span>
-            <NuxtLink to="/solutions">解决方案</NuxtLink>
-            <span aria-hidden="true">/</span>
-            <span>{{ solution.breadcrumbLabel }}</span>
-          </nav>
-          <BaseTag tone="concept">{{ solution.status }}</BaseTag>
-          <h1 id="solution-title">{{ solution.title }}</h1>
-          <p class="solution-hero__headline">{{ solution.headline }}</p>
-          <p class="solution-hero__summary">{{ solution.summary }}</p>
-          <div class="solution-hero__actions" aria-label="解决方案主要操作">
-            <BaseButton to="/demo" size="lg">
-              预约方案演示
-              <template #iconRight>
-                <BaseIcon name="arrow-right" />
-              </template>
-            </BaseButton>
-            <BaseButton
-              :to="solution.secondaryAction?.to ?? '#workflow'"
-              variant="text"
-              size="lg"
-            >
-              {{ solution.secondaryAction?.label ?? '查看流程' }}
-            </BaseButton>
-          </div>
-          <div class="solution-hero__tags" aria-label="方案模块">
-            <BaseTag v-for="module in solution.modules" :key="module.id">{{ module.title }}</BaseTag>
-          </div>
-        </div>
-        <div class="solution-hero__visual">
-          <BaseImage
-            :src="solution.cover"
-            :alt="solution.coverAlt"
-            aspect-ratio="16 / 10"
-            radius="lg"
-            priority
-            concept
-            label-placement="below"
-          />
-          <div class="solution-hero__route-panel" aria-label="方案推进路径">
-            <span>方案路径</span>
-            <strong>问题识别 -> 流程协同 -> 边界确认</strong>
-            <p>真实合作、数据接入和上线节奏均以项目方确认资料为准。</p>
-          </div>
-        </div>
-      </BaseContainer>
-    </section>
+  <main class="solution-detail-page">
+    <EditorialHero
+      :eyebrow="solution.breadcrumbLabel"
+      :title="solution.title"
+      :description="solution.summary"
+      :image="solution.cover"
+      :image-alt="solution.coverAlt"
+      :crumbs="[
+        { label: '首页', to: '/' },
+        { label: '解决方案', to: '/solutions' },
+        { label: solution.breadcrumbLabel },
+      ]"
+      primary-label="查看服务路径"
+      primary-to="#workflow"
+      :secondary-label="solution.secondaryAction?.label ?? '邮件联系我们'"
+      :secondary-to="solution.secondaryAction?.to ?? '/contact'"
+      priority
+    />
 
     <BaseContainer
       id="pain-points"
       :ref="register"
       tag="section"
-      class="solution-section pain-section"
+      class="solution-section"
       width="wide"
       aria-labelledby="pain-points-title"
     >
@@ -83,13 +46,13 @@ const solution = props.solution
         id="pain-points-title"
         :title="solution.sections.painTitle"
         :description="solution.sections.painDescription"
+        align="left"
       />
-      <div class="pain-grid">
-        <article v-for="item in solution.painPoints" :key="item.id" class="pain-card">
-          <span class="icon-shell" aria-hidden="true">
-            <BaseIcon :name="item.icon" />
-          </span>
-          <h3>{{ item.title }}</h3>
+      <div class="insight-line">
+        <article v-for="(item, index) in solution.painPoints" :key="item.id">
+          <span>0{{ index + 1 }}</span>
+          <BaseIcon :name="item.icon" aria-hidden="true" />
+          <h2>{{ item.title }}</h2>
           <p>{{ item.description }}</p>
         </article>
       </div>
@@ -98,43 +61,32 @@ const solution = props.solution
     <section
       id="workflow"
       :ref="register"
-      class="solution-section workflow-section"
+      class="solution-section workflow-band"
       aria-labelledby="workflow-title"
     >
       <BaseContainer width="wide">
-        <div class="workflow-layout">
-          <div>
-            <SectionHeading
-              id="workflow-title"
-              :title="solution.sections.workflowTitle"
-              :description="solution.sections.workflowDescription"
-            />
-            <ol class="workflow-list" aria-label="方案流程地图">
-              <li v-for="step in solution.workflow" :key="step.id">
-                <span>{{ step.order }}</span>
-                <div>
-                  <h3>{{ step.title }}</h3>
-                  <p>{{ step.description }}</p>
-                </div>
-              </li>
-            </ol>
-          </div>
-          <BaseImage
-            :src="solution.sections.workflowImage"
-            :alt="solution.sections.workflowImageAlt"
-            aspect-ratio="16 / 10"
-            radius="lg"
-            concept
-            label-placement="below"
-          />
-        </div>
+        <SectionHeading
+          id="workflow-title"
+          :title="solution.sections.workflowTitle"
+          :description="solution.sections.workflowDescription"
+          align="left"
+        />
+        <ol class="workflow-line" aria-label="方案流程">
+          <li v-for="step in solution.workflow" :key="step.id">
+            <span>{{ step.order }}</span>
+            <div>
+              <h2>{{ step.title }}</h2>
+              <p>{{ step.description }}</p>
+            </div>
+          </li>
+        </ol>
       </BaseContainer>
     </section>
 
     <BaseContainer
       :ref="register"
       tag="section"
-      class="solution-section module-section"
+      class="solution-section"
       width="wide"
       aria-labelledby="modules-title"
     >
@@ -142,23 +94,20 @@ const solution = props.solution
         id="modules-title"
         :title="solution.sections.modulesTitle"
         :description="solution.sections.modulesDescription"
+        align="left"
       />
-      <div class="module-list">
-        <article v-for="module in solution.modules" :key="module.id" class="module-item">
-          <span class="icon-shell" aria-hidden="true">
-            <BaseIcon :name="module.icon" />
-          </span>
-          <div>
-            <h3>{{ module.title }}</h3>
-            <p>{{ module.description }}</p>
-          </div>
+      <div class="module-rows">
+        <article v-for="module in solution.modules" :key="module.id">
+          <BaseIcon :name="module.icon" aria-hidden="true" />
+          <h2>{{ module.title }}</h2>
+          <p>{{ module.description }}</p>
         </article>
       </div>
     </BaseContainer>
 
     <section
       :ref="register"
-      class="solution-section boundary-section"
+      class="solution-section guardrail-band"
       aria-labelledby="boundary-title"
     >
       <BaseContainer width="wide">
@@ -166,24 +115,16 @@ const solution = props.solution
           id="boundary-title"
           :title="solution.sections.boundaryTitle"
           :description="solution.sections.boundaryDescription"
+          align="left"
         />
-        <div class="boundary-layout">
-          <div class="guardrail-list">
-            <article v-for="item in solution.guardrails" :key="item.id" class="guardrail-item">
-              <BaseIcon name="shield-check" />
-              <div>
-                <h3>{{ item.title }}</h3>
-                <p>{{ item.description }}</p>
-              </div>
-            </article>
-          </div>
-          <div class="confirmation-panel">
-            <div v-for="item in solution.confirmationItems" :key="item.label" class="confirmation-row">
-              <span>{{ item.label }}</span>
-              <strong>{{ item.value }}</strong>
-              <p v-if="item.note">{{ item.note }}</p>
+        <div class="guardrail-line">
+          <article v-for="item in solution.guardrails" :key="item.id">
+            <BaseIcon name="shield-check" aria-hidden="true" />
+            <div>
+              <h2>{{ item.title }}</h2>
+              <p>{{ item.description }}</p>
             </div>
-          </div>
+          </article>
         </div>
       </BaseContainer>
     </section>
@@ -191,10 +132,12 @@ const solution = props.solution
     <CTASection
       :title="solution.sections.ctaTitle"
       :description="solution.sections.ctaDescription"
+      primary-label="邮件联系我们"
+      primary-to="/contact"
       secondary-label="返回解决方案"
       secondary-to="/solutions"
     />
-  </div>
+  </main>
 </template>
 
 <style scoped lang="scss">
@@ -204,367 +147,197 @@ const solution = props.solution
   overflow: hidden;
 }
 
-.solution-hero {
-  padding-block: var(--space-8) var(--space-7);
-}
-
-.solution-hero__inner {
-  display: grid;
-  grid-template-columns: minmax(0, 0.86fr) minmax(360px, 0.82fr);
-  gap: var(--space-8);
-  align-items: center;
-}
-
-.solution-hero__copy {
-  display: grid;
-  gap: var(--space-4);
-}
-
-.breadcrumb {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-2);
-  align-items: center;
-  color: var(--color-text-secondary);
-  font-size: 14px;
-  font-weight: 650;
-}
-
-.breadcrumb a {
-  color: var(--color-text-secondary);
-}
-
-.breadcrumb a:hover {
-  color: var(--color-accent-600);
-}
-
-.solution-hero h1 {
-  max-width: 680px;
-  font-size: 52px;
-  line-height: 1.08;
-  letter-spacing: 0;
-  text-wrap: balance;
-}
-
-.solution-hero__headline {
-  color: var(--color-brand-800);
-  font-size: 24px;
-  font-weight: 750;
-}
-
-.solution-hero__summary {
-  max-width: 720px;
-  color: var(--color-text-secondary);
-  font-size: 17px;
-  line-height: 1.72;
-}
-
-.solution-hero__actions,
-.solution-hero__tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-3);
-}
-
-.solution-hero__visual {
-  position: relative;
-}
-
-.solution-hero__visual::before {
-  position: absolute;
-  inset: -18px 24px 24px -18px;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-media);
-  content: '';
-}
-
-.solution-hero__visual :deep(.base-image__frame) {
-  box-shadow: 0 24px 64px rgb(47 36 27 / 10%);
-}
-
-.solution-hero__route-panel {
-  position: absolute;
-  right: var(--space-5);
-  bottom: var(--space-7);
-  display: grid;
-  max-width: 300px;
-  gap: var(--space-2);
-  padding: var(--space-4);
-  border: 1px solid rgb(200 138 56 / 24%);
-  border-radius: var(--radius-button);
-  background: rgb(255 255 255 / 90%);
-}
-
-.solution-hero__route-panel span {
-  color: var(--color-text-secondary);
-  font-size: 13px;
-  font-weight: 750;
-}
-
-.solution-hero__route-panel strong {
-  color: var(--color-brand-900);
-  line-height: 1.35;
-}
-
-.solution-hero__route-panel p {
-  color: var(--color-text-secondary);
-  font-size: 13px;
-}
-
 .solution-section {
   @include section-spacing;
 }
 
-.pain-grid {
+.insight-line {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: var(--space-5);
+  margin-top: var(--space-7);
+  border-block: 1px solid var(--color-border);
 }
 
-.pain-card {
-  @include subtle-lift(-1px);
-
-  display: grid;
-  gap: var(--space-3);
-  padding: var(--space-5);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-card);
-  background: var(--color-surface);
-}
-
-.pain-card p,
-.workflow-list p,
-.module-item p,
-.guardrail-item p,
-.confirmation-row p {
-  color: var(--color-text-secondary);
-}
-
-.icon-shell {
-  display: inline-flex;
-  width: 44px;
-  height: 44px;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid rgb(200 138 56 / 24%);
-  border-radius: var(--radius-button);
-  color: var(--color-accent-600);
-  background: var(--color-accent-100);
-  font-size: 22px;
-}
-
-.workflow-section,
-.boundary-section {
-  background: var(--color-surface-soft);
-}
-
-.workflow-layout {
-  display: grid;
-  grid-template-columns: minmax(0, 0.8fr) minmax(420px, 1fr);
-  gap: var(--space-8);
-  align-items: center;
-}
-
-.workflow-list {
+.insight-line article {
   position: relative;
   display: grid;
-  gap: var(--space-4);
+  min-height: 300px;
+  align-content: start;
+  gap: var(--space-3);
+  padding: var(--space-5);
+  border-left: 1px solid var(--color-border);
+}
+
+.insight-line article:first-child {
+  border-left: 0;
+}
+
+.insight-line article > span {
+  color: var(--color-accent-600);
+  font-size: 13px;
+  font-weight: 850;
+}
+
+.insight-line .base-icon {
+  margin-top: var(--space-4);
+  color: var(--color-sage-700);
+  font-size: 26px;
+}
+
+.insight-line h2,
+.module-rows h2,
+.guardrail-line h2,
+.workflow-line h2 {
+  font-size: 20px;
+  line-height: 1.3;
+}
+
+.insight-line p,
+.module-rows p,
+.guardrail-line p,
+.workflow-line p {
+  color: var(--color-text-secondary);
+  line-height: 1.72;
+}
+
+.workflow-band {
+  color: #fff;
+  background: #22372e;
+}
+
+.workflow-band :deep(.section-heading h2),
+.workflow-band :deep(.section-heading p) {
+  color: #fff;
+}
+
+.workflow-band :deep(.section-heading p) {
+  opacity: 0.72;
+}
+
+.workflow-line {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0;
   padding: 0;
-  margin: 0;
+  margin: var(--space-7) 0 0;
+  border-top: 1px solid rgb(255 255 255 / 18%);
   list-style: none;
 }
 
-.workflow-list::before {
-  position: absolute;
-  top: var(--space-2);
-  bottom: var(--space-2);
-  left: 26px;
-  width: 1px;
-  background: var(--color-border);
-  content: '';
-}
-
-.workflow-list li {
-  position: relative;
+.workflow-line li {
   display: grid;
-  grid-template-columns: 54px minmax(0, 1fr);
+  grid-template-columns: 56px minmax(0, 1fr);
   gap: var(--space-4);
-  align-items: start;
-  padding-block: var(--space-4);
-}
-
-.workflow-list li:first-child {
-  padding-top: 0;
-}
-
-.workflow-list span {
-  z-index: 1;
-  display: inline-flex;
-  width: 54px;
-  height: 54px;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid rgb(200 138 56 / 24%);
-  border-radius: var(--radius-pill);
-  color: var(--color-accent-600);
-  background: var(--color-surface);
-  font-size: 15px;
-  font-weight: 800;
-}
-
-.workflow-list h3,
-.module-item h3,
-.guardrail-item h3 {
-  margin-bottom: var(--space-2);
-}
-
-.module-list {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: var(--space-5);
-}
-
-.module-item {
-  @include subtle-lift(-1px);
-
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
-  gap: var(--space-4);
-  align-items: start;
+  min-height: 180px;
   padding: var(--space-5);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-card);
-  background: var(--color-surface);
+  border-right: 1px solid rgb(255 255 255 / 18%);
+  border-bottom: 1px solid rgb(255 255 255 / 18%);
 }
 
-.boundary-layout {
-  display: grid;
-  grid-template-columns: minmax(0, 0.9fr) minmax(360px, 0.8fr);
-  gap: var(--space-6);
+.workflow-line li:nth-child(even) {
+  border-right: 0;
 }
 
-.guardrail-list {
-  display: grid;
-  gap: var(--space-4);
+.workflow-line li > span {
+  color: var(--color-accent-300);
+  font-size: 14px;
+  font-weight: 850;
 }
 
-.guardrail-item {
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
-  gap: var(--space-4);
-  align-items: start;
-  padding-bottom: var(--space-4);
-  border-bottom: 1px solid var(--color-border);
+.workflow-line h2 {
+  color: #fff;
 }
 
-.guardrail-item .base-icon {
-  width: 24px;
-  height: 24px;
-  color: var(--color-success);
+.workflow-line p {
+  margin-top: var(--space-2);
+  color: rgb(255 255 255 / 68%);
 }
 
-.confirmation-panel {
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-media);
-  background: var(--color-surface);
-  overflow: hidden;
-}
-
-.confirmation-row {
-  display: grid;
-  gap: var(--space-1);
-  padding: var(--space-4) var(--space-5);
+.module-rows {
+  margin-top: var(--space-7);
   border-top: 1px solid var(--color-border);
 }
 
-.confirmation-row:first-child {
-  border-top: 0;
+.module-rows article {
+  display: grid;
+  grid-template-columns: 64px minmax(220px, 0.42fr) minmax(0, 1fr);
+  gap: var(--space-5);
+  align-items: start;
+  padding-block: var(--space-5);
+  border-bottom: 1px solid var(--color-border);
 }
 
-.confirmation-row span {
-  color: var(--color-brand-900);
-  font-weight: 750;
-}
-
-.confirmation-row strong {
+.module-rows .base-icon {
   color: var(--color-accent-600);
-  font-weight: 750;
+  font-size: 26px;
 }
 
-.confirmation-row p {
-  margin: 0;
-  font-size: 13px;
+.guardrail-band {
+  background: #eef2ec;
 }
 
-@media (max-width: 1100px) {
-  .solution-hero__inner,
-  .workflow-layout,
-  .boundary-layout {
+.guardrail-line {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin-top: var(--space-7);
+  border-block: 1px solid rgb(33 72 55 / 18%);
+}
+
+.guardrail-line article {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: var(--space-3);
+  padding: var(--space-5);
+  border-left: 1px solid rgb(33 72 55 / 18%);
+}
+
+.guardrail-line article:first-child {
+  border-left: 0;
+}
+
+.guardrail-line .base-icon {
+  color: var(--color-sage-700);
+  font-size: 22px;
+}
+
+@media (max-width: 900px) {
+  .insight-line,
+  .guardrail-line {
     grid-template-columns: 1fr;
   }
 
-  .solution-hero h1 {
-    font-size: 44px;
+  .insight-line article,
+  .guardrail-line article {
+    min-height: 0;
+    border-top: 1px solid var(--color-border);
+    border-left: 0;
+  }
+
+  .insight-line article:first-child,
+  .guardrail-line article:first-child {
+    border-top: 0;
   }
 }
 
-@media (max-width: 820px) {
-  .pain-grid,
-  .module-list {
+@media (max-width: 680px) {
+  .workflow-line {
     grid-template-columns: 1fr;
   }
 
-  .solution-hero h1 {
-    font-size: 38px;
+  .workflow-line li,
+  .workflow-line li:nth-child(even) {
+    grid-template-columns: 42px minmax(0, 1fr);
+    min-height: 0;
+    padding-inline: 0;
+    border-right: 0;
   }
 
-  .solution-hero__headline {
-    font-size: 20px;
-  }
-}
-
-@media (max-width: 560px) {
-  .solution-hero {
-    padding-block: var(--space-6) var(--space-5);
+  .module-rows article {
+    grid-template-columns: 42px minmax(0, 1fr);
   }
 
-  .solution-hero__copy {
-    gap: var(--space-3);
-  }
-
-  .solution-hero h1 {
-    font-size: 34px;
-  }
-
-  .solution-hero__summary {
-    font-size: 15px;
-  }
-
-  .solution-hero__actions :deep(.base-button) {
-    width: 100%;
-  }
-
-  .solution-hero__visual {
-    margin-inline: auto;
-  }
-
-  .solution-hero__visual::before {
-    inset: -12px 16px 16px -12px;
-  }
-
-  .solution-hero__route-panel {
-    position: static;
-    margin-top: var(--space-3);
-  }
-
-  .workflow-list li,
-  .module-item,
-  .guardrail-item {
-    grid-template-columns: 1fr;
-  }
-
-  .workflow-list::before {
-    display: none;
+  .module-rows article p {
+    grid-column: 2;
   }
 }
 </style>

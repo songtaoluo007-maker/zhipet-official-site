@@ -53,10 +53,10 @@ describe('BaseButton', () => {
   it('renders NuxtLink for internal routes', () => {
     const wrapper = mount(BaseButton, {
       props: {
-        to: '/demo',
+        to: '/contact',
       },
       slots: {
-        default: '预约演示',
+        default: '邮件联系我们',
       },
       global: {
         stubs: {
@@ -65,7 +65,7 @@ describe('BaseButton', () => {
       },
     })
 
-    expect(wrapper.find('a').attributes('href')).toBe('/demo')
+    expect(wrapper.find('a').attributes('href')).toBe('/contact')
   })
   it('removes external hrefs with unsafe URL schemes', async () => {
     const wrapper = mount(BaseButton, {
@@ -96,11 +96,11 @@ describe('BaseButton', () => {
   it('removes disabled route links from keyboard navigation', async () => {
     const wrapper = mount(BaseButton, {
       props: {
-        to: '/demo',
+        to: '/contact',
         disabled: true,
       },
       slots: {
-        default: '预约演示',
+        default: '邮件联系我们',
       },
       global: {
         stubs: {

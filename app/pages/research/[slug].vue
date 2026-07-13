@@ -3,9 +3,8 @@ import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
 import BaseButton from '~/components/base/BaseButton.vue'
 import BaseContainer from '~/components/base/BaseContainer.vue'
 import BaseIcon from '~/components/base/BaseIcon.vue'
-import BaseTag from '~/components/base/BaseTag.vue'
-import CTASection from '~/components/common/CTASection.vue'
-import SceneFrame from '~/components/common/SceneFrame.vue'
+import EditorialHero from '~/components/common/EditorialHero.vue'
+import { resolveResearchVisual } from '~/data/research-visuals'
 import type { SeoBreadcrumbItem } from '~/utils/site-seo'
 
 const route = useRoute()
@@ -15,11 +14,7 @@ const slugParam = Array.isArray(route.params.slug) ? route.params.slug[0] : rout
 const readingProgress = ref(0)
 
 if (!slugParam) {
-  throw createError({
-    statusCode: 404,
-    statusMessage: '研究院内容暂未找到',
-    fatal: true,
-  })
+  throw createError({ statusCode: 404, message: '研究院内容暂未找到', fatal: true })
 }
 
 const articlePath = `/research/${slugParam}`
@@ -35,21 +30,16 @@ const { data: relatedArticles } = await useAsyncData(`research-related-${article
     .map((entry) => ({
       path: entry.path,
       title: entry.title,
-      category: entry.category ?? '内容规划',
+      category: entry.category ?? '专题内容',
     }))
 })
 
 if (!article.value) {
-  throw createError({
-    statusCode: 404,
-    statusMessage: '研究院内容暂未找到',
-    fatal: true,
-  })
+  throw createError({ statusCode: 404, message: '研究院内容暂未找到', fatal: true })
 }
 
-const siteOrigin = computed(() =>
-  resolveSiteOrigin(runtimeConfig.public.siteUrl, requestUrl.origin),
-)
+const visual = resolveResearchVisual(articlePath)
+const siteOrigin = computed(() => resolveSiteOrigin(runtimeConfig.public.siteUrl, requestUrl.origin))
 const breadcrumbItems = computed<SeoBreadcrumbItem[]>(() => [
   { name: '首页', path: '/' },
   { name: '健康研究院', path: '/research' },
@@ -57,12 +47,14 @@ const breadcrumbItems = computed<SeoBreadcrumbItem[]>(() => [
 ])
 const related = computed(() => relatedArticles.value ?? [])
 const articleDescription = computed(
-  () => article.value?.description ?? '知宠健康研究院文章草稿，正文与发布日期待项目方确认。',
+  () => article.value?.description ?? '围绕宠物健康观察与科学照护方法展开。',
 )
 
 const updateReadingProgress = () => {
   const scrollable = document.documentElement.scrollHeight - window.innerHeight
-  readingProgress.value = scrollable > 0 ? Math.min(100, Math.round((window.scrollY / scrollable) * 100)) : 0
+  readingProgress.value = scrollable > 0
+    ? Math.min(100, Math.round((window.scrollY / scrollable) * 100))
+    : 0
 }
 
 onMounted(() => {
@@ -87,15 +79,12 @@ useHead({
     {
       key: 'jsonld-research-page',
       type: 'application/ld+json',
-      innerHTML: () =>
-        JSON.stringify(
-          createWebPageJsonLd({
-            name: article.value?.title ?? '文章详情',
-            description: articleDescription.value,
-            path: articlePath,
-            siteOrigin: siteOrigin.value,
-          }),
-        ),
+      innerHTML: () => JSON.stringify(createWebPageJsonLd({
+        name: article.value?.title ?? '文章详情',
+        description: articleDescription.value,
+        path: articlePath,
+        siteOrigin: siteOrigin.value,
+      })),
     },
     {
       key: 'jsonld-research-breadcrumb',
@@ -107,47 +96,34 @@ useHead({
 </script>
 
 <template>
-  <div v-if="article" class="research-detail-page">
-    <section class="research-detail-hero" aria-labelledby="research-detail-title">
-      <BaseContainer class="research-detail-hero__inner" width="narrow">
-        <nav class="breadcrumb" aria-label="面包屑">
-          <NuxtLink to="/">首页</NuxtLink>
-          <span aria-hidden="true">/</span>
-          <NuxtLink to="/research">健康研究院</NuxtLink>
-          <span aria-hidden="true">/</span>
-          <span>{{ article.title }}</span>
-        </nav>
-        <BaseTag tone="concept">{{ article.status }}</BaseTag>
-        <h1 id="research-detail-title">{{ article.title }}</h1>
-        <p>{{ article.description }}</p>
-      </BaseContainer>
+  <main v-if="article" class="research-detail-page">
+    <EditorialHero
+      :eyebrow="article.category ?? '专题内容'"
+      :title="article.title"
+      :description="article.description ?? '围绕宠物健康观察与科学照护方法展开。'"
+      :image="visual.src"
+      :image-alt="visual.alt"
+      :object-position="visual.objectPosition"
+      :crumbs="[
+        { label: '首页', to: '/' },
+        { label: '健康研究院', to: '/research' },
+        { label: article.title },
+      ]"
+      primary-label="开始阅读"
+      primary-to="#article-body"
+      secondary-label="返回研究院"
+      secondary-to="/research"
+      priority
+    />
+
+    <section class="reading-meter" aria-label="阅读进度">
+      <span :style="{ width: `${readingProgress}%` }" />
     </section>
 
-    <BaseContainer class="article-visual" tag="section" width="narrow" aria-label="文章概念视觉">
-      <SceneFrame
-        src="/images/generated/pages/zhipet-research-observation-scene.png"
-        alt="知宠健康研究院安静阅读场景概念视觉"
-        aspect-ratio="16 / 8"
-        object-position="center"
-      />
-    </BaseContainer>
-
     <BaseContainer
+      id="article-body"
       tag="section"
-      class="research-detail-section boundary-notice"
-      width="narrow"
-      aria-labelledby="boundary-title"
-    >
-      <BaseIcon name="shield-check" aria-hidden="true" />
-      <div>
-        <h2 id="boundary-title">风险边界提示</h2>
-        <p>本文不提供医疗诊断或治疗建议。内容仅供参考，不能替代专业兽医意见。如宠物出现异常，请及时咨询执业兽医。</p>
-      </div>
-    </BaseContainer>
-
-    <BaseContainer
-      tag="section"
-      class="research-detail-section article-layout"
+      class="article-layout"
       width="wide"
       aria-labelledby="article-body-title"
     >
@@ -156,172 +132,76 @@ useHead({
         <div class="article-meta" aria-label="文章信息">
           <span>{{ article.category }}</span>
           <span>{{ article.publishedLabel }}</span>
+          <span>阅读进度 {{ readingProgress }}%</span>
         </div>
         <ContentRenderer :value="article" class="research-prose" />
       </article>
 
-      <aside class="article-sidebar" aria-label="文章侧栏">
-        <section class="sidebar-panel">
-          <h2>阅读进度</h2>
-          <div class="progress-track" aria-hidden="true">
-            <span :style="{ width: `${readingProgress}%` }" />
-          </div>
-          <p>{{ readingProgress }}%</p>
-        </section>
-        <section class="sidebar-panel">
-          <h2>相关阅读</h2>
-          <NuxtLink v-for="item in related" :key="item.path" :to="item.path">
-            <span>{{ item.category }}</span>
-            <strong>{{ item.title }}</strong>
-          </NuxtLink>
-        </section>
-        <section class="sidebar-panel product-card">
-          <BaseTag tone="concept">产品参考</BaseTag>
-          <h2>知宠智能项圈</h2>
-          <p>当前为产品方向展示，真实硬件参数、上市时间和能力范围待项目方确认。</p>
-          <BaseButton to="/products" variant="text">
-            查看产品
-            <template #iconRight>
-              <BaseIcon name="arrow-right" />
-            </template>
-          </BaseButton>
-        </section>
+      <aside class="article-rail" aria-label="相关阅读">
+        <p class="article-rail__eyebrow">继续阅读</p>
+        <NuxtLink v-for="item in related" :key="item.path" :to="item.path">
+          <span>{{ item.category }}</span>
+          <strong>{{ item.title }}</strong>
+          <BaseIcon name="arrow-right" aria-hidden="true" />
+        </NuxtLink>
       </aside>
     </BaseContainer>
 
-    <BaseContainer
-      tag="section"
-      class="research-detail-section editorial-boundary"
-      width="narrow"
-      aria-labelledby="editorial-boundary-title"
-    >
-      <BaseTag tone="warning">发布边界</BaseTag>
-      <h2 id="editorial-boundary-title">正式发布前仍需确认</h2>
-      <p>
-        标题、发布日期、引用来源、正文事实、图表和配图均需项目方确认后再作为正式研究院内容公开。
-      </p>
-      <BaseButton to="/research" variant="text">
-        返回健康研究院
-        <template #iconRight>
-          <BaseIcon name="arrow-right" />
-        </template>
-      </BaseButton>
-    </BaseContainer>
+    <section class="reading-boundary" aria-labelledby="reading-boundary-title">
+      <BaseContainer class="reading-boundary__inner" width="wide">
+        <BaseIcon name="shield-check" aria-hidden="true" />
+        <div>
+          <p class="reading-boundary__eyebrow">阅读边界</p>
+          <h2 id="reading-boundary-title">健康观察不能替代专业诊疗</h2>
+        </div>
+        <p>
+          文中内容用于帮助理解日常变化与照护线索，不提供医疗诊断或治疗建议。宠物出现持续或明显异常时，请及时咨询执业兽医。
+        </p>
+      </BaseContainer>
+    </section>
 
-    <CTASection
-      title="想了解文章背后的产品路径？"
-      description="预约演示，确认当前样机能力、App 流程和健康趋势观察边界。"
-    />
-  </div>
+    <BaseContainer tag="section" class="article-end" width="wide">
+      <div>
+        <p>知宠研究院</p>
+        <h2>把观察变成更有依据的照护</h2>
+      </div>
+      <div class="article-end__actions">
+        <BaseButton to="/research" variant="secondary">返回研究院</BaseButton>
+        <BaseButton to="/help#feedback">
+          提交意见反馈
+          <template #iconRight><BaseIcon name="arrow-right" /></template>
+        </BaseButton>
+      </div>
+    </BaseContainer>
+  </main>
 </template>
 
 <style scoped lang="scss">
-@use '~/assets/styles/mixins' as *;
-
 .research-detail-page {
   overflow: hidden;
 }
 
-.research-detail-hero {
-  position: relative;
-  isolation: isolate;
-  padding-block: var(--space-8) var(--space-6);
-  background:
-    linear-gradient(180deg, rgb(255 255 255 / 64%), rgb(251 248 242 / 0) 78%),
-    radial-gradient(circle at 76% 20%, rgb(232 200 148 / 16%), transparent 30%);
+.reading-meter {
+  position: sticky;
+  z-index: 12;
+  top: var(--header-height, 80px);
+  height: 3px;
+  background: rgb(16 73 58 / 10%);
 }
 
-.research-detail-hero::before {
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  background:
-    linear-gradient(90deg, var(--color-bg) 0%, rgb(251 248 242 / 82%) 48%, rgb(251 248 242 / 34%) 100%),
-    url('/images/generated/pages/zhipet-research-observation-scene.png') center / cover no-repeat;
-  content: '';
-  opacity: 0.14;
-}
-
-.research-detail-hero__inner {
-  display: grid;
-  gap: var(--space-4);
-}
-
-.breadcrumb {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-2);
-  align-items: center;
-  color: var(--color-text-secondary);
-  font-size: 14px;
-  font-weight: 650;
-}
-
-.breadcrumb a {
-  color: var(--color-text-secondary);
-}
-
-.breadcrumb a:hover {
-  color: var(--color-accent-600);
-}
-
-.research-detail-hero h1 {
-  max-width: 860px;
-  font-size: 58px;
-  line-height: 1.1;
-  letter-spacing: 0;
-  text-wrap: balance;
-}
-
-.research-detail-hero p {
-  max-width: 760px;
-  color: var(--color-text-secondary);
-  font-size: 18px;
-  line-height: 1.72;
-}
-
-.article-visual {
-  padding-bottom: var(--space-7);
-}
-
-.research-detail-section {
-  @include section-spacing;
-}
-
-.boundary-notice {
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
-  gap: var(--space-4);
-  padding: var(--space-5);
-  border: 1px solid rgb(183 121 43 / 24%);
-  border-radius: var(--radius-media);
-  background: var(--color-accent-100);
-}
-
-.boundary-notice .base-icon {
-  color: var(--color-accent-600);
-  font-size: 24px;
-}
-
-.boundary-notice h2 {
-  margin-bottom: var(--space-2);
-  font-size: 20px;
-}
-
-.boundary-notice p,
-.article-meta,
-.research-prose :deep(p),
-.research-prose :deep(li),
-.article-sidebar p,
-.editorial-boundary p {
-  color: var(--color-text-secondary);
+.reading-meter span {
+  display: block;
+  height: 100%;
+  background: var(--color-accent-600);
+  transition: width var(--motion-duration-fast) var(--motion-ease-out);
 }
 
 .article-layout {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(280px, 0.32fr);
-  gap: var(--space-7);
+  grid-template-columns: minmax(0, 780px) minmax(220px, 1fr);
+  gap: clamp(48px, 8vw, 112px);
   align-items: start;
+  padding-block: clamp(96px, 11vw, 144px);
 }
 
 .article-body {
@@ -334,23 +214,29 @@ useHead({
   gap: var(--space-3);
   padding-bottom: var(--space-5);
   border-bottom: 1px solid var(--color-border);
-  font-size: 14px;
-  font-weight: 650;
+  color: var(--color-text-secondary);
+  font-size: 13px;
+  font-weight: 700;
 }
 
 .research-prose {
   padding-top: var(--space-7);
   color: var(--color-text);
-  font-size: 17px;
-  line-height: 1.86;
+  font-size: 18px;
+  line-height: 1.9;
 }
 
 .research-prose :deep(h2) {
-  margin: var(--space-7) 0 var(--space-3);
+  margin: var(--space-8) 0 var(--space-3);
   color: var(--color-brand-900);
-  font-size: 28px;
-  line-height: 1.25;
+  font-size: 32px;
+  line-height: 1.24;
   letter-spacing: 0;
+}
+
+.research-prose :deep(p),
+.research-prose :deep(li) {
+  color: var(--color-text-secondary);
 }
 
 .research-prose :deep(p) {
@@ -361,106 +247,163 @@ useHead({
   display: grid;
   gap: var(--space-2);
   margin: 0 0 var(--space-5);
-  padding-left: 1.25em;
+  padding-left: 1.2em;
 }
 
-.article-sidebar {
+.article-rail {
   position: sticky;
-  top: 104px;
+  top: 120px;
   display: grid;
-  gap: var(--space-4);
+  border-top: 1px solid var(--color-border-strong);
 }
 
-.sidebar-panel {
-  display: grid;
-  gap: var(--space-3);
-  padding: var(--space-5);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-card);
-  background: var(--color-surface);
+.article-rail__eyebrow {
+  padding-block: var(--space-4);
+  color: var(--color-accent-600);
+  font-size: 13px;
+  font-weight: 800;
 }
 
-.sidebar-panel h2 {
-  font-size: 18px;
-}
-
-.sidebar-panel a {
+.article-rail a {
   display: grid;
-  gap: var(--space-1);
-  padding-top: var(--space-3);
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: var(--space-1) var(--space-3);
+  padding-block: var(--space-4);
   border-top: 1px solid var(--color-border);
   color: var(--color-brand-900);
 }
 
-.sidebar-panel a span {
+.article-rail a span {
+  grid-column: 1 / -1;
   color: var(--color-text-secondary);
   font-size: 12px;
 }
 
-.progress-track {
-  overflow: hidden;
-  height: 6px;
-  border-radius: var(--radius-pill);
-  background: var(--color-surface-soft);
+.article-rail a strong {
+  line-height: 1.5;
 }
 
-.progress-track span {
-  display: block;
-  height: 100%;
-  border-radius: inherit;
-  background: var(--color-accent-600);
-  transition: width var(--motion-duration-fast) var(--motion-ease-out);
+.article-rail a .base-icon {
+  align-self: center;
 }
 
-.editorial-boundary {
+.reading-boundary {
+  background: var(--color-brand-900);
+  color: #fff;
+}
+
+.reading-boundary__inner {
   display: grid;
-  gap: var(--space-3);
-  padding-top: 0;
+  grid-template-columns: auto minmax(220px, 0.7fr) minmax(320px, 1fr);
+  gap: var(--space-5);
+  align-items: center;
+  padding-block: clamp(64px, 7vw, 88px);
 }
 
-.editorial-boundary h2 {
+.reading-boundary__inner > .base-icon {
+  color: var(--color-accent-300);
+  font-size: 34px;
+}
+
+.reading-boundary__eyebrow {
+  margin-bottom: var(--space-2);
+  color: var(--color-accent-300);
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.reading-boundary h2 {
+  color: #fff;
   font-size: 28px;
 }
 
-@media (max-width: 980px) {
+.reading-boundary__inner > p {
+  color: rgb(255 255 255 / 72%);
+  line-height: 1.8;
+}
+
+.article-end {
+  display: flex;
+  gap: var(--space-6);
+  align-items: end;
+  justify-content: space-between;
+  padding-block: clamp(96px, 10vw, 128px);
+}
+
+.article-end p {
+  margin-bottom: var(--space-2);
+  color: var(--color-accent-600);
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.article-end h2 {
+  max-width: 620px;
+  font-size: 38px;
+}
+
+.article-end__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+@media (max-width: 900px) {
   .article-layout {
     grid-template-columns: 1fr;
   }
 
-  .article-sidebar {
+  .article-rail {
     position: static;
   }
-}
 
-@media (max-width: 760px) {
-  .research-detail-hero h1 {
-    font-size: 38px;
+  .reading-boundary__inner {
+    grid-template-columns: auto 1fr;
+  }
+
+  .reading-boundary__inner > p {
+    grid-column: 2;
   }
 }
 
-@media (max-width: 560px) {
-  .research-detail-hero {
-    padding-block: var(--space-6) var(--space-5);
+@media (max-width: 640px) {
+  .article-layout {
+    padding-block: 72px;
   }
 
-  .research-detail-hero h1 {
-    font-size: 34px;
-  }
-
-  .research-detail-hero p,
   .research-prose {
-    font-size: 15px;
+    font-size: 16px;
   }
 
-  .boundary-notice,
-  .sidebar-panel {
+  .research-prose :deep(h2) {
+    font-size: 26px;
+  }
+
+  .reading-boundary__inner {
     grid-template-columns: 1fr;
-    padding: var(--space-4);
+  }
+
+  .reading-boundary__inner > p {
+    grid-column: auto;
+  }
+
+  .article-end {
+    display: grid;
+    align-items: start;
+  }
+
+  .article-end h2 {
+    font-size: 30px;
+  }
+
+  .article-end__actions,
+  .article-end__actions :deep(.base-button) {
+    width: 100%;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .progress-track span {
+  .reading-meter span {
     transition-duration: 0.01ms;
   }
 }

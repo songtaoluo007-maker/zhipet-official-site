@@ -1,0 +1,16 @@
+[Unit]
+Description=Deliver queued ZHIPET feedback emails
+After=network-online.target zhipet-web.service
+
+[Service]
+Type=oneshot
+User=zhipet
+Group=zhipet
+WorkingDirectory=/srv/zhipet/current
+EnvironmentFile=/etc/zhipet/zhipet.env
+ExecStart=/usr/bin/node /srv/zhipet/current/scripts/deliver-email-outbox.mjs
+UMask=0077
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=full
+ProtectHome=true

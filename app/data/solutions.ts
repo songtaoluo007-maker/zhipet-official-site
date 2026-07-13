@@ -1,43 +1,4 @@
-import type { SolutionCard, SolutionDetail } from '~/types/solution'
-
-export const solutionCards: SolutionCard[] = [
-  {
-    id: 'family',
-    icon: 'home',
-    title: '家庭养宠',
-    audience: '家庭用户',
-    status: '方案定义阶段',
-    summary: '围绕宠物叫声、日常行为、情绪趋势和长期个体画像，帮助家庭把陪伴状态与异常变化看得更清楚。',
-    image: '/images/generated/pages/zhipet-family-care-scene.png',
-    alt: '知宠家庭养宠解决方案概念视觉',
-    features: ['叫声状态理解', '行为变化分析', '个体画像'],
-    href: '/solutions/family',
-  },
-  {
-    id: 'hospital',
-    icon: 'hospital',
-    title: '宠物医院',
-    audience: '医疗机构',
-    status: '场景验证阶段',
-    summary: '探索院外健康记录、复诊沟通和设备数据接入，真实合作流程待机构确认后再展示。',
-    image: '/images/generated/pages/zhipet-hospital-collab-scene.png',
-    alt: '宠物医院健康管理协同概念视觉',
-    features: ['院外管理', '复诊沟通', '数据接入'],
-    href: '/solutions/hospital',
-  },
-  {
-    id: 'store',
-    icon: 'store',
-    title: '宠物门店',
-    audience: '门店与服务机构',
-    status: '服务流程规划中',
-    summary: '围绕会员健康服务、提醒触达和照护记录归档建立长期连接，具体方案待项目方确认。',
-    image: '/images/generated/pages/zhipet-store-service-scene.png',
-    alt: '宠物门店服务连接概念视觉',
-    features: ['会员服务', '提醒触达', '照护归档'],
-    href: '/solutions/store',
-  },
-]
+import type { SolutionDetail } from '~/types/solution'
 
 export const familySolution: SolutionDetail = {
   slug: 'family',
@@ -45,9 +6,8 @@ export const familySolution: SolutionDetail = {
   breadcrumbLabel: '家庭养宠',
   headline: '把日常行为和陪伴状态看得更清楚',
   summary:
-    '知宠家庭养宠解决方案面向日常陪伴、状态理解和异常变化观察场景，融合设备或手机采集的声音、动作、活动、场景与长期记录，结合知宠 App 和 PetSense 引擎推测宠物可能的情绪、需求和异常状态。当前内容用于方案定义展示，真实服务范围与上线节奏以项目方确认为准。',
-  status: '家庭场景方案定义阶段',
-  cover: '/images/generated/pages/zhipet-family-care-scene.png',
+    '知宠家庭养宠解决方案面向日常陪伴、状态理解和异常变化观察场景，将声音、动作、活动、场景与长期记录组织成更容易理解的照护线索。',
+  cover: '/images/generated/pages/zhipet-family-care-scene.webp',
   coverAlt: '知宠家庭养宠解决方案概念视觉',
   painPoints: [
     {
@@ -144,30 +104,8 @@ export const familySolution: SolutionDetail = {
     },
     {
       id: 'privacy-boundary',
-      title: '隐私与授权待完善',
-      description: '原始音频、家庭环境音频和宠物数据均应视为敏感数据，采集、删除和共享规则待项目方确认。',
-    },
-  ],
-  confirmationItems: [
-    {
-      label: '服务上线状态',
-      value: '待项目方确认',
-      note: '当前为方案定义展示',
-    },
-    {
-      label: '采集方式范围',
-      value: '待项目方确认',
-      note: '智能挂件、手机记录和手动补充边界需样机验证',
-    },
-    {
-      label: '分析与提醒规则',
-      value: '待项目方确认',
-      note: '置信度、风险等级、阈值和触达方式需结合真实测试确定',
-    },
-    {
-      label: '自然语言交互范围',
-      value: '待项目方确认',
-      note: '可询问范围、反馈方式和回复边界确认后再展示',
+      title: '尊重隐私与授权',
+      description: '原始音频、家庭环境音频和宠物数据均应视为敏感数据，采集、删除和共享需要清晰授权。',
     },
   ],
   sections: {
@@ -175,14 +113,12 @@ export const familySolution: SolutionDetail = {
     painDescription: '方案先解决日常叫声、行为、情绪趋势和长期习惯的理解缺口，不做未验证诊疗承诺。',
     workflowTitle: '家庭宠物理解流程',
     workflowDescription: '从设备或手机采集到主人反馈，形成可持续更新的个体画像和陪伴建议。',
-    workflowImage: '/images/generated/pages/zhipet-family-care-scene.png',
-    workflowImageAlt: '智能挂件、知宠 App 和 PetSense 引擎协同概念视觉',
     modulesTitle: '家庭端能力组成',
-    modulesDescription: '以长期个体画像、自然语言询问和陪伴建议组织当前能力，避免额外堆叠功能模块。',
-    boundaryTitle: '边界与待确认项',
+    modulesDescription: '以长期个体画像、自然语言询问和陪伴建议组织体验，避免额外堆叠功能模块。',
+    boundaryTitle: '使用边界',
     boundaryDescription: '把概率分析、专业诊疗边界和敏感数据授权写清楚，比把概念写成确定承诺更重要。',
     ctaTitle: '想确认家庭宠物理解方案是否适合您？',
-    ctaDescription: '预约演示，了解当前样机能力、App 流程和 AI 宠物理解边界。',
+    ctaDescription: '通过公开邮箱了解 App 流程和 AI 宠物理解边界。',
   },
 }
 
@@ -192,9 +128,8 @@ export const hospitalSolution: SolutionDetail = {
   breadcrumbLabel: '宠物医院',
   headline: '让院外健康记录成为复诊沟通线索',
   summary:
-    '知宠宠物医院解决方案面向院外观察、复诊沟通和授权数据协同场景。当前内容用于场景验证展示，真实合作机构、数据接入范围和服务流程待项目方确认。',
-  status: '场景验证阶段',
-  cover: '/images/generated/pages/zhipet-hospital-collab-scene.png',
+    '知宠宠物医院解决方案面向院外观察、复诊沟通和授权数据协同场景，让家庭记录成为更清晰的沟通线索。',
+  cover: '/images/generated/pages/zhipet-hospital-collab-scene.webp',
   coverAlt: '宠物医院健康管理协同概念视觉',
   painPoints: [
     {
@@ -227,7 +162,7 @@ export const hospitalSolution: SolutionDetail = {
       id: 'observe',
       order: '02',
       title: '记录院外变化',
-      description: '围绕样机阶段可验证的数据能力，沉淀活动趋势、异常备注和照护执行情况。',
+      description: '围绕可读取的日常数据，沉淀活动趋势、异常备注和照护执行情况。',
     },
     {
       id: 'summarize',
@@ -239,7 +174,7 @@ export const hospitalSolution: SolutionDetail = {
       id: 'handoff',
       order: '04',
       title: '机构侧参考沟通',
-      description: '在真实合作流程确认后，再展示医生端、客服端或院内系统的具体连接方式。',
+      description: '在主人授权前提下，为医生端、客服端或院内系统提供清晰的参考摘要。',
     },
   ],
   modules: [
@@ -247,7 +182,7 @@ export const hospitalSolution: SolutionDetail = {
       id: 'record-entry',
       icon: 'collar',
       title: '院外记录入口',
-      description: '承接智能挂件与 App 的趋势记录能力，具体硬件指标和记录颗粒度待项目方确认。',
+      description: '承接智能挂件与 App 的趋势记录能力，整理与复诊沟通相关的连续线索。',
     },
     {
       id: 'clinic-view',
@@ -259,7 +194,7 @@ export const hospitalSolution: SolutionDetail = {
       id: 'privacy-rule',
       icon: 'shield-check',
       title: '授权与隐私规则',
-      description: '以主人授权为前提处理数据查看、撤回和留痕，具体合规规则待项目方确认。',
+      description: '以主人授权为前提处理数据查看、撤回和留痕，避免默认共享。',
     },
   ],
   guardrails: [
@@ -270,50 +205,26 @@ export const hospitalSolution: SolutionDetail = {
     },
     {
       id: 'partner-boundary',
-      title: '合作机构待确认',
-      description: '不展示虚构医院名称、合作案例或落地数据，机构名单需由项目方确认后再发布。',
+      title: '真实协作原则',
+      description: '只基于真实授权关系开展协作，不以虚构案例或数据代替实际服务。',
     },
     {
       id: 'authorization-boundary',
-      title: '授权流程待确认',
-      description: '数据共享、查看权限、撤回机制和留痕规则均需项目方确认后再进入正式官网口径。',
-    },
-  ],
-  confirmationItems: [
-    {
-      label: '合作机构名单',
-      value: '待项目方确认',
-      note: '不使用虚构医院或客户 Logo',
-    },
-    {
-      label: '数据接入范围',
-      value: '待项目方确认',
-      note: '设备、App 或院内系统字段需真实确认',
-    },
-    {
-      label: '医生端流程',
-      value: '待项目方确认',
-      note: '问诊、复诊、客服角色边界需验证',
-    },
-    {
-      label: '服务上线状态',
-      value: '待项目方确认',
-      note: '当前为场景验证展示',
+      title: '授权流程清晰',
+      description: '数据共享、查看权限、撤回机制和留痕规则需要对家庭与机构保持透明。',
     },
   ],
   sections: {
     painTitle: '医院场景常见难点',
-    painDescription: '先梳理院外记录与复诊沟通中的信息缺口，不把概念流程写成已上线合作。',
+    painDescription: '先梳理院外记录与复诊沟通中的信息缺口，再建立清晰的授权与协作方式。',
     workflowTitle: '院外健康协同流程',
     workflowDescription: '从授权建档到复诊摘要，流程强调可验证、可撤回和边界清晰。',
-    workflowImage: '/images/generated/pages/zhipet-hospital-collab-scene.png',
-    workflowImageAlt: '宠物医院院外健康协同概念视觉',
     modulesTitle: '方案组成',
-    modulesDescription: '以院外记录、机构协同和授权规则三个层次组织能力，真实接入方式待项目方确认。',
-    boundaryTitle: '边界与待确认项',
+    modulesDescription: '以院外记录、机构协同和授权规则三个层次组织能力。',
+    boundaryTitle: '使用边界',
     boundaryDescription: '医疗场景必须把诊疗边界、授权机制和合作状态写得足够清楚。',
     ctaTitle: '想评估医院场景的协同方式？',
-    ctaDescription: '预约演示，确认当前样机能力、院外记录口径和机构协同边界。',
+    ctaDescription: '通过公开邮箱沟通院外记录口径和机构协同边界。',
   },
 }
 
@@ -323,9 +234,8 @@ export const storeSolution: SolutionDetail = {
   breadcrumbLabel: '宠物门店',
   headline: '把照护记录与会员服务连接起来',
   summary:
-    '知宠宠物门店解决方案面向会员健康服务、提醒触达和照护记录归档场景。当前内容用于服务流程规划展示，合作门店、上线范围和触达规则待项目方确认。',
-  status: '服务流程规划中',
-  cover: '/images/generated/pages/zhipet-store-service-scene.png',
+    '知宠宠物门店解决方案面向会员健康服务、提醒触达和照护记录归档场景，让每次服务都能成为长期照护的一部分。',
+  cover: '/images/generated/pages/zhipet-store-service-scene.webp',
   coverAlt: '宠物门店服务连接概念视觉',
   painPoints: [
     {
@@ -338,7 +248,7 @@ export const storeSolution: SolutionDetail = {
       id: 'touchpoint',
       icon: 'phone',
       title: '提醒触达不稳定',
-      description: '疫苗、护理、复购和复访提醒需要明确授权与频率，当前不承诺具体触达效果。',
+      description: '疫苗、护理、复购和复访提醒需要明确授权与频率，避免过度触达。',
     },
     {
       id: 'service-archive',
@@ -378,13 +288,13 @@ export const storeSolution: SolutionDetail = {
       id: 'store-entry',
       icon: 'store',
       title: '门店服务入口',
-      description: '承接门店会员、护理记录和回访任务，具体功能范围待项目方确认。',
+      description: '承接门店会员、护理记录和回访任务，保持服务信息连贯。',
     },
     {
       id: 'member-app',
       icon: 'phone',
       title: '会员 App 协作',
-      description: '让主人查看宠物档案、提醒和服务记录，真实账号体系和触达方式待确认。',
+      description: '让主人查看宠物档案、提醒和服务记录，账号与触达遵循清晰授权和用户自主控制。',
     },
     {
       id: 'archive-rule',
@@ -406,30 +316,8 @@ export const storeSolution: SolutionDetail = {
     },
     {
       id: 'authorization-boundary',
-      title: '授权与触达规则待确认',
-      description: '会员通知、数据查看和门店协作需建立清晰授权机制，规则待项目方确认。',
-    },
-  ],
-  confirmationItems: [
-    {
-      label: '合作门店名单',
-      value: '待项目方确认',
-      note: '不使用虚构门店或客户 Logo',
-    },
-    {
-      label: '会员服务范围',
-      value: '待项目方确认',
-      note: '美容、护理、寄养等场景需逐项确认',
-    },
-    {
-      label: '提醒触达方式',
-      value: '待项目方确认',
-      note: '短信、App、企业微信等入口需真实配置',
-    },
-    {
-      label: '服务上线节奏',
-      value: '待项目方确认',
-      note: '当前为服务流程规划展示',
+      title: '授权与触达克制',
+      description: '会员通知、数据查看和门店协作需要建立清晰授权机制。',
     },
   ],
   sections: {
@@ -437,13 +325,11 @@ export const storeSolution: SolutionDetail = {
     painDescription: '先把会员服务链路中的信息分散、授权触达和记录归档问题讲清楚。',
     workflowTitle: '会员健康服务流程',
     workflowDescription: '从会员档案到服务归档，流程以可确认、可调整和可授权为前提。',
-    workflowImage: '/images/generated/pages/zhipet-store-service-scene.png',
-    workflowImageAlt: '宠物门店会员服务连接概念视觉',
     modulesTitle: '方案组成',
-    modulesDescription: '以门店服务入口、会员 App 协作和授权归档三个层次组织当前方案。',
-    boundaryTitle: '边界与待确认项',
+    modulesDescription: '以门店服务入口、会员 App 协作和授权归档三个层次组织方案。',
+    boundaryTitle: '使用边界',
     boundaryDescription: '门店场景不虚构经营结果，也不把服务提醒包装成医疗判断。',
     ctaTitle: '想确认门店服务流程是否匹配？',
-    ctaDescription: '预约演示，确认会员场景、触达方式和当前规划边界。',
+    ctaDescription: '通过公开邮箱沟通会员场景、触达方式和服务边界。',
   },
 }

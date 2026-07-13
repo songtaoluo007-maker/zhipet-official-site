@@ -7,7 +7,7 @@
       "request": "launch",
       "url": "http://127.0.0.1:3000/",
       "webRoot": "${workspaceFolder}",
-      "preLaunchTask": "nuxt: dev",
+      "preLaunchTask": "zhipet: dev",
       "sourceMaps": true
     }
   ]

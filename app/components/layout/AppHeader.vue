@@ -59,7 +59,10 @@
       </nav>
 
       <div class="app-header__actions">
-        <BaseButton to="/login" variant="secondary" size="sm">登录 / 注册</BaseButton>
+        <BaseButton to="/download" variant="secondary" size="sm">
+          <template #iconLeft><BaseIcon name="phone" /></template>
+          App 下载
+        </BaseButton>
       </div>
 
       <BaseIconButton
@@ -73,7 +76,11 @@
     </BaseContainer>
   </header>
 
-  <MobileMenu :open="menuOpen" :items="mainNavigation" @close="menuOpen = false" />
+  <MobileMenu
+    :open="menuOpen"
+    :items="mainNavigation"
+    @close="menuOpen = false"
+  />
 </template>
 
 <script setup lang="ts">
@@ -87,7 +94,6 @@ import type { NavigationItem } from '~/types/site'
 
 const route = useRoute()
 const { mainNavigation } = useNavigation()
-
 const scrolled = ref(false)
 const menuOpen = ref(false)
 const openDropdownHref = ref<string | null>(null)
@@ -338,8 +344,7 @@ onBeforeUnmount(() => {
   border: 1px solid rgb(226 216 203 / 86%);
   border-radius: 10px;
   background:
-    linear-gradient(180deg, rgb(255 253 248 / 96%), rgb(246 241 233 / 94%)),
-    var(--color-surface);
+    linear-gradient(180deg, rgb(255 253 248 / 96%), rgb(246 241 233 / 94%)), var(--color-surface);
   box-shadow:
     0 16px 42px rgb(47 36 27 / 10%),
     inset 0 1px 0 rgb(255 255 255 / 64%);
@@ -353,21 +358,11 @@ onBeforeUnmount(() => {
   visibility: hidden;
 }
 
-.app-header__nav-item:nth-last-child(-n + 2) .app-header__dropdown {
-  right: 0;
-  left: auto;
-  transform: translateY(-8px);
-}
-
 .app-header__nav-item.is-open .app-header__dropdown {
   opacity: 1;
   pointer-events: auto;
   transform: translate(-50%, 0);
   visibility: visible;
-}
-
-.app-header__nav-item:nth-last-child(-n + 2).is-open .app-header__dropdown {
-  transform: translateY(0);
 }
 
 .app-header__dropdown ul {
@@ -416,7 +411,7 @@ onBeforeUnmount(() => {
   box-shadow: var(--focus-ring);
 }
 
-.app-header__menu-button {
+.app-header :deep(.app-header__menu-button) {
   display: none;
 }
 
@@ -426,7 +421,7 @@ onBeforeUnmount(() => {
     display: none;
   }
 
-  .app-header__menu-button {
+  .app-header :deep(.app-header__menu-button) {
     display: inline-flex;
   }
 }

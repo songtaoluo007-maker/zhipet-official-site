@@ -8,7 +8,7 @@ const NuxtImgStub = {
 }
 
 describe('BaseImage', () => {
-  it('does not render visible concept labels inside the image', () => {
+  it('renders a visible label for an explicitly marked concept image', () => {
     const wrapper = mount(BaseImage, {
       props: {
         src: '/images/concepts/hero-care-scene.svg',
@@ -22,11 +22,11 @@ describe('BaseImage', () => {
       },
     })
 
-    expect(wrapper.find('.base-image__frame .base-image__label').exists()).toBe(false)
+    expect(wrapper.find('.base-image__label').text()).toBe('AI 概念图，仅供参考')
     expect(wrapper.find('.base-image__label--below').exists()).toBe(false)
   })
 
-  it('does not render visible concept labels below the image', () => {
+  it('places the concept label below the image when requested', () => {
     const wrapper = mount(BaseImage, {
       props: {
         src: '/images/concepts/hero-care-scene.svg',
@@ -41,7 +41,22 @@ describe('BaseImage', () => {
       },
     })
 
-    expect(wrapper.find('.base-image__frame .base-image__label').exists()).toBe(false)
-    expect(wrapper.find('.base-image__label--below').exists()).toBe(false)
+    expect(wrapper.find('.base-image__label--below').text()).toBe('AI 概念图，仅供参考')
+  })
+
+  it('automatically labels generated image assets', () => {
+    const wrapper = mount(BaseImage, {
+      props: {
+        src: '/images/generated/product-scene.webp',
+        alt: '产品概念场景',
+      },
+      global: {
+        stubs: {
+          NuxtImg: NuxtImgStub,
+        },
+      },
+    })
+
+    expect(wrapper.find('.base-image__label').text()).toBe('AI 概念图，仅供参考')
   })
 })

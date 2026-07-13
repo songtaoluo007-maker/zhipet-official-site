@@ -54,6 +54,10 @@ const decorativeSignals = computed(() => props.stage.signals.slice(0, 4))
     >
       <HeroAppPanel :stage="stage" />
     </section>
+
+    <figcaption class="hero-immersive-stage__label">
+      AI 概念图，仅供参考 · App 界面与数据为示意
+    </figcaption>
   </figure>
 </template>
 
@@ -102,8 +106,8 @@ const decorativeSignals = computed(() => props.stage.signals.slice(0, 4))
 
 .hero-immersive-stage__label {
   position: absolute;
-  right: max(var(--page-gutter), calc((100vw - var(--container-default)) / 2));
-  bottom: clamp(142px, 16vh, 176px);
+  bottom: 18px;
+  left: max(var(--page-gutter), calc((100vw - var(--container-default)) / 2));
   z-index: 4;
   padding: 7px 12px;
   border: 1px solid rgb(255 253 248 / 48%);
@@ -671,7 +675,7 @@ const decorativeSignals = computed(() => props.stage.signals.slice(0, 4))
   }
 
   .hero-immersive-stage__label {
-    bottom: 8px;
+    bottom: 10px;
   }
 }
 
@@ -689,9 +693,9 @@ const decorativeSignals = computed(() => props.stage.signals.slice(0, 4))
   }
 
   .hero-immersive-stage__label {
-    top: 416px;
     right: var(--page-gutter);
-    bottom: auto;
+    bottom: 10px;
+    left: auto;
   }
 
   .hero-immersive-stage__trend {

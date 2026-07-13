@@ -96,7 +96,7 @@ test('unknown routes show the branded not-found experience', async ({ page }) =>
   await expect(page.getByRole('heading', { name: '页面暂未找到' })).toBeVisible()
   await expect(page.getByRole('link', { name: '返回首页' })).toBeVisible()
   await expect(page.getByRole('link', { name: '查看产品中心' })).toBeVisible()
-  await expect(page.locator('.error-page__actions').getByRole('link', { name: '帮助中心' })).toBeVisible()
+  await expect(page.locator('.error-page__actions').getByRole('link', { name: '咨询与反馈' })).toBeVisible()
 
   const hasOverflow = await page.evaluate(
     () => document.documentElement.scrollWidth > window.innerWidth,

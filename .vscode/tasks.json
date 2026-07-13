@@ -2,6 +2,32 @@
   "version": "2.0.0",
   "tasks": [
     {
+      "label": "database: start",
+      "type": "shell",
+      "command": "docker",
+      "args": ["compose", "up", "-d", "database"],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "database: stop",
+      "type": "shell",
+      "command": "docker",
+      "args": ["compose", "down"],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "zhipet: dev",
+      "dependsOrder": "sequence",
+      "dependsOn": ["database: start", "nuxt: dev"],
+      "problemMatcher": []
+    },
+    {
       "label": "nuxt: dev",
       "type": "shell",
       "command": "C:\\Users\\Administrator\\nodejs\\pnpm.CMD",

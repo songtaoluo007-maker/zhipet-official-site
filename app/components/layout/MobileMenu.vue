@@ -1,6 +1,13 @@
 <template>
   <Transition name="mobile-menu">
-    <div v-if="open" ref="dialogElement" class="mobile-menu" role="dialog" aria-modal="true" aria-label="移动端导航">
+    <div
+      v-if="open"
+      ref="dialogElement"
+      class="mobile-menu"
+      role="dialog"
+      aria-modal="true"
+      aria-label="移动端导航"
+    >
       <button
         class="mobile-menu__backdrop"
         type="button"
@@ -14,7 +21,12 @@
             <span>知宠</span>
             <strong>ZHIPET</strong>
           </NuxtLink>
-          <BaseIconButton label="关闭菜单" variant="bordered" data-menu-close @click="$emit('close')">
+          <BaseIconButton
+            label="关闭菜单"
+            variant="bordered"
+            data-menu-close
+            @click="$emit('close')"
+          >
             <BaseIcon name="x" />
           </BaseIconButton>
         </div>
@@ -44,9 +56,14 @@
             </ul>
           </li>
         </ul>
-        <div class="mobile-menu__actions" aria-label="账号入口">
-          <BaseButton to="/login" variant="ghost" block @click="$emit('close')">登录</BaseButton>
-          <BaseButton to="/login?mode=register" block @click="$emit('close')">注册</BaseButton>
+        <div class="mobile-menu__actions" aria-label="产品与支持">
+          <BaseButton to="/download" block @click="$emit('close')">
+            <template #iconLeft><BaseIcon name="phone" /></template>
+            App 下载
+          </BaseButton>
+          <BaseButton to="/help#feedback" variant="secondary" block @click="$emit('close')">
+            意见问题反馈
+          </BaseButton>
         </div>
       </nav>
     </div>
@@ -111,7 +128,8 @@ const isChildActive = (href: string, parentHref: string) => {
   return isActive(href)
 }
 
-const childLinks = (item: NavigationItem) => item.children?.filter((child) => child.href !== item.href) ?? []
+const childLinks = (item: NavigationItem) =>
+  item.children?.filter((child) => child.href !== item.href) ?? []
 
 const hasChildLinks = (item: NavigationItem) => childLinks(item).length > 0
 
@@ -130,7 +148,8 @@ const restorePageScroll = () => {
 }
 
 const openMenu = async () => {
-  previousActiveElement = document.activeElement instanceof HTMLElement ? document.activeElement : null
+  previousActiveElement =
+    document.activeElement instanceof HTMLElement ? document.activeElement : null
   lockPageScroll()
   await focusCloseButton()
 }
@@ -236,8 +255,7 @@ onBeforeUnmount(() => {
   padding: var(--space-5);
   border-left: 1px solid rgb(232 224 213 / 78%);
   background:
-    linear-gradient(180deg, rgb(255 253 248 / 98%), rgb(246 241 233 / 98%)),
-    var(--color-bg);
+    linear-gradient(180deg, rgb(255 253 248 / 98%), rgb(246 241 233 / 98%)), var(--color-bg);
   box-shadow: -20px 0 60px rgb(47 36 27 / 15%);
   overscroll-behavior: contain;
 }

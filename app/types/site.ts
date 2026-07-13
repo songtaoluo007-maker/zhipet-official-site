@@ -11,16 +11,29 @@ export interface FooterGroup {
 }
 
 export interface SiteContact {
-  phone: string
+  teamName: string
   email: string
-  address: string
-  registrationNumber: string
-  qrCode: string
+  registrationNumber?: string
 }
 
 export interface SiteConfig {
   name: string
   brand: string
+  descriptor: string
   description: string
   contact: SiteContact
+}
+
+export type AppDownloadPlatform = 'ios' | 'android'
+
+export interface AppDownloadChannelDefinition {
+  id: AppDownloadPlatform
+  label: string
+  sourceLabel: string
+  description: string
+}
+
+export interface AppDownloadChannel extends AppDownloadChannelDefinition {
+  href?: string
+  available: boolean
 }

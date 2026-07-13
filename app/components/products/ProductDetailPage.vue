@@ -57,8 +57,8 @@ const productSignalFlow = [
           <p class="product-hero__headline">{{ product.headline }}</p>
           <p class="product-hero__summary">{{ product.summary }}</p>
           <div class="product-hero__actions" aria-label="产品页主要操作">
-            <BaseButton to="/demo" size="lg">
-              预约演示
+            <BaseButton to="/contact" size="lg">
+              邮件联系我们
               <template #iconRight>
                 <BaseIcon name="arrow-right" />
               </template>
@@ -86,7 +86,7 @@ const productSignalFlow = [
             label-placement="below"
           />
           <div class="product-hero__status-panel" aria-label="产品确认状态">
-            <span>当前阶段</span>
+            <span>产品类别</span>
             <strong>{{ product.status }}</strong>
             <p>真实参数、上线版本和能力边界以项目方确认资料为准。</p>
           </div>
@@ -236,7 +236,7 @@ const productSignalFlow = [
       <SectionHeading
         id="process-title"
         title="使用流程"
-        description="流程保持清晰和克制，后续再接入真实设备绑定、账号体系和服务表单。"
+        description="流程保持清晰和克制，后续仅围绕项目方确认的能力补充服务流程。"
       />
       <ol class="process-list">
         <li v-for="item in product.process" :key="item.id">

@@ -11,10 +11,6 @@
             </span>
           </NuxtLink>
           <p>{{ site.description }}</p>
-          <div class="app-footer__notice" role="note">
-            <span>让爱更安心</span>
-            <p>如信息尚未确认，将以“待项目方确认”标记，不展示虚构客户、资质或联系方式。</p>
-          </div>
         </div>
 
         <div class="app-footer__groups">
@@ -30,10 +26,14 @@
       </div>
 
       <div class="app-footer__contact">
-        <span>电话：{{ site.contact.phone }}</span>
-        <span>邮箱：{{ site.contact.email }}</span>
-        <span>地址：{{ site.contact.address }}</span>
-        <span>备案：{{ site.contact.registrationNumber }}</span>
+        <span>© 2026 {{ site.contact.teamName }}</span>
+        <span>{{ site.descriptor }}</span>
+        <a :href="`mailto:${site.contact.email}`">
+          {{ site.contact.email }}
+        </a>
+        <span v-if="site.contact.registrationNumber">
+          备案：{{ site.contact.registrationNumber }}
+        </span>
       </div>
     </BaseContainer>
   </footer>
@@ -110,28 +110,6 @@ const { footerGroups } = useNavigation()
   color: var(--color-text-secondary);
 }
 
-.app-footer__notice {
-  display: grid;
-  max-width: 360px;
-  gap: var(--space-2);
-  padding: var(--space-4);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-button);
-  background: rgb(255 255 255 / 62%);
-}
-
-.app-footer__notice span {
-  color: var(--color-brand-900);
-  font-size: 13px;
-  font-weight: 750;
-}
-
-.app-footer__notice p {
-  margin: 0;
-  color: var(--color-text-secondary);
-  font-size: 13px;
-}
-
 .app-footer__groups {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -177,6 +155,14 @@ const { footerGroups } = useNavigation()
   border-top: 1px solid var(--color-border);
   color: var(--color-text-secondary);
   font-size: 13px;
+}
+
+.app-footer__contact a {
+  color: inherit;
+}
+
+.app-footer__contact a:hover {
+  color: var(--color-brand-900);
 }
 
 @media (max-width: 899px) {
