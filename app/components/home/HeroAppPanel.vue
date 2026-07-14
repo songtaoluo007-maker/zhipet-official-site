@@ -1,12 +1,15 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import BaseIcon from '~/components/base/BaseIcon.vue'
+import { usePublicAssetUrl } from '~/composables/usePublicAssetUrl'
 import type { HomeStoryAppPanel, HomeStoryPanelMetric, HomeStoryStage } from '~/data/v2'
 import type { IconName } from '~/types/ui'
 
 const props = defineProps<{
   stage: HomeStoryStage
 }>()
+
+const publicAssetUrl = usePublicAssetUrl()
 
 const fallbackPanel = computed<HomeStoryAppPanel>(() => ({
   title: props.stage.phoneTitle,
@@ -122,7 +125,7 @@ const trendDots = computed(() =>
     <header class="hero-app-panel__pet">
       <img
         class="hero-app-panel__avatar"
-        :src="stage.asset"
+        :src="publicAssetUrl(stage.asset)"
         alt=""
         loading="lazy"
       >

@@ -2,6 +2,7 @@
 import { computed } from 'vue'
 import BaseIcon from '~/components/base/BaseIcon.vue'
 import HeroAppPanel from '~/components/home/HeroAppPanel.vue'
+import { usePublicAssetUrl } from '~/composables/usePublicAssetUrl'
 import type { HomeStoryStage } from '~/data/v2'
 
 const props = withDefaults(
@@ -15,6 +16,7 @@ const props = withDefaults(
 )
 
 const decorativeSignals = computed(() => props.stage.signals.slice(0, 4))
+const publicAssetUrl = usePublicAssetUrl()
 </script>
 
 <template>
@@ -24,7 +26,7 @@ const decorativeSignals = computed(() => props.stage.signals.slice(0, 4))
   >
     <img
       class="hero-immersive-stage__scene"
-      :src="stage.asset"
+      :src="publicAssetUrl(stage.asset)"
       :alt="stage.assetAlt"
       :loading="priority ? 'eager' : 'lazy'"
     >

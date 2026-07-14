@@ -12,6 +12,12 @@
 - 维护团队：知宠团队
 - 在线预览：[知宠 ZHIPET 官网](https://songtaoluo007-maker.github.io/zhipet-official-site/)
 
+## 项目预览
+
+![知宠官网宠物陪伴场景，AI 概念图，仅供参考](public/images/generated/zhipet-home-companion.webp)
+
+> AI 概念图，仅供参考。页面中的产品外观、App 界面与展示数据不代表最终交付形态。
+
 ## 功能概览
 
 - 首页、产品、解决方案、健康研究院、项目介绍、联系页、帮助中心、隐私说明和使用条款。

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, ref, useId, watch } from 'vue'
 import BaseIcon from '~/components/base/BaseIcon.vue'
+import { usePublicAssetUrl } from '~/composables/usePublicAssetUrl'
 import type { HomeStoryAppPanel, HomeStoryStage } from '~/data/v2'
 
 const props = withDefaults(
@@ -16,6 +17,7 @@ const props = withDefaults(
 const defaultSignalId = computed(() => props.stage.signals[0]?.id ?? '')
 const activeSignalId = ref(defaultSignalId.value)
 const panelId = useId()
+const publicAssetUrl = usePublicAssetUrl()
 
 const fallbackPanel = computed<HomeStoryAppPanel>(() => ({
   title: props.stage.phoneTitle,
@@ -47,7 +49,7 @@ watch(
   <figure class="product-story-stage" :class="`product-story-stage--${stage.tone}`">
     <img
       class="product-story-stage__scene"
-      :src="stage.asset"
+      :src="publicAssetUrl(stage.asset)"
       :alt="stage.assetAlt"
       :loading="priority ? 'eager' : 'lazy'"
     >

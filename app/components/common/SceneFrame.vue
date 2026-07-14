@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { usePublicAssetUrl } from '~/composables/usePublicAssetUrl'
+
 withDefaults(
   defineProps<{
     src: string
@@ -13,11 +15,18 @@ withDefaults(
     tone: 'light',
   },
 )
+
+const publicAssetUrl = usePublicAssetUrl()
 </script>
 
 <template>
   <figure class="scene-frame" :class="`scene-frame--${tone}`" :style="{ aspectRatio }">
-    <img class="scene-frame__image" :src="src" :alt="alt" :style="{ objectPosition }">
+    <img
+      class="scene-frame__image"
+      :src="publicAssetUrl(src)"
+      :alt="alt"
+      :style="{ objectPosition }"
+    >
     <slot />
     <figcaption v-if="src.startsWith('/images/generated/')" class="scene-frame__label">
       AI 概念图，仅供参考

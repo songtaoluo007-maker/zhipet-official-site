@@ -4,9 +4,11 @@ import BaseIcon from '~/components/base/BaseIcon.vue'
 import CTASection from '~/components/common/CTASection.vue'
 import EditorialHero from '~/components/common/EditorialHero.vue'
 import SectionHeading from '~/components/common/SectionHeading.vue'
+import { usePublicAssetUrl } from '~/composables/usePublicAssetUrl'
 import { solutionScenarios, trustStrip } from '~/data/v2'
 
 const { register } = useScrollReveal()
+const publicAssetUrl = usePublicAssetUrl()
 
 useSeoMeta({
   title: '解决方案 | 知宠 ZHIPET',
@@ -59,7 +61,7 @@ useSeoMeta({
         >
           <div class="scene-row__media">
             <img
-              :src="scenario.image"
+              :src="publicAssetUrl(scenario.image)"
               :alt="scenario.alt"
               :style="{ objectPosition: scenario.imagePosition }"
               loading="lazy"

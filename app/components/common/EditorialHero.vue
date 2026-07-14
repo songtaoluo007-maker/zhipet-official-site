@@ -2,6 +2,7 @@
 import BaseButton from '~/components/base/BaseButton.vue'
 import BaseContainer from '~/components/base/BaseContainer.vue'
 import BaseIcon from '~/components/base/BaseIcon.vue'
+import { usePublicAssetUrl } from '~/composables/usePublicAssetUrl'
 
 export interface EditorialHeroCrumb {
   label: string
@@ -33,13 +34,15 @@ withDefaults(
     priority: false,
   },
 )
+
+const publicAssetUrl = usePublicAssetUrl()
 </script>
 
 <template>
   <section class="editorial-hero" :aria-labelledby="`editorial-hero-${eyebrow}`">
     <img
       class="editorial-hero__image"
-      :src="image"
+      :src="publicAssetUrl(image)"
       :alt="imageAlt"
       :loading="priority ? 'eager' : 'lazy'"
       :style="{ objectPosition }"

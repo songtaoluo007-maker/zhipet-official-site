@@ -5,6 +5,7 @@ import BaseContainer from '~/components/base/BaseContainer.vue'
 import BaseIcon from '~/components/base/BaseIcon.vue'
 import BaseTag from '~/components/base/BaseTag.vue'
 import HeroImmersiveStage from '~/components/home/HeroImmersiveStage.vue'
+import { usePublicAssetUrl } from '~/composables/usePublicAssetUrl'
 import { homeStoryStages } from '~/data/v2'
 import type { IconName } from '~/types/ui'
 
@@ -34,6 +35,7 @@ if (!firstHeroSlide) {
 const activeStoryIndex = ref(0)
 const activeHeroSlide = computed(() => heroSlides[activeStoryIndex.value] ?? firstHeroSlide)
 const heroAutoRotateDelay = 5000
+const publicAssetUrl = usePublicAssetUrl()
 
 interface EcosystemCard {
   id: string
@@ -265,7 +267,7 @@ useSeoMeta({
             aria-label="查看知宠智能项圈"
           >
             <img
-              src="/images/generated/home-ecosystem/ecosystem-collar.webp"
+              :src="publicAssetUrl('/images/generated/home-ecosystem/ecosystem-collar.webp')"
               alt="知宠智能项圈产品近景"
               loading="lazy"
             >
@@ -283,7 +285,7 @@ useSeoMeta({
             aria-label="查看知宠 App"
           >
             <img
-              src="/images/generated/home-ecosystem/ecosystem-phone.webp"
+              :src="publicAssetUrl('/images/generated/home-ecosystem/ecosystem-phone.webp')"
               alt="知宠 App 健康评分界面"
               loading="lazy"
             >
@@ -301,7 +303,7 @@ useSeoMeta({
             aria-label="查看健康管理平台"
           >
             <img
-              src="/images/generated/home-ecosystem/ecosystem-desktop.webp"
+              :src="publicAssetUrl('/images/generated/home-ecosystem/ecosystem-desktop.webp')"
               alt="健康档案面板示意"
               loading="lazy"
             >
@@ -318,7 +320,7 @@ useSeoMeta({
             :to="card.href"
             :aria-label="`${card.title}：${card.description}`"
           >
-            <img :src="card.image" :alt="card.alt" loading="lazy">
+            <img :src="publicAssetUrl(card.image)" :alt="card.alt" loading="lazy">
             <span class="ecosystem-card__shade" aria-hidden="true" />
             <span class="ecosystem-card__icon" aria-hidden="true">
               <BaseIcon :name="card.icon" />

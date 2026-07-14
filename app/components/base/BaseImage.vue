@@ -6,7 +6,7 @@
     <div class="base-image__frame" :style="frameStyle">
       <img
         v-if="useRawImage"
-        :src="src"
+        :src="publicAssetUrl(src)"
         :alt="alt"
         :width="width"
         :height="height"
@@ -16,7 +16,7 @@
       >
       <NuxtImg
         v-else
-        :src="src"
+        :src="publicAssetUrl(src)"
         :alt="alt"
         :width="width"
         :height="height"
@@ -38,6 +38,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
+import { usePublicAssetUrl } from '~/composables/usePublicAssetUrl'
 import type { ImageFit, ImageLabelPlacement, ImageRadius } from '~/types/ui'
 
 const props = withDefaults(
@@ -68,6 +69,8 @@ const props = withDefaults(
     unoptimized: false,
   },
 )
+
+const publicAssetUrl = usePublicAssetUrl()
 
 const frameStyle = computed(() => ({
   aspectRatio: props.aspectRatio,

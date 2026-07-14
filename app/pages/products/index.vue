@@ -6,9 +6,14 @@ import BaseTag from '~/components/base/BaseTag.vue'
 import CTASection from '~/components/common/CTASection.vue'
 import SceneFrame from '~/components/common/SceneFrame.vue'
 import SectionHeading from '~/components/common/SectionHeading.vue'
+import { usePublicAssetUrl } from '~/composables/usePublicAssetUrl'
 import { productFeatureStrip, productVariants, valueLayers } from '~/data/v2'
 
 const { register } = useScrollReveal()
+const publicAssetUrl = usePublicAssetUrl()
+const productHeroStyle = {
+  '--product-hero-image': `url("${publicAssetUrl('/images/generated/pages/zhipet-product-closeup-scene.webp')}")`,
+}
 
 useSeoMeta({
   title: '产品 | 知宠 ZHIPET',
@@ -21,7 +26,7 @@ useSeoMeta({
 
 <template>
   <div class="products-page">
-    <section class="product-hero" aria-labelledby="products-title">
+    <section class="product-hero" :style="productHeroStyle" aria-labelledby="products-title">
       <BaseContainer class="product-hero__inner" width="wide">
         <div class="product-hero__copy">
           <nav class="breadcrumb" aria-label="面包屑">
@@ -206,7 +211,7 @@ useSeoMeta({
   z-index: -1;
   background:
     linear-gradient(90deg, var(--color-bg) 0%, rgb(251 248 242 / 72%) 44%, rgb(251 248 242 / 22%) 100%),
-    url('/images/generated/pages/zhipet-product-closeup-scene.webp') center / cover no-repeat;
+    var(--product-hero-image) center / cover no-repeat;
   content: '';
   opacity: 0.16;
 }

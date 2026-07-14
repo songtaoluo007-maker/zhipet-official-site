@@ -5,6 +5,7 @@ import BaseIcon from '~/components/base/BaseIcon.vue'
 import CTASection from '~/components/common/CTASection.vue'
 import EditorialHero from '~/components/common/EditorialHero.vue'
 import SectionHeading from '~/components/common/SectionHeading.vue'
+import { usePublicAssetUrl } from '~/composables/usePublicAssetUrl'
 import { resolveResearchVisual } from '~/data/research-visuals'
 
 interface ResearchArticleCard {
@@ -18,6 +19,7 @@ interface ResearchArticleCard {
 }
 
 const { register } = useScrollReveal()
+const publicAssetUrl = usePublicAssetUrl()
 const selectedCategory = ref('全部')
 
 const toResearchArticleCard = (entry: {
@@ -117,7 +119,11 @@ useSeoMeta({
           class="article-row"
         >
           <div class="article-row__media">
-            <img :src="article.image" :alt="`${article.title} 文章配图`" loading="lazy">
+            <img
+              :src="publicAssetUrl(article.image)"
+              :alt="`${article.title} 文章配图`"
+              loading="lazy"
+            >
             <span>AI 概念图，仅供参考</span>
           </div>
           <div class="article-row__copy">
