@@ -5,6 +5,8 @@ import BaseContainer from '~/components/base/BaseContainer.vue'
 import BaseIcon from '~/components/base/BaseIcon.vue'
 import BaseTag from '~/components/base/BaseTag.vue'
 import HeroImmersiveStage from '~/components/home/HeroImmersiveStage.vue'
+import MobileEditorialJourney from '~/components/home/MobileEditorialJourney.vue'
+import MobileStoryPreview from '~/components/home/MobileStoryPreview.vue'
 import { usePublicAssetUrl } from '~/composables/usePublicAssetUrl'
 import { homeStoryStages } from '~/data/v2'
 import type { IconName } from '~/types/ui'
@@ -180,8 +182,13 @@ useSeoMeta({
 
 <template>
   <div class="home-page">
+    <div class="home-page__mobile">
+      <MobileStoryPreview />
+      <MobileEditorialJourney />
+    </div>
+
     <section
-      class="home-hero"
+      class="home-hero home-page__desktop"
       aria-labelledby="home-title"
       aria-roledescription="carousel"
       :aria-label="`首页叙事轮播，当前第 ${activeStoryIndex + 1} 屏，共 ${heroSlides.length} 屏`"
@@ -248,7 +255,7 @@ useSeoMeta({
 
     </section>
 
-    <section class="ecosystem-replica" aria-labelledby="ecosystem-replica-title">
+    <section class="ecosystem-replica home-page__desktop" aria-labelledby="ecosystem-replica-title">
       <BaseContainer class="ecosystem-replica__container" width="wide">
         <div class="ecosystem-replica__system">
           <div class="ecosystem-replica__intro">
@@ -356,6 +363,10 @@ useSeoMeta({
 .home-page {
   overflow: hidden;
   background: var(--color-bg);
+}
+
+.home-page__mobile {
+  display: none;
 }
 
 .ecosystem-replica__concept-note {
@@ -935,6 +946,14 @@ useSeoMeta({
 }
 
 @media (max-width: 760px) {
+  .home-page__mobile {
+    display: block;
+  }
+
+  .home-page__desktop {
+    display: none;
+  }
+
   .ecosystem-replica__container {
     width: min(100% - (var(--page-gutter) * 2), var(--container-wide));
   }

@@ -63,4 +63,18 @@ describe('BackToTopButton', () => {
       behavior: 'auto',
     })
   })
+
+  it('stays out of the way while the page is already at the top', () => {
+    Object.defineProperty(window, 'scrollY', {
+      value: 0,
+      configurable: true,
+    })
+
+    const wrapper = mount(BackToTopButton)
+    const button = wrapper.get('button')
+
+    expect(button.classes()).toContain('is-at-top')
+    expect(button.attributes('aria-hidden')).toBe('true')
+    expect(button.attributes('tabindex')).toBe('-1')
+  })
 })

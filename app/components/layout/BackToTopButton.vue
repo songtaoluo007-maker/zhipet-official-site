@@ -40,6 +40,8 @@ onBeforeUnmount(() => {
   <BaseIconButton
     class="back-to-top"
     :class="{ 'is-at-top': isAtTop }"
+    :aria-hidden="isAtTop ? 'true' : undefined"
+    :tabindex="isAtTop ? -1 : 0"
     label="返回页面顶部"
     variant="bordered"
     size="lg"
@@ -80,7 +82,10 @@ onBeforeUnmount(() => {
 }
 
 .back-to-top.is-at-top {
-  opacity: 0.72;
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(8px);
 }
 
 @media (max-width: 639px) {
