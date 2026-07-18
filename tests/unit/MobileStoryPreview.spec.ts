@@ -29,6 +29,7 @@ describe('MobileStoryPreview', () => {
   afterEach(() => {
     vi.useRealTimers()
     window.matchMedia = originalMatchMedia
+    vi.unstubAllGlobals()
     vi.restoreAllMocks()
   })
 
@@ -74,5 +75,17 @@ describe('MobileStoryPreview', () => {
     await vi.advanceTimersByTimeAsync(5000)
 
     expect(wrapper.get('[data-story-selector="0"]').attributes('aria-current')).toBe('true')
+  })
+
+  it('resolves story images against the configured public base path', () => {
+    vi.stubGlobal('useRuntimeConfig', () => ({
+      app: { baseURL: '/zhipet-official-site/' },
+    }))
+
+    const wrapper = mountPreview()
+
+    expect(wrapper.get('.mobile-story-preview__image').attributes('src')).toBe(
+      '/zhipet-official-site/images/generated/zhipet-home-companion.webp',
+    )
   })
 })

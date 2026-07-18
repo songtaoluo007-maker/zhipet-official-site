@@ -3,6 +3,7 @@ import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
 import BaseButton from '~/components/base/BaseButton.vue'
 import BaseIcon from '~/components/base/BaseIcon.vue'
 import HeroAppPanel from '~/components/home/HeroAppPanel.vue'
+import { usePublicAssetUrl } from '~/composables/usePublicAssetUrl'
 import { homeStoryStages } from '~/data/v2'
 import type { HomeStoryStage } from '~/data/v2'
 import type { IconName } from '~/types/ui'
@@ -41,6 +42,8 @@ const requireStage = (id: string) => {
 
   return stage
 }
+
+const publicAssetUrl = usePublicAssetUrl()
 
 const companionshipStage = requireStage('companionship')
 const healthStage = requireStage('health')
@@ -243,7 +246,7 @@ onBeforeUnmount(() => {
       >
         <img
           class="mobile-story-preview__image"
-          :src="activeStory.image"
+          :src="publicAssetUrl(activeStory.image)"
           :alt="activeStory.imageAlt"
           :style="{ objectPosition: activeStory.objectPosition }"
           loading="eager"
