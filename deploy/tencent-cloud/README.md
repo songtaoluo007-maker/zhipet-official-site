@@ -28,7 +28,7 @@
      FULL_40_CHARACTER_COMMIT_SHA
    ```
 
-   该脚本会在新目录执行安装、lint、类型检查、单元测试和生产构建。任一步失败都不会切换 `current`。当服务器无法访问 GitHub Git 端点时，脚本仅在提供完整提交哈希的情况下回退到 GitHub 官方 codeload 源码包。
+   该脚本会在新目录执行安装、lint、类型检查、单元测试和生产构建。构建通过后，它会原子切换 `current`、重启 Web 服务并最多执行 20 次 `/api/health` 检查；新版本未恢复健康时自动切回上一版本，并再次核验旧版本健康状态。首次发布没有上一版本可回滚，因此仍需人工确认服务状态。当服务器无法访问 GitHub Git 端点时，脚本仅在提供完整提交哈希的情况下回退到 GitHub 官方 codeload 源码包。
 
 ## AI 操作治理
 
@@ -84,6 +84,7 @@ sudo systemctl enable --now zhipet-mail.timer zhipet-purge.timer
 
 ```bash
 sudo cp deploy/tencent-cloud/nginx/zhipet-proxy.conf /etc/nginx/snippets/
+sudo cp deploy/tencent-cloud/nginx/zhipet-security-headers.conf /etc/nginx/snippets/
 sudo cp deploy/tencent-cloud/nginx/zhipet.conf.template /etc/nginx/sites-available/zhipet.conf
 sudo nginx -t
 sudo systemctl reload nginx
@@ -108,6 +109,7 @@ sudo systemctl reload nginx
 systemctl status zhipet-web.service
 systemctl list-timers 'zhipet-*'
 journalctl -u zhipet-web.service -n 100 --no-pager
+curl --fail --silent https://YOUR_DOMAIN/api/live
 curl --fail --silent https://YOUR_DOMAIN/api/health
 ```
 

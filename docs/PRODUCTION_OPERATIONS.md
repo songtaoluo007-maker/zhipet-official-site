@@ -23,7 +23,7 @@ GitHub main
 2. 配置最终 HTTPS 域名到 `NUXT_PUBLIC_SITE_URL`。
 3. 保持 `NUXT_PUBLIC_FEEDBACK_ENABLED=false` 完成首次构建。
 4. 执行 `pnpm db:migrate:deploy`。
-5. 访问 `/api/health`，确认数据库状态为 `reachable`。
+5. 访问 `/api/live` 确认 Web 进程可用，再访问 `/api/health` 确认数据库状态为 `reachable`。
 6. 配置 SMTP 客户端授权码，并手动运行一次 `pnpm mail:deliver`。
 7. 验证备份、恢复、日志和邮件告警后，再开启在线反馈。
 
@@ -84,6 +84,7 @@ MAIL_FROM=petSense@126.com
 
 至少配置以下告警：
 
+- `/api/live` 连续失败
 - `/api/health` 连续失败
 - HTTP 5xx 比例异常
 - 数据库连接失败

@@ -1,4 +1,5 @@
 import { dataGovernance } from './shared/constants/data-governance'
+import { browserSecurityHeaders } from './shared/constants/security-headers'
 
 const nodeEnv = (globalThis as { process?: { env?: Record<string, string | undefined> } }).process
   ?.env
@@ -102,6 +103,9 @@ export default defineNuxtConfig({
       ],
     },
     routeRules: {
+      '/**': {
+        headers: browserSecurityHeaders,
+      },
       '/_nuxt/**': {
         headers: { 'cache-control': 'public, max-age=31536000, immutable' },
       },

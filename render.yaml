@@ -4,7 +4,7 @@ services:
     runtime: node
     plan: free
     autoDeploy: true
-    healthCheckPath: /api/health
+    healthCheckPath: /api/live
     buildCommand: corepack enable && pnpm install --frozen-lockfile --prod=false && pnpm db:generate && pnpm build
     startCommand: pnpm db:migrate:deploy && node .output/server/index.mjs
     envVars:

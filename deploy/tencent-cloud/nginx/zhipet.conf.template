@@ -31,11 +31,7 @@ server {
     ssl_session_cache shared:SSL:10m;
     ssl_session_timeout 1d;
 
-    add_header Strict-Transport-Security "max-age=31536000; includeSubDomains" always;
-    add_header X-Content-Type-Options "nosniff" always;
-    add_header X-Frame-Options "SAMEORIGIN" always;
-    add_header Referrer-Policy "strict-origin-when-cross-origin" always;
-    add_header Permissions-Policy "camera=(), microphone=(), geolocation=()" always;
+    include /etc/nginx/snippets/zhipet-security-headers.conf;
 
     client_max_body_size 32k;
     limit_req_status 429;
@@ -49,17 +45,15 @@ server {
     location ^~ /_nuxt/ {
         proxy_pass http://zhipet_app;
         include /etc/nginx/snippets/zhipet-proxy.conf;
+        include /etc/nginx/snippets/zhipet-security-headers.conf;
         add_header Cache-Control "public, max-age=31536000, immutable" always;
-        add_header Strict-Transport-Security "max-age=31536000; includeSubDomains" always;
-        add_header X-Content-Type-Options "nosniff" always;
     }
 
     location ^~ /images/ {
         proxy_pass http://zhipet_app;
         include /etc/nginx/snippets/zhipet-proxy.conf;
+        include /etc/nginx/snippets/zhipet-security-headers.conf;
         add_header Cache-Control "public, max-age=604800" always;
-        add_header Strict-Transport-Security "max-age=31536000; includeSubDomains" always;
-        add_header X-Content-Type-Options "nosniff" always;
     }
 
     location / {
