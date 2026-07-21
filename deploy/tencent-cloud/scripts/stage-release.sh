@@ -13,6 +13,8 @@ site_url=${NUXT_PUBLIC_SITE_URL:-https://petsense-agent.com}
 release_root=/srv/zhipet/releases
 timestamp=$(date -u +%Y%m%dT%H%M%SZ)
 staging_dir="${release_root}/.staging-${timestamp}"
+current_link=/srv/zhipet/current
+health_url=http://127.0.0.1:3000/api/health
 repo_path=${repo_url#https://github.com/}
 repo_path=${repo_path%.git}
 
@@ -57,6 +59,11 @@ fi
 
 short_sha=${commit_sha:0:12}
 release_dir="${release_root}/${timestamp}-${short_sha}"
+previous_release=
+
+if [[ -L ${current_link} ]]; then
+  previous_release=$(readlink -f "${current_link}")
+fi
 
 run_as_zhipet() {
   local workdir=$1
@@ -83,8 +90,45 @@ NODE_ENV=test run_as_zhipet "${staging_dir}" pnpm test
 NODE_ENV=production run_as_zhipet "${staging_dir}" pnpm build
 
 mv -- "${staging_dir}" "${release_dir}"
-ln -s "${release_dir}" /srv/zhipet/current.next
-mv -Tf /srv/zhipet/current.next /srv/zhipet/current
+
+switch_current() {
+  local target=$1
+  ln -sfn -- "${target}" "${current_link}.next"
+  mv -Tf -- "${current_link}.next" "${current_link}"
+}
+
+restart_and_wait_for_health() {
+  if ! systemctl restart zhipet-web.service; then
+    return 1
+  fi
+
+  for _ in {1..20}; do
+    if curl --fail --silent --show-error --max-time 3 "${health_url}" >/dev/null; then
+      return 0
+    fi
+    sleep 1
+  done
+
+  return 1
+}
+
+switch_current "${release_dir}"
+
+if ! restart_and_wait_for_health; then
+  echo "Release health check failed: ${release_dir}" >&2
+
+  if [[ -n ${previous_release} && -d ${previous_release} ]]; then
+    echo "Rolling back to: ${previous_release}" >&2
+    switch_current "${previous_release}"
+    if ! restart_and_wait_for_health; then
+      echo "Rollback release is also unhealthy: ${previous_release}" >&2
+    fi
+  else
+    echo "No previous release is available for automatic rollback." >&2
+  fi
+
+  exit 1
+fi
 
 trap - ERR
 printf '%s\n' \
