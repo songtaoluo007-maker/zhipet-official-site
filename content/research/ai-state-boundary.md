@@ -9,6 +9,13 @@ tags:
   - AI 边界
   - 状态解释
   - 不确定性
+sources:
+  - title: "Human Listeners Are Able to Classify Dog (Canis familiaris) Barks Recorded in Different Situations"
+    authors: "Pongrácz, P., Molnár, C., Miklósi, Á., & Csányi, V."
+    publication: Journal of Comparative Psychology
+    year: 2005
+    url: https://doi.org/10.1037/0735-7036.119.2.136
+    note: 该研究说明犬吠声可能包含可被人类分类的情境线索，不支持逐字翻译宠物语言。
 ---
 
 ## 从多种线索形成推测

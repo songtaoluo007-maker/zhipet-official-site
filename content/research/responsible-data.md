@@ -9,6 +9,12 @@ tags:
   - 数据边界
   - 隐私保护
   - 用户控制
+sources:
+  - title: NIST Privacy Framework 1.0
+    publication: National Institute of Standards and Technology
+    year: 2020
+    url: https://www.nist.gov/privacy-framework/privacy-framework
+    note: 该框架用于支持最小必要、风险识别和可治理的隐私设计原则。
 ---
 
 ## 先明确为什么记录

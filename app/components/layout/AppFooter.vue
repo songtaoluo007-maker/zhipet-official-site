@@ -4,7 +4,6 @@
       <div class="app-footer__top">
         <div class="app-footer__brand">
           <NuxtLink class="app-footer__logo" to="/">
-            <span class="app-footer__spark" aria-hidden="true" />
             <span class="app-footer__logo-text">
               <span>知宠</span>
               <strong>ZHIPET</strong>
@@ -13,8 +12,23 @@
           <p>{{ site.description }}</p>
         </div>
 
-        <div class="app-footer__groups">
+        <div class="app-footer__groups app-footer__groups--desktop">
           <section v-for="group in footerGroups" :key="group.title" class="app-footer__group">
+            <h2>{{ group.title }}</h2>
+            <ul>
+              <li v-for="link in group.links" :key="link.href">
+                <NuxtLink :to="link.href">{{ link.label }}</NuxtLink>
+              </li>
+            </ul>
+          </section>
+        </div>
+
+        <div class="app-footer__groups app-footer__groups--mobile">
+          <section
+            v-for="group in mobileFooterGroups"
+            :key="group.title"
+            class="app-footer__group"
+          >
             <h2>{{ group.title }}</h2>
             <ul>
               <li v-for="link in group.links" :key="link.href">
@@ -43,7 +57,7 @@
 import BaseContainer from '~/components/base/BaseContainer.vue'
 
 const site = useSiteConfig()
-const { footerGroups } = useNavigation()
+const { footerGroups, mobileFooterGroups } = useNavigation()
 </script>
 
 <style scoped lang="scss">
@@ -70,17 +84,6 @@ const { footerGroups } = useNavigation()
   align-items: center;
   color: var(--color-brand-900);
   line-height: 1.1;
-}
-
-.app-footer__spark {
-  position: absolute;
-  top: -5px;
-  left: 2px;
-  width: 5px;
-  height: 10px;
-  border-radius: var(--radius-pill);
-  background: var(--color-accent-500);
-  transform: rotate(24deg);
 }
 
 .app-footer__logo-text {
@@ -157,6 +160,10 @@ const { footerGroups } = useNavigation()
   font-size: 13px;
 }
 
+.app-footer__groups--mobile {
+  display: none;
+}
+
 .app-footer__contact a {
   color: inherit;
 }
@@ -170,14 +177,45 @@ const { footerGroups } = useNavigation()
     grid-template-columns: 1fr;
   }
 
-  .app-footer__groups {
+  .app-footer__groups--desktop {
+    display: none;
+  }
+
+  .app-footer__groups--mobile {
+    display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
 @media (max-width: 520px) {
-  .app-footer__groups {
-    grid-template-columns: 1fr;
+  .app-footer {
+    padding-block: var(--space-6) var(--space-4);
+  }
+
+  .app-footer__top {
+    gap: var(--space-6);
+  }
+
+  .app-footer__groups--mobile {
+    gap: var(--space-4);
+  }
+
+  .app-footer__group h2 {
+    margin-bottom: var(--space-3);
+  }
+
+  .app-footer__group ul {
+    gap: var(--space-2);
+  }
+
+  .app-footer__brand p {
+    font-size: 14px;
+  }
+
+  .app-footer__contact {
+    display: grid;
+    gap: var(--space-2);
+    margin-top: var(--space-6);
   }
 }
 </style>

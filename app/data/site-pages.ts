@@ -186,3 +186,25 @@ export const footerGroups: FooterGroup[] = [
     ],
   },
 ]
+
+export const mobileFooterGroups: FooterGroup[] = [
+  {
+    title: '浏览',
+    links: [
+      { label: '项目介绍', href: '/about' },
+      { label: '产品', href: '/products' },
+      { label: '解决方案', href: '/solutions' },
+      { label: '健康研究院', href: '/research' },
+      { label: 'App 下载', href: '/download' },
+    ],
+  },
+  {
+    title: '支持',
+    links: [
+      { label: '联系与反馈', href: '/help' },
+      { label: '邮件联系我们', href: '/contact' },
+      { label: '隐私说明', href: '/privacy' },
+      { label: '使用条款', href: '/terms' },
+    ],
+  },
+]

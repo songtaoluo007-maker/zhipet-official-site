@@ -77,6 +77,24 @@ describe('MobileStoryPreview', () => {
     expect(wrapper.get('[data-story-selector="0"]').attributes('aria-current')).toBe('true')
   })
 
+  it('lets the user pause and resume automatic rotation', async () => {
+    const wrapper = mountPreview()
+    const toggle = wrapper.get('[data-testid="mobile-story-auto-rotate-toggle"]')
+
+    expect(toggle.attributes('aria-pressed')).toBe('false')
+
+    await toggle.trigger('click')
+    expect(toggle.attributes('aria-pressed')).toBe('true')
+
+    await vi.advanceTimersByTimeAsync(5000)
+    expect(wrapper.get('[data-story-selector="0"]').attributes('aria-current')).toBe('true')
+
+    await toggle.trigger('click')
+    await vi.advanceTimersByTimeAsync(5000)
+
+    expect(wrapper.get('[data-story-selector="1"]').attributes('aria-current')).toBe('true')
+  })
+
   it('resolves story images against the configured public base path', () => {
     vi.stubGlobal('useRuntimeConfig', () => ({
       app: { baseURL: '/zhipet-official-site/' },

@@ -135,6 +135,28 @@ useHead({
           <span>阅读进度 {{ readingProgress }}%</span>
         </div>
         <ContentRenderer :value="article" class="research-prose" />
+        <section
+          v-if="article.sources?.length"
+          class="article-sources"
+          aria-labelledby="article-sources-title"
+        >
+          <header>
+            <p>可核验信息</p>
+            <h2 id="article-sources-title">参考来源</h2>
+            <span>用于支撑背景论述，不代表合作、产品验证或诊疗结论。</span>
+          </header>
+          <ol>
+            <li v-for="source in article.sources" :key="source.url">
+              <a :href="source.url" target="_blank" rel="noopener noreferrer">
+                <span>{{ source.publication }} · {{ source.year }}</span>
+                <strong>{{ source.title }}</strong>
+                <small v-if="source.authors">{{ source.authors }}</small>
+                <p v-if="source.note">{{ source.note }}</p>
+                <BaseIcon name="arrow-right" aria-hidden="true" />
+              </a>
+            </li>
+          </ol>
+        </section>
       </article>
 
       <aside class="article-rail" aria-label="相关阅读">
@@ -248,6 +270,76 @@ useHead({
   gap: var(--space-2);
   margin: 0 0 var(--space-5);
   padding-left: 1.2em;
+}
+
+.article-sources {
+  margin-top: clamp(72px, 8vw, 104px);
+  border-top: 1px solid var(--color-border-strong);
+}
+
+.article-sources header {
+  display: grid;
+  gap: var(--space-2);
+  padding-block: var(--space-6);
+}
+
+.article-sources header > p {
+  color: var(--color-accent-600);
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.article-sources h2 {
+  color: var(--color-brand-900);
+  font-size: 30px;
+}
+
+.article-sources header > span {
+  color: var(--color-text-secondary);
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.article-sources ol {
+  padding: 0;
+  margin: 0;
+  border-bottom: 1px solid var(--color-border-strong);
+  list-style: none;
+}
+
+.article-sources li {
+  border-top: 1px solid var(--color-border);
+}
+
+.article-sources a {
+  position: relative;
+  display: grid;
+  gap: var(--space-2);
+  padding: var(--space-5) 44px var(--space-5) 0;
+  color: var(--color-brand-900);
+}
+
+.article-sources a > span,
+.article-sources a > small {
+  color: var(--color-text-secondary);
+  font-size: 12px;
+}
+
+.article-sources a > strong {
+  line-height: 1.55;
+}
+
+.article-sources a > p {
+  color: var(--color-text-secondary);
+  font-size: 14px;
+  line-height: 1.65;
+}
+
+.article-sources a > .base-icon {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
 }
 
 .article-rail {

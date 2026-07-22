@@ -8,11 +8,12 @@ import HeroImmersiveStage from '~/components/home/HeroImmersiveStage.vue'
 import MobileEditorialJourney from '~/components/home/MobileEditorialJourney.vue'
 import MobileStoryPreview from '~/components/home/MobileStoryPreview.vue'
 import { usePublicAssetUrl } from '~/composables/usePublicAssetUrl'
-import { homeStoryStages } from '~/data/v2'
+import { homeStoryStages, resolveHomeStoryActions } from '~/data/v2'
 import type { IconName } from '~/types/ui'
 
 const heroSlides = homeStoryStages.map((stage, index) => {
   const [, navLabel] = stage.eyebrow.split('/')
+  const actions = resolveHomeStoryActions(stage.id)
 
   return {
     stage,
@@ -21,10 +22,9 @@ const heroSlides = homeStoryStages.map((stage, index) => {
     title: index === 0 ? '更懂陪伴，\n更守护健康' : stage.title,
     description:
       index === 0
-        ? '知宠智能项圈、App 与健康档案生态，科技守护每一次心跳，陪伴更长久。'
+        ? '知宠智能项圈、App 与健康档案生态，持续记录日常变化，让陪伴更有依据。'
         : stage.description,
-    primaryLabel: index === 1 ? '了解安全能力' : index === 2 ? '查看健康研究' : '了解产品',
-    primaryTo: index === 1 ? '/products/smart-collar' : index === 2 ? '/research' : '/products',
+    ...actions,
   }
 })
 
@@ -35,7 +35,12 @@ if (!firstHeroSlide) {
 }
 
 const activeStoryIndex = ref(0)
+const isHeroUserPaused = ref(false)
+const isHeroInteractionPaused = ref(false)
 const activeHeroSlide = computed(() => heroSlides[activeStoryIndex.value] ?? firstHeroSlide)
+const heroAutoRotateToggleLabel = computed(() =>
+  isHeroUserPaused.value ? '继续自动播放' : '暂停自动播放',
+)
 const heroAutoRotateDelay = 5000
 const publicAssetUrl = usePublicAssetUrl()
 
@@ -61,7 +66,7 @@ const ecosystemCards: EcosystemCard[] = [
     id: 'safety',
     icon: 'shield-check',
     title: '安全边界',
-    description: '设定活动范围与停留区域，异常离界即时提醒',
+    description: '设定活动范围与停留区域，异常离界时提供风险提示',
     image: '/images/generated/home-ecosystem/ecosystem-card-safety.webp',
     alt: '金毛在户外活动场景中的安全边界卡片',
     href: '/products/smart-collar',
@@ -70,7 +75,7 @@ const ecosystemCards: EcosystemCard[] = [
     id: 'health',
     icon: 'chart',
     title: '健康趋势',
-    description: '长期数据趋势分析，发现潜在变化',
+    description: '结合长期记录观察趋势，辅助发现潜在变化',
     image: '/images/generated/home-ecosystem/ecosystem-card-health.webp',
     alt: '猫咪休息场景中的健康趋势卡片',
     href: '/research',
@@ -79,7 +84,7 @@ const ecosystemCards: EcosystemCard[] = [
     id: 'collaboration',
     icon: 'users',
     title: '专业协同',
-    description: '连接家庭、宠物医院与伙伴，协同守护更安心',
+    description: '面向家庭、宠物医院与伙伴，呈现授权后的协作路径',
     image: '/images/generated/home-ecosystem/ecosystem-card-collab.webp',
     alt: '宠物医生检查猫咪场景中的专业协同卡片',
     href: '/solutions',
@@ -89,32 +94,31 @@ const trustItems: TrustItem[] = [
   {
     id: 'data',
     icon: 'shield-check',
-    title: '数据安全',
-    lines: ['多重加密与权限管理', '保护每一份敏感信息'],
+    title: '数据保护设计',
+    lines: ['遵循最小必要原则', '敏感数据谨慎处理'],
   },
   {
     id: 'privacy',
     icon: 'lock',
     title: '隐私优先',
-    lines: ['最小化数据采集', '用户自主掌控'],
+    lines: ['说明采集与使用范围', '以用户授权为前提'],
   },
   {
     id: 'research',
     icon: 'check-circle',
-    title: '科学循证',
-    lines: ['联合研究与算法验证', '数据驱动不断进步'],
+    title: '依据可见',
+    lines: ['提示同时说明观察依据', '保留边界与不确定性'],
   },
   {
     id: 'service',
     icon: 'heart-pulse',
-    title: '用心服务',
-    lines: ['专业团队与持续支持', '陪伴每一个家庭'],
+    title: '持续沟通',
+    lines: ['提供公开邮箱与反馈入口', '认真处理意见与纠错'],
   },
 ]
 
 let heroAutoRotateTimer: number | undefined
 let reducedMotionQuery: MediaQueryList | undefined
-
 
 const clearHeroAutoRotate = () => {
   if (!heroAutoRotateTimer) {
@@ -126,7 +130,10 @@ const clearHeroAutoRotate = () => {
 }
 
 const canAutoRotateHero = () =>
-  typeof window !== 'undefined' && !window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  typeof window !== 'undefined' &&
+  !isHeroUserPaused.value &&
+  !isHeroInteractionPaused.value &&
+  !window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
 const startHeroAutoRotate = () => {
   clearHeroAutoRotate()
@@ -155,6 +162,51 @@ const stepHeroSlide = (step: number) => {
   activeStoryIndex.value = (activeStoryIndex.value + step + heroSlides.length) % heroSlides.length
   startHeroAutoRotate()
 }
+
+const toggleHeroAutoRotate = () => {
+  isHeroUserPaused.value = !isHeroUserPaused.value
+
+  if (isHeroUserPaused.value) {
+    clearHeroAutoRotate()
+    return
+  }
+
+  startHeroAutoRotate()
+}
+
+const pauseHeroForInteraction = () => {
+  isHeroInteractionPaused.value = true
+  clearHeroAutoRotate()
+}
+
+const resumeHeroAfterInteraction = () => {
+  isHeroInteractionPaused.value = false
+  startHeroAutoRotate()
+}
+
+const handleHeroFocusOut = (event: FocusEvent) => {
+  const currentTarget = event.currentTarget
+
+  if (
+    currentTarget instanceof HTMLElement &&
+    event.relatedTarget instanceof Node &&
+    currentTarget.contains(event.relatedTarget)
+  ) {
+    return
+  }
+
+  resumeHeroAfterInteraction()
+}
+
+const handleHeroVisibilityChange = () => {
+  if (document.visibilityState === 'visible') {
+    startHeroAutoRotate()
+    return
+  }
+
+  clearHeroAutoRotate()
+}
+
 const handleReducedMotionChange = () => {
   startHeroAutoRotate()
 }
@@ -162,12 +214,14 @@ const handleReducedMotionChange = () => {
 onMounted(() => {
   reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)')
   reducedMotionQuery.addEventListener('change', handleReducedMotionChange)
+  document.addEventListener('visibilitychange', handleHeroVisibilityChange)
   startHeroAutoRotate()
 })
 
 onBeforeUnmount(() => {
   clearHeroAutoRotate()
   reducedMotionQuery?.removeEventListener('change', handleReducedMotionChange)
+  document.removeEventListener('visibilitychange', handleHeroVisibilityChange)
 })
 
 useSeoMeta({
@@ -182,6 +236,8 @@ useSeoMeta({
 
 <template>
   <div class="home-page">
+    <h1 class="sr-only">知宠 ZHIPET · 更懂陪伴，更守护健康</h1>
+
     <div class="home-page__mobile">
       <MobileStoryPreview />
       <MobileEditorialJourney />
@@ -192,6 +248,10 @@ useSeoMeta({
       aria-labelledby="home-title"
       aria-roledescription="carousel"
       :aria-label="`首页叙事轮播，当前第 ${activeStoryIndex + 1} 屏，共 ${heroSlides.length} 屏`"
+      @mouseenter="pauseHeroForInteraction"
+      @mouseleave="resumeHeroAfterInteraction"
+      @focusin="pauseHeroForInteraction"
+      @focusout="handleHeroFocusOut"
     >
       <HeroImmersiveStage
         v-for="(slide, index) in heroSlides"
@@ -206,13 +266,9 @@ useSeoMeta({
       <BaseContainer class="home-hero__inner" width="wide">
         <div class="home-hero__copy">
           <Transition name="home-hero-copy" mode="out-in">
-            <div
-              :key="activeHeroSlide.stage.id"
-              class="home-hero__copy-content"
-              aria-live="polite"
-            >
+            <div :key="activeHeroSlide.stage.id" class="home-hero__copy-content" aria-live="polite">
               <BaseTag tone="concept">{{ activeHeroSlide.tag }}</BaseTag>
-              <h1 id="home-title">{{ activeHeroSlide.title }}</h1>
+              <h2 id="home-title">{{ activeHeroSlide.title }}</h2>
               <p class="home-hero__lead">{{ activeHeroSlide.description }}</p>
               <div class="home-hero__actions" aria-label="首页主要操作">
                 <BaseButton :to="activeHeroSlide.primaryTo" size="lg">
@@ -221,7 +277,9 @@ useSeoMeta({
                     <BaseIcon name="arrow-right" />
                   </template>
                 </BaseButton>
-                <BaseButton to="/contact" variant="secondary" size="lg">邮件联系我们</BaseButton>
+                <BaseButton :to="activeHeroSlide.secondaryTo" variant="secondary" size="lg">
+                  {{ activeHeroSlide.secondaryLabel }}
+                </BaseButton>
               </div>
             </div>
           </Transition>
@@ -244,15 +302,34 @@ useSeoMeta({
           </button>
         </div>
         <div class="home-hero__arrows" aria-label="轮播切换">
-          <button type="button" class="home-hero__arrow home-hero__arrow--prev" aria-label="上一屏" @click="stepHeroSlide(-1)">
+          <button
+            type="button"
+            class="home-hero__auto-toggle"
+            data-testid="home-hero-auto-rotate-toggle"
+            :aria-label="heroAutoRotateToggleLabel"
+            :aria-pressed="isHeroUserPaused"
+            @click="toggleHeroAutoRotate"
+          >
+            {{ isHeroUserPaused ? '播放' : '暂停' }}
+          </button>
+          <button
+            type="button"
+            class="home-hero__arrow home-hero__arrow--prev"
+            aria-label="上一屏"
+            @click="stepHeroSlide(-1)"
+          >
             <BaseIcon name="arrow-right" aria-hidden="true" />
           </button>
-          <button type="button" class="home-hero__arrow" aria-label="下一屏" @click="stepHeroSlide(1)">
+          <button
+            type="button"
+            class="home-hero__arrow"
+            aria-label="下一屏"
+            @click="stepHeroSlide(1)"
+          >
             <BaseIcon name="arrow-right" aria-hidden="true" />
           </button>
         </div>
       </nav>
-
     </section>
 
     <section class="ecosystem-replica home-page__desktop" aria-labelledby="ecosystem-replica-title">
@@ -280,7 +357,10 @@ useSeoMeta({
             >
           </NuxtLink>
 
-          <div class="ecosystem-replica__bridge ecosystem-replica__bridge--connect" aria-hidden="true">
+          <div
+            class="ecosystem-replica__bridge ecosystem-replica__bridge--connect"
+            aria-hidden="true"
+          >
             <span><BaseIcon name="phone" /></span>
             <strong>设备连接</strong>
             <em>持续记录与趋势观察</em>
@@ -389,7 +469,12 @@ useSeoMeta({
   inset: auto 0 0;
   z-index: 2;
   height: 34%;
-  background: linear-gradient(180deg, rgb(251 248 242 / 0%), rgb(251 248 242 / 30%) 58%, rgb(251 248 242 / 62%));
+  background: linear-gradient(
+    180deg,
+    rgb(251 248 242 / 0%),
+    rgb(251 248 242 / 30%) 58%,
+    rgb(251 248 242 / 62%)
+  );
   content: '';
   pointer-events: none;
 }
@@ -417,7 +502,7 @@ useSeoMeta({
   gap: var(--space-5);
 }
 
-.home-hero h1 {
+.home-hero h2 {
   max-width: 680px;
   color: var(--color-brand-900);
   font-size: clamp(56px, 5.8vw, 92px);
@@ -452,7 +537,7 @@ useSeoMeta({
 }
 .home-hero__controls {
   position: absolute;
-  right: max(var(--page-gutter), calc((100vw - 1580px) / 2));
+  right: max(var(--page-gutter), calc((100vw - var(--container-wide)) / 2));
   bottom: clamp(28px, 5vh, 54px);
   z-index: 5;
   display: flex;
@@ -478,6 +563,7 @@ useSeoMeta({
 }
 
 .home-hero__selector,
+.home-hero__auto-toggle,
 .home-hero__arrow {
   display: inline-flex;
   align-items: center;
@@ -528,6 +614,18 @@ useSeoMeta({
   padding: 5px;
 }
 
+.home-hero__auto-toggle {
+  min-width: 46px;
+  height: 38px;
+  padding-inline: 10px;
+  border-radius: var(--radius-pill);
+  font-size: 12px;
+  font-weight: 800;
+  transition:
+    color var(--motion-duration-base) var(--motion-ease-out),
+    background var(--motion-duration-base) var(--motion-ease-out);
+}
+
 .home-hero__arrow {
   width: 38px;
   height: 38px;
@@ -543,12 +641,16 @@ useSeoMeta({
 }
 
 .home-hero__arrow:hover,
-.home-hero__arrow:focus-visible {
+.home-hero__arrow:focus-visible,
+.home-hero__auto-toggle:hover,
+.home-hero__auto-toggle:focus-visible,
+.home-hero__auto-toggle[aria-pressed='true'] {
   color: var(--color-surface);
   background: rgb(20 63 50 / 88%);
 }
 
 .home-hero__selector:focus-visible,
+.home-hero__auto-toggle:focus-visible,
 .home-hero__arrow:focus-visible {
   outline: 2px solid transparent;
   box-shadow: var(--focus-ring);
@@ -562,21 +664,33 @@ useSeoMeta({
 }
 
 .ecosystem-replica__container {
-  width: min(100% - (var(--page-gutter) * 2), 1580px);
+  width: min(100% - (var(--page-gutter) * 2), var(--container-wide));
 }
 
 .ecosystem-replica__system {
   position: relative;
   display: grid;
   min-height: 260px;
-  grid-template-columns: 240px minmax(360px, 430px) 82px 230px 82px minmax(340px, 420px);
-  gap: clamp(10px, 1vw, 18px);
+  grid-template-columns:
+    minmax(180px, 0.8fr)
+    minmax(250px, 1.2fr)
+    minmax(56px, 0.34fr)
+    minmax(150px, 0.68fr)
+    minmax(56px, 0.34fr)
+    minmax(250px, 1.2fr);
+  gap: clamp(6px, 0.65vw, 10px);
   align-items: center;
   padding-block: 0 18px;
   overflow: hidden;
   border-bottom: 1px solid rgb(47 36 27 / 8%);
   background:
-    linear-gradient(90deg, rgb(255 253 248 / 0%) 0%, rgb(255 253 248 / 72%) 18%, rgb(255 253 248 / 78%) 82%, rgb(255 253 248 / 0%) 100%),
+    linear-gradient(
+      90deg,
+      rgb(255 253 248 / 0%) 0%,
+      rgb(255 253 248 / 72%) 18%,
+      rgb(255 253 248 / 78%) 82%,
+      rgb(255 253 248 / 0%) 100%
+    ),
     radial-gradient(ellipse at 46% 42%, rgb(230 207 173 / 18%), transparent 58%);
   isolation: isolate;
 }
@@ -644,8 +758,8 @@ useSeoMeta({
 }
 
 .ecosystem-replica__product img {
-  width: min(100%, 430px);
-  height: 236px;
+  width: min(100%, 330px);
+  height: 220px;
   object-fit: contain;
   object-position: center;
   mix-blend-mode: multiply;
@@ -665,7 +779,7 @@ useSeoMeta({
 .ecosystem-replica__bridge::after {
   position: absolute;
   top: 38px;
-  width: clamp(34px, 2.8vw, 60px);
+  width: clamp(18px, 1.8vw, 32px);
   height: 1px;
   border-top: 1px dashed rgb(86 130 103 / 35%);
   content: '';
@@ -705,8 +819,8 @@ useSeoMeta({
 }
 
 .ecosystem-replica__phone img {
-  width: 226px;
-  height: 252px;
+  width: min(100%, 172px);
+  height: 238px;
   object-fit: contain;
   object-position: center bottom;
   mix-blend-mode: multiply;
@@ -714,8 +828,8 @@ useSeoMeta({
 }
 
 .ecosystem-replica__desktop img {
-  width: min(100%, 412px);
-  height: 234px;
+  width: min(100%, 320px);
+  height: 214px;
   object-fit: contain;
   object-position: center;
   mix-blend-mode: multiply;
@@ -733,7 +847,7 @@ useSeoMeta({
   position: relative;
   display: block;
   overflow: hidden;
-  min-height: 244px;
+  min-height: 260px;
   border-radius: 8px;
   background: rgb(20 63 50 / 8%);
   transition:
@@ -744,7 +858,7 @@ useSeoMeta({
 .ecosystem-card img {
   display: block;
   width: 100%;
-  height: 244px;
+  height: 260px;
   object-fit: cover;
   object-position: center;
   filter: saturate(1.04) contrast(1.03);
@@ -756,7 +870,12 @@ useSeoMeta({
   inset: 0;
   z-index: 1;
   background:
-    linear-gradient(90deg, rgb(20 63 50 / 78%) 0%, rgb(20 63 50 / 48%) 42%, rgb(20 63 50 / 10%) 100%),
+    linear-gradient(
+      90deg,
+      rgb(20 63 50 / 78%) 0%,
+      rgb(20 63 50 / 48%) 42%,
+      rgb(20 63 50 / 10%) 100%
+    ),
     linear-gradient(180deg, rgb(20 63 50 / 8%), rgb(20 63 50 / 18%));
 }
 
@@ -779,11 +898,11 @@ useSeoMeta({
 
 .ecosystem-card__content {
   position: absolute;
-  inset: 104px 28px 24px;
+  inset: 98px 28px 20px;
   z-index: 2;
   display: grid;
   align-content: start;
-  gap: 11px;
+  gap: 8px;
   max-width: 330px;
   color: var(--color-surface);
 }
@@ -807,7 +926,7 @@ useSeoMeta({
   width: fit-content;
   align-items: center;
   gap: 8px;
-  margin-top: 16px;
+  margin-top: 4px;
   color: rgb(255 253 248 / 88%);
   font-size: 14px;
   font-weight: 850;
@@ -827,7 +946,9 @@ useSeoMeta({
 .ecosystem-card:focus-visible {
   outline: 2px solid transparent;
   outline-offset: 5px;
-  box-shadow: var(--focus-ring), 0 18px 42px rgb(47 36 27 / 12%);
+  box-shadow:
+    var(--focus-ring),
+    0 18px 42px rgb(47 36 27 / 12%);
 }
 
 .ecosystem-replica__trust {
@@ -881,21 +1002,6 @@ useSeoMeta({
   color: var(--color-text-secondary);
   font-size: 14px;
   line-height: 1.45;
-}
-
-@media (max-width: 1380px) {
-  .ecosystem-replica__system {
-    grid-template-columns: 220px minmax(300px, 1fr) 74px 196px 74px minmax(280px, 0.9fr);
-  }
-
-  .ecosystem-replica__product img {
-    height: 220px;
-  }
-
-  .ecosystem-replica__phone img {
-    width: 198px;
-    height: 236px;
-  }
 }
 
 @media (max-width: 1180px) {
@@ -991,6 +1097,12 @@ useSeoMeta({
   }
 }
 
+@media (max-width: 1400px) {
+  .home-hero__copy {
+    transform: none;
+  }
+}
+
 @media (max-width: 1180px) {
   .home-hero__inner {
     align-items: start;
@@ -1002,7 +1114,7 @@ useSeoMeta({
     transform: none;
   }
 
-  .home-hero h1 {
+  .home-hero h2 {
     font-size: 52px;
   }
 
@@ -1021,7 +1133,7 @@ useSeoMeta({
     padding-block: var(--space-6) var(--space-9);
   }
 
-  .home-hero h1 {
+  .home-hero h2 {
     font-size: 40px;
   }
 
@@ -1081,10 +1193,3 @@ useSeoMeta({
   }
 }
 </style>
-
-
-
-
-
-
-

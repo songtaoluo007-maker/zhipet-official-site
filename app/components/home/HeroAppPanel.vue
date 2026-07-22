@@ -102,14 +102,26 @@ const trendPoints = computed(() => {
   return '12,72 48,82 82,70 116,62 150,45 184,66 220,54 252,28'
 })
 
+const trendPath = computed(() =>
+  trendPoints.value
+    .split(' ')
+    .map((point, index) => {
+      const [x = '0', y = '0'] = point.split(',')
+
+      return `${index === 0 ? 'M' : 'L'} ${x} ${y}`
+    })
+    .join(' '),
+)
+
 const trendDots = computed(() =>
   trendPoints.value.split(' ').map((point, index) => {
     const [x = '0', y = '0'] = point.split(',')
+    const radius = 3.5
+    const left = Number.parseFloat(x) - radius
 
     return {
       id: `${props.stage.id}-dot-${index}`,
-      x,
-      y,
+      path: `M ${left} ${y} a ${radius} ${radius} 0 1 0 ${radius * 2} 0 a ${radius} ${radius} 0 1 0 -${radius * 2} 0`,
     }
   }),
 )
@@ -172,14 +184,12 @@ const trendDots = computed(() =>
           <path d="M192 20V92" />
           <path d="M252 20V92" />
         </g>
-        <polyline class="hero-app-panel__line" :points="trendPoints" />
-        <circle
+        <path class="hero-app-panel__line" :d="trendPath" />
+        <path
           v-for="dot in trendDots"
           :key="dot.id"
           class="hero-app-panel__dot"
-          :cx="dot.x"
-          :cy="dot.y"
-          r="3.5"
+          :d="dot.path"
         />
       </svg>
       <div class="hero-app-panel__days" aria-hidden="true">

@@ -9,6 +9,19 @@ tags:
   - 连续数据
   - 行为趋势
   - 风险提示
+sources:
+  - title: "Validity, practical utility and reliability of Actigraph accelerometry for the measurement of habitual physical activity in dogs"
+    authors: "Yam, P. S. et al."
+    publication: Journal of Small Animal Practice
+    year: 2011
+    url: https://pubmed.ncbi.nlm.nih.gov/21265847/
+    note: 该研究验证犬只日常活动加速度测量的效度、实用性与可靠性。
+  - title: "The Use of Triaxial Accelerometers and Machine Learning Algorithms for Behavioural Identification in Domestic Dogs (Canis familiaris): A Validation Study"
+    authors: "Redmond, B. et al."
+    publication: Sensors
+    year: 2024
+    url: https://pubmed.ncbi.nlm.nih.gov/39338701/
+    note: 该研究讨论三轴加速度计与机器学习用于犬只行为识别的验证方法。
 ---
 
 ## 单次变化不等于异常

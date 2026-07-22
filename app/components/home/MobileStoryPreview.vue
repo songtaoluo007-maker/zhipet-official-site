@@ -4,7 +4,7 @@ import BaseButton from '~/components/base/BaseButton.vue'
 import BaseIcon from '~/components/base/BaseIcon.vue'
 import HeroAppPanel from '~/components/home/HeroAppPanel.vue'
 import { usePublicAssetUrl } from '~/composables/usePublicAssetUrl'
-import { homeStoryStages } from '~/data/v2'
+import { homeStoryActions, homeStoryStages } from '~/data/v2'
 import type { HomeStoryStage } from '~/data/v2'
 import type { IconName } from '~/types/ui'
 
@@ -59,10 +59,7 @@ const stories: PreviewStory[] = [
     imageAlt: companionshipStage.assetAlt,
     objectPosition: '64% center',
     tone: 'light',
-    primaryLabel: '了解产品',
-    primaryTo: '/products',
-    secondaryLabel: 'App 下载',
-    secondaryTo: '/download',
+    ...homeStoryActions.companionship,
     showAppPanel: false,
     stage: companionshipStage,
     highlights: [
@@ -79,10 +76,7 @@ const stories: PreviewStory[] = [
     imageAlt: healthStage.assetAlt,
     objectPosition: '58% center',
     tone: 'warm',
-    primaryLabel: '查看健康研究',
-    primaryTo: '/research',
-    secondaryLabel: '了解产品',
-    secondaryTo: '/products',
+    ...homeStoryActions.health,
     showAppPanel: true,
     stage: healthStage,
     highlights: [],
@@ -96,10 +90,7 @@ const stories: PreviewStory[] = [
     imageAlt: '宠物医生与宠物家庭协同照护场景',
     objectPosition: '66% center',
     tone: 'deep',
-    primaryLabel: '了解解决方案',
-    primaryTo: '/solutions',
-    secondaryLabel: '联系知宠团队',
-    secondaryTo: '/contact',
+    ...homeStoryActions.collaboration,
     showAppPanel: false,
     stage: safetyStage,
     highlights: [
@@ -111,9 +102,11 @@ const stories: PreviewStory[] = [
 
 const activeIndex = ref(0)
 const interactionPaused = ref(false)
+const userPaused = ref(false)
 const pointerStartX = ref<number | null>(null)
 const activeStory = computed(() => stories[activeIndex.value] ?? stories[0]!)
 const activeStoryNumber = computed(() => String(activeIndex.value + 1).padStart(2, '0'))
+const autoRotateToggleLabel = computed(() => (userPaused.value ? '继续自动播放' : '暂停自动播放'))
 
 const autoRotateDelay = 5000
 let autoRotateTimer: number | undefined
@@ -134,7 +127,7 @@ const prefersReducedMotion = () =>
 const startAutoRotate = () => {
   clearAutoRotate()
 
-  if (interactionPaused.value || prefersReducedMotion()) {
+  if (userPaused.value || interactionPaused.value || prefersReducedMotion()) {
     return
   }
 
@@ -163,6 +156,31 @@ const pauseAutoRotate = () => {
 const resumeAutoRotate = () => {
   interactionPaused.value = false
   startAutoRotate()
+}
+
+const toggleAutoRotate = () => {
+  userPaused.value = !userPaused.value
+
+  if (userPaused.value) {
+    clearAutoRotate()
+    return
+  }
+
+  startAutoRotate()
+}
+
+const handleFocusOut = (event: FocusEvent) => {
+  const currentTarget = event.currentTarget
+
+  if (
+    currentTarget instanceof HTMLElement &&
+    event.relatedTarget instanceof Node &&
+    currentTarget.contains(event.relatedTarget)
+  ) {
+    return
+  }
+
+  resumeAutoRotate()
 }
 
 const handlePointerDown = (event: PointerEvent) => {
@@ -233,7 +251,7 @@ onBeforeUnmount(() => {
     @mouseenter="pauseAutoRotate"
     @mouseleave="resumeAutoRotate"
     @focusin="pauseAutoRotate"
-    @focusout="resumeAutoRotate"
+    @focusout="handleFocusOut"
     @pointerdown="handlePointerDown"
     @pointerup="handlePointerUp"
     @pointercancel="handlePointerCancel"
@@ -261,7 +279,7 @@ onBeforeUnmount(() => {
             aria-live="polite"
           >
             <span class="mobile-story-preview__eyebrow">{{ activeStory.eyebrow }}</span>
-            <h1>{{ activeStory.title }}</h1>
+            <h2>{{ activeStory.title }}</h2>
             <p>{{ activeStory.description }}</p>
             <div class="mobile-story-preview__actions">
               <BaseButton :to="activeStory.primaryTo" size="lg">
@@ -309,6 +327,16 @@ onBeforeUnmount(() => {
           <span />
         </button>
       </div>
+      <button
+        type="button"
+        class="mobile-story-preview__auto-toggle"
+        data-testid="mobile-story-auto-rotate-toggle"
+        :aria-label="autoRotateToggleLabel"
+        :aria-pressed="userPaused"
+        @click="toggleAutoRotate"
+      >
+        {{ userPaused ? '播放' : '暂停' }}
+      </button>
       <button
         type="button"
         class="mobile-story-preview__arrow mobile-story-preview__arrow--previous"
@@ -440,7 +468,7 @@ onBeforeUnmount(() => {
   max-width: 226px;
 }
 
-.mobile-story-preview .mobile-story-preview__story--with-panel h1 {
+.mobile-story-preview .mobile-story-preview__story--with-panel h2 {
   max-width: 226px;
   font-size: 30px;
 }
@@ -463,7 +491,7 @@ onBeforeUnmount(() => {
   border-color: var(--color-accent-300);
 }
 
-.mobile-story-preview h1 {
+.mobile-story-preview h2 {
   max-width: 340px;
   color: inherit;
   font-size: 42px;
@@ -700,6 +728,7 @@ onBeforeUnmount(() => {
 }
 
 .mobile-story-preview__selectors button,
+.mobile-story-preview__auto-toggle,
 .mobile-story-preview__arrow {
   display: inline-grid;
   flex: 0 0 44px;
@@ -728,6 +757,27 @@ onBeforeUnmount(() => {
   width: 18px;
   border-radius: var(--radius-pill);
   opacity: 1;
+}
+
+.mobile-story-preview__auto-toggle {
+  width: 44px;
+  border: 1px solid rgb(47 36 27 / 14%);
+  font-size: 10px;
+  font-weight: 800;
+}
+
+.mobile-story-preview__auto-toggle[aria-pressed='true'] {
+  color: var(--color-surface);
+  background: var(--color-brand-900);
+}
+
+.mobile-story-preview--deep .mobile-story-preview__auto-toggle {
+  border-color: rgb(255 255 255 / 22%);
+}
+
+.mobile-story-preview--deep .mobile-story-preview__auto-toggle[aria-pressed='true'] {
+  color: var(--color-brand-900);
+  background: var(--color-surface);
 }
 
 .mobile-story-preview__arrow {
@@ -777,7 +827,7 @@ onBeforeUnmount(() => {
     padding-top: 22px;
   }
 
-  .mobile-story-preview h1 {
+  .mobile-story-preview h2 {
     font-size: 36px;
   }
 
@@ -808,7 +858,7 @@ onBeforeUnmount(() => {
     padding-top: 16px;
   }
 
-  .mobile-story-preview h1 {
+  .mobile-story-preview h2 {
     font-size: 31px;
   }
 
@@ -847,7 +897,7 @@ onBeforeUnmount(() => {
     max-width: 154px;
   }
 
-  .mobile-story-preview .mobile-story-preview__story--with-panel h1 {
+  .mobile-story-preview .mobile-story-preview__story--with-panel h2 {
     max-width: 154px;
     font-size: 24px;
   }

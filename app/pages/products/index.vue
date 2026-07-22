@@ -14,6 +14,15 @@ const publicAssetUrl = usePublicAssetUrl()
 const productHeroStyle = {
   '--product-hero-image': `url("${publicAssetUrl('/images/generated/pages/zhipet-product-closeup-scene.webp')}")`,
 }
+const featuredVariant = productVariants.find((variant) => variant.presentation === 'featured')
+const alternativeVariants = productVariants.filter(
+  (variant) => variant.presentation === 'alternative',
+)
+const futureVariant = productVariants.find((variant) => variant.presentation === 'future')
+
+if (!featuredVariant || !futureVariant) {
+  throw new Error('产品形态内容不完整')
+}
 
 useSeoMeta({
   title: '产品 | 知宠 ZHIPET',
@@ -92,15 +101,67 @@ useSeoMeta({
         title="产品形态"
         description="围绕不同佩戴需求，呈现核心模块与配件之间的组合逻辑。"
       />
-      <div class="variant-grid">
-        <article v-for="variant in productVariants" :key="variant.id" class="variant-card">
-          <BaseTag tone="concept">{{ variant.status }}</BaseTag>
-          <h2>{{ variant.title }}</h2>
-          <p>{{ variant.description }}</p>
-          <ul>
-            <li v-for="tag in variant.tags" :key="tag">{{ tag }}</li>
-          </ul>
+      <div class="variant-layout">
+        <article class="variant-card variant-card--featured">
+          <figure class="variant-card__media">
+            <img
+              :src="publicAssetUrl('/images/generated/home-ecosystem/ecosystem-collar.webp')"
+              alt="知宠智能项圈核心模块概念产品图"
+              loading="lazy"
+            >
+            <figcaption>AI 概念图，仅供参考</figcaption>
+          </figure>
+          <div class="variant-card__content">
+            <BaseTag tone="concept">推荐 · {{ featuredVariant.status }}</BaseTag>
+            <div>
+              <p class="variant-card__eyebrow">完整佩戴体验</p>
+              <h2>{{ featuredVariant.title }}</h2>
+              <p>{{ featuredVariant.description }}</p>
+            </div>
+            <dl class="variant-card__comparison">
+              <div v-for="item in featuredVariant.comparison" :key="item.label">
+                <dt>{{ item.label }}</dt>
+                <dd>{{ item.value }}</dd>
+              </div>
+            </dl>
+            <ul aria-label="核心形态特点">
+              <li v-for="tag in featuredVariant.tags" :key="tag">{{ tag }}</li>
+            </ul>
+            <NuxtLink class="variant-card__link" to="/products/smart-collar">
+              了解核心产品
+              <BaseIcon name="arrow-right" aria-hidden="true" />
+            </NuxtLink>
+          </div>
         </article>
+
+        <div class="variant-alternatives" aria-label="替代安装形态">
+          <article
+            v-for="variant in alternativeVariants"
+            :key="variant.id"
+            class="variant-card variant-card--alternative"
+          >
+            <BaseTag tone="neutral">{{ variant.status }}</BaseTag>
+            <h2>{{ variant.title }}</h2>
+            <p>{{ variant.description }}</p>
+            <dl class="variant-card__comparison">
+              <div v-for="item in variant.comparison" :key="item.label">
+                <dt>{{ item.label }}</dt>
+                <dd>{{ item.value }}</dd>
+              </div>
+            </dl>
+          </article>
+        </div>
+
+        <aside class="variant-future" aria-labelledby="future-variant-title">
+          <div>
+            <span>{{ futureVariant.status }}</span>
+            <h2 id="future-variant-title">{{ futureVariant.title }}</h2>
+          </div>
+          <p>{{ futureVariant.description }}</p>
+          <ul aria-label="未来拓展方向">
+            <li v-for="tag in futureVariant.tags" :key="tag">{{ tag }}</li>
+          </ul>
+        </aside>
       </div>
     </BaseContainer>
 
@@ -376,14 +437,12 @@ useSeoMeta({
   @include section-spacing;
 }
 
-.variant-grid,
 .value-grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: var(--space-5);
 }
 
-.variant-card,
 .value-card {
   display: grid;
   align-content: start;
@@ -394,20 +453,17 @@ useSeoMeta({
   background: var(--color-surface);
 }
 
-.variant-card h2,
 .value-card h2 {
   font-size: 22px;
   line-height: 1.25;
 }
 
-.variant-card p,
 .value-card p,
 .boundary-panel p {
   color: var(--color-text-secondary);
   line-height: 1.72;
 }
 
-.variant-card ul,
 .feature-strip {
   display: flex;
   flex-wrap: wrap;
@@ -417,7 +473,6 @@ useSeoMeta({
   list-style: none;
 }
 
-.variant-card li,
 .feature-strip span {
   padding: 7px 10px;
   border: 1px solid var(--color-border);
@@ -426,6 +481,221 @@ useSeoMeta({
   background: var(--color-surface-soft);
   font-size: 13px;
   font-weight: 650;
+}
+
+.variant-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.28fr) minmax(320px, 0.72fr);
+  gap: var(--space-5);
+  margin-top: var(--space-7);
+}
+
+.variant-card {
+  display: grid;
+  align-content: start;
+  gap: var(--space-4);
+  padding: var(--space-5);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-card);
+  background: var(--color-surface);
+}
+
+.variant-card--featured {
+  min-height: 0;
+  align-content: stretch;
+  gap: 0;
+  padding: 0;
+  border-color: transparent;
+  color: var(--color-surface);
+  background: var(--color-brand-900);
+  overflow: hidden;
+}
+
+.variant-card__media {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  margin: 0;
+  overflow: hidden;
+  background: #f2ede4;
+}
+
+.variant-card__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.variant-card__media figcaption {
+  position: absolute;
+  right: var(--space-3);
+  bottom: var(--space-3);
+  color: rgb(255 255 255 / 80%);
+  font-size: 11px;
+  text-shadow: 0 1px 4px rgb(0 0 0 / 44%);
+}
+
+.variant-card__content {
+  display: grid;
+  align-content: start;
+  gap: var(--space-4);
+  padding: clamp(28px, 4vw, 48px);
+}
+
+.variant-card--featured :deep(.base-tag) {
+  color: var(--color-accent-300);
+  border-color: rgb(231 197 144 / 32%);
+  background: rgb(255 255 255 / 8%);
+}
+
+.variant-card__eyebrow {
+  margin-bottom: var(--space-2);
+  color: var(--color-accent-300) !important;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.variant-card h2,
+.variant-future h2 {
+  font-size: 24px;
+  line-height: 1.25;
+}
+
+.variant-card--featured h2 {
+  color: var(--color-surface);
+  font-size: clamp(32px, 3vw, 42px);
+}
+
+.variant-card p,
+.variant-future p {
+  color: var(--color-text-secondary);
+  line-height: 1.72;
+}
+
+.variant-card--featured p {
+  color: rgb(255 255 255 / 72%);
+}
+
+.variant-card__comparison {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin: 0;
+  border-block: 1px solid var(--color-border);
+}
+
+.variant-card--featured .variant-card__comparison {
+  border-color: rgb(255 255 255 / 18%);
+}
+
+.variant-card__comparison div {
+  display: grid;
+  gap: 4px;
+  padding-block: var(--space-3);
+}
+
+.variant-card__comparison div + div {
+  padding-left: var(--space-4);
+  border-left: 1px solid var(--color-border);
+}
+
+.variant-card--featured .variant-card__comparison div + div {
+  border-color: rgb(255 255 255 / 18%);
+}
+
+.variant-card__comparison dt {
+  color: var(--color-text-secondary);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.variant-card--featured .variant-card__comparison dt {
+  color: rgb(255 255 255 / 58%);
+}
+
+.variant-card__comparison dd {
+  margin: 0;
+  color: var(--color-brand-900);
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.variant-card--featured .variant-card__comparison dd {
+  color: var(--color-surface);
+}
+
+.variant-card ul,
+.variant-future ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.variant-card li,
+.variant-future li {
+  color: var(--color-brand-800);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.variant-card li + li::before,
+.variant-future li + li::before {
+  margin-right: var(--space-2);
+  color: var(--color-accent-600);
+  content: '·';
+}
+
+.variant-card--featured li {
+  color: rgb(255 255 255 / 78%);
+}
+
+.variant-card__link {
+  display: inline-flex;
+  width: fit-content;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--color-surface);
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.variant-card__link .base-icon {
+  transition: transform var(--motion-duration-fast) var(--motion-ease-out);
+}
+
+.variant-card__link:hover .base-icon {
+  transform: translateX(3px);
+}
+
+.variant-alternatives {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-5);
+}
+
+.variant-card--alternative {
+  min-height: 0;
+}
+
+.variant-future {
+  display: grid;
+  grid-column: 1 / -1;
+  grid-template-columns: minmax(220px, 0.55fr) minmax(280px, 1fr) auto;
+  gap: var(--space-5);
+  align-items: center;
+  padding: var(--space-4) 0;
+  border-block: 1px solid var(--color-border);
+}
+
+.variant-future > div > span {
+  color: var(--color-accent-600);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.variant-future h2 {
+  margin-top: 4px;
 }
 
 .core-section {
@@ -472,8 +742,16 @@ useSeoMeta({
 @media (max-width: 1100px) {
   .product-hero__inner,
   .core-layout,
-  .variant-grid {
+  .variant-layout {
     grid-template-columns: 1fr;
+  }
+
+  .variant-future {
+    grid-column: auto;
+  }
+
+  .variant-alternatives {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .product-hero h1 {
@@ -532,6 +810,28 @@ useSeoMeta({
 
   .boundary-panel {
     grid-template-columns: 1fr;
+  }
+
+  .variant-alternatives,
+  .variant-card__comparison,
+  .variant-future {
+    grid-template-columns: 1fr;
+  }
+
+  .variant-card__comparison div + div {
+    padding-left: 0;
+    border-top: 1px solid var(--color-border);
+    border-left: 0;
+  }
+
+  .variant-card--featured .variant-card__comparison div + div {
+    border-color: rgb(255 255 255 / 18%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .variant-card__link .base-icon {
+    transition: none;
   }
 }
 </style>

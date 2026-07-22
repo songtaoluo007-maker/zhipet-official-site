@@ -32,16 +32,33 @@
         </div>
         <ul class="mobile-menu__list">
           <li v-for="item in items" :key="item.href" class="mobile-menu__item">
-            <NuxtLink
-              class="mobile-menu__link"
-              :class="{ 'is-active': isActive(item.href) }"
-              :to="item.href"
-              :aria-current="isCurrent(item.href) ? 'page' : undefined"
-              @click="$emit('close')"
+            <div class="mobile-menu__row">
+              <NuxtLink
+                class="mobile-menu__link"
+                :class="{ 'is-active': isActive(item.href) }"
+                :to="item.href"
+                :aria-current="isCurrent(item.href) ? 'page' : undefined"
+                @click="$emit('close')"
+              >
+                {{ item.label }}
+              </NuxtLink>
+              <button
+                v-if="hasChildLinks(item)"
+                class="mobile-menu__toggle"
+                type="button"
+                :aria-expanded="isSectionExpanded(item)"
+                :aria-controls="sectionId(item)"
+                :aria-label="`${isSectionExpanded(item) ? '收起' : '展开'}${item.label}子菜单`"
+                @click="toggleSection(item)"
+              >
+                <span aria-hidden="true">{{ isSectionExpanded(item) ? '−' : '+' }}</span>
+              </button>
+            </div>
+            <ul
+              v-if="hasChildLinks(item) && isSectionExpanded(item)"
+              :id="sectionId(item)"
+              class="mobile-menu__children"
             >
-              {{ item.label }}
-            </NuxtLink>
-            <ul v-if="hasChildLinks(item)" class="mobile-menu__children">
               <li v-for="child in childLinks(item)" :key="child.href">
                 <NuxtLink
                   class="mobile-menu__sub-link"
@@ -88,6 +105,7 @@ const emit = defineEmits<{
 
 const route = useRoute()
 const dialogElement = ref<HTMLElement | null>(null)
+const expandedHref = ref<string | null>(null)
 let previousActiveElement: HTMLElement | null = null
 let previousBodyOverflow = ''
 
@@ -133,6 +151,22 @@ const childLinks = (item: NavigationItem) =>
 
 const hasChildLinks = (item: NavigationItem) => childLinks(item).length > 0
 
+const isSectionExpanded = (item: NavigationItem) => expandedHref.value === item.href
+
+const sectionId = (item: NavigationItem) =>
+  `mobile-menu-section-${item.href.replace(/[^a-z0-9]+/gi, '-') || 'home'}`
+
+const activeSectionHref = () =>
+  props.items.find((item) => hasChildLinks(item) && isActive(item.href))?.href ?? null
+
+const syncExpandedSection = () => {
+  expandedHref.value = activeSectionHref()
+}
+
+const toggleSection = (item: NavigationItem) => {
+  expandedHref.value = isSectionExpanded(item) ? null : item.href
+}
+
 const focusCloseButton = async () => {
   await nextTick()
   dialogElement.value?.querySelector<HTMLElement>('[data-menu-close]')?.focus()
@@ -150,6 +184,7 @@ const restorePageScroll = () => {
 const openMenu = async () => {
   previousActiveElement =
     document.activeElement instanceof HTMLElement ? document.activeElement : null
+  syncExpandedSection()
   lockPageScroll()
   await focusCloseButton()
 }
@@ -210,6 +245,15 @@ watch(
   },
 )
 
+watch(
+  () => route.path,
+  () => {
+    if (props.open) {
+      syncExpandedSection()
+    }
+  },
+)
+
 onMounted(() => {
   window.addEventListener('keydown', handleKeydown)
 
@@ -250,9 +294,7 @@ onBeforeUnmount(() => {
   display: flex;
   width: min(88vw, 360px);
   flex-direction: column;
-  gap: var(--space-6);
-  overflow-y: auto;
-  padding: var(--space-5);
+  overflow: hidden;
   border-left: 1px solid rgb(232 224 213 / 78%);
   background:
     linear-gradient(180deg, rgb(255 253 248 / 98%), rgb(246 241 233 / 98%)), var(--color-bg);
@@ -262,8 +304,11 @@ onBeforeUnmount(() => {
 
 .mobile-menu__head {
   display: flex;
+  flex: 0 0 auto;
   align-items: center;
   justify-content: space-between;
+  padding: var(--space-5);
+  border-bottom: 1px solid var(--color-border);
 }
 
 .mobile-menu__brand {
@@ -286,57 +331,81 @@ onBeforeUnmount(() => {
 
 .mobile-menu__list {
   display: grid;
+  min-height: 0;
+  flex: 1 1 auto;
+  align-content: start;
   gap: var(--space-2);
-  padding: 0;
+  overflow-y: auto;
+  padding: var(--space-3) var(--space-5);
   margin: 0;
   list-style: none;
+  overscroll-behavior: contain;
+}
+
+.mobile-menu__item {
+  border-bottom: 1px solid var(--color-border);
+}
+
+.mobile-menu__row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 48px;
+  align-items: center;
 }
 
 .mobile-menu__link {
   display: flex;
   min-height: 48px;
   align-items: center;
-  justify-content: space-between;
-  border-bottom: 1px solid var(--color-border);
   color: var(--color-brand-900);
   font-weight: 650;
-}
-
-.mobile-menu__link::after {
-  width: 8px;
-  height: 8px;
-  border-radius: var(--radius-pill);
-  background: var(--color-accent-600);
-  content: '';
-  opacity: 0;
 }
 
 .mobile-menu__link.is-active {
   color: var(--color-accent-600);
 }
 
-.mobile-menu__link.is-active::after {
-  opacity: 1;
+.mobile-menu__toggle {
+  display: grid;
+  width: 48px;
+  height: 48px;
+  place-items: center;
+  border: 0;
+  color: var(--color-brand-900);
+  background: transparent;
+  cursor: pointer;
+}
+
+.mobile-menu__toggle span {
+  font-size: 21px;
+  font-weight: 400;
+  line-height: 1;
+}
+
+.mobile-menu__toggle:hover,
+.mobile-menu__toggle:focus-visible {
+  color: var(--color-accent-600);
+}
+
+.mobile-menu__toggle:focus-visible {
+  box-shadow: var(--focus-ring);
+  outline: 2px solid transparent;
 }
 
 .mobile-menu__children {
   display: grid;
   gap: 4px;
-  padding: 6px 0 10px var(--space-4);
+  padding: 4px 0 var(--space-3) var(--space-3);
   margin: 0;
-  border-left: 1px solid rgb(226 216 203 / 82%);
+  border-left: 1px solid var(--color-border-strong);
   list-style: none;
 }
 
 .mobile-menu__sub-link {
-  display: grid;
-  gap: 2px;
-  min-height: 36px;
-  padding: 7px 10px;
-  border: 1px solid transparent;
-  border-radius: 8px;
+  display: flex;
+  min-height: 38px;
+  align-items: center;
+  padding: 6px var(--space-3);
   color: var(--color-brand-900);
-  background: rgb(255 253 248 / 54%);
 }
 
 .mobile-menu__sub-link span {
@@ -346,14 +415,16 @@ onBeforeUnmount(() => {
 }
 
 .mobile-menu__sub-link.is-active {
-  border-color: rgb(200 138 56 / 32%);
-  background: rgb(255 253 248 / 60%);
+  color: var(--color-accent-600);
 }
 
 .mobile-menu__actions {
   display: grid;
+  flex: 0 0 auto;
   gap: var(--space-3);
-  margin-top: auto;
+  padding: var(--space-4) var(--space-5) max(var(--space-5), env(safe-area-inset-bottom));
+  border-top: 1px solid var(--color-border);
+  background: rgb(255 253 248 / 96%);
 }
 
 .mobile-menu-enter-active,

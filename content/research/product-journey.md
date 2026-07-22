@@ -9,6 +9,12 @@ tags:
   - 产品体验
   - 健康档案
   - 家庭协作
+sources:
+  - title: Wearable Devices in Veterinary Health Care
+    publication: Veterinary Clinics of North America - Small Animal Practice
+    year: 2022
+    url: https://pubmed.ncbi.nlm.nih.gov/36150786/
+    note: 该综述讨论可穿戴设备在兽医健康照护中的应用与局限，用于说明设备只是长期照护链路的一部分。
 ---
 
 ## 设备只是观察入口

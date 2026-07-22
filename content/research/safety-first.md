@@ -9,6 +9,13 @@ tags:
   - 日常安全
   - 产品路径
   - 佩戴习惯
+sources:
+  - title: Search Methods Used to Locate Missing Cats and Locations Where Missing Cats Are Found
+    authors: "Huang, L. et al."
+    publication: Animals
+    year: 2018
+    url: https://pubmed.ncbi.nlm.nih.gov/29301322/
+    note: 该研究提供走失猫寻找方式与发现地点的实证背景，不代表任何设备能够绝对防止走失。
 ---
 
 ## 安全需求更容易被理解

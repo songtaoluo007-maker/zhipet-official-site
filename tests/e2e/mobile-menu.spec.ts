@@ -42,3 +42,33 @@ test('mobile menu focuses the close button, locks page scroll, and restores trig
   await expect(menuButton).toBeFocused()
   await expect.poll(() => page.evaluate(() => document.body.style.overflow)).toBe('')
 })
+
+test('mobile menu expands only the active or selected navigation section', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 })
+  await page.goto('/products')
+  await page.waitForLoadState('networkidle')
+
+  await page.getByRole('button', { name: '打开导航' }).click()
+
+  const dialog = page.getByRole('dialog', { name: '移动端导航' })
+  const productsToggle = dialog.getByRole('button', { name: '收起产品子菜单' })
+  const solutionsToggle = dialog.getByRole('button', { name: '展开解决方案子菜单' })
+
+  await expect(productsToggle).toHaveAttribute('aria-expanded', 'true')
+  await expect(solutionsToggle).toHaveAttribute('aria-expanded', 'false')
+  await expect(dialog.getByRole('link', { name: '知宠智能挂件' })).toBeVisible()
+  await expect(dialog.getByRole('link', { name: '家庭养宠' })).toBeHidden()
+
+  await solutionsToggle.click()
+
+  await expect(dialog.getByRole('button', { name: '展开产品子菜单' })).toHaveAttribute(
+    'aria-expanded',
+    'false',
+  )
+  await expect(dialog.getByRole('button', { name: '收起解决方案子菜单' })).toHaveAttribute(
+    'aria-expanded',
+    'true',
+  )
+  await expect(dialog.getByRole('link', { name: '知宠智能挂件' })).toBeHidden()
+  await expect(dialog.getByRole('link', { name: '家庭养宠' })).toBeVisible()
+})

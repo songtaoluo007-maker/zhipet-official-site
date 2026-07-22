@@ -22,6 +22,14 @@ export default defineContentConfig({
         order: z.number().default(999),
         tags: z.array(z.string()).default([]),
         publishedAt: z.string().optional(),
+        sources: z.array(z.object({
+          title: z.string(),
+          authors: z.string().optional(),
+          publication: z.string(),
+          year: z.number(),
+          url: z.string().url(),
+          note: z.string().optional(),
+        })).min(1),
       }),
     }),
     cases: defineCollection({

@@ -8,6 +8,15 @@ import SectionHeading from '~/components/common/SectionHeading.vue'
 import { usePublicAssetUrl } from '~/composables/usePublicAssetUrl'
 import { resolveResearchVisual } from '~/data/research-visuals'
 
+interface ResearchSource {
+  title: string
+  authors?: string
+  publication: string
+  year: number
+  url: string
+  note?: string
+}
+
 interface ResearchArticleCard {
   path: string
   title: string
@@ -16,6 +25,8 @@ interface ResearchArticleCard {
   order: number
   tags: string[]
   image: string
+  sourceLabel: string
+  sourceCount: number
 }
 
 const { register } = useScrollReveal()
@@ -29,15 +40,25 @@ const toResearchArticleCard = (entry: {
   category?: string
   order?: number
   tags?: string[]
-}): ResearchArticleCard => ({
-  path: entry.path,
-  title: entry.title,
-  description: entry.description ?? '围绕宠物健康观察与照护方法展开。',
-  category: entry.category ?? '健康观察',
-  order: entry.order ?? 999,
-  tags: entry.tags ?? [],
-  image: resolveResearchVisual(entry.path).src,
-})
+  sources?: ResearchSource[]
+}): ResearchArticleCard => {
+  const sources = entry.sources ?? []
+  const primarySource = sources[0]
+
+  return {
+    path: entry.path,
+    title: entry.title,
+    description: entry.description ?? '围绕宠物健康观察与照护方法展开。',
+    category: entry.category ?? '健康观察',
+    order: entry.order ?? 999,
+    tags: entry.tags ?? [],
+    image: resolveResearchVisual(entry.path).src,
+    sourceLabel: primarySource
+      ? `${primarySource.publication} · ${primarySource.year}`
+      : '来源信息见正文',
+    sourceCount: sources.length,
+  }
+}
 
 const { data: researchArticles } = await useAsyncData('research-list', async () => {
   const entries = await queryCollection('research').order('order', 'ASC').all()
@@ -117,6 +138,7 @@ useSeoMeta({
           :key="article.path"
           :to="article.path"
           class="article-row"
+          :class="{ 'article-row--lead': index === 0 }"
         >
           <div class="article-row__media">
             <img
@@ -130,6 +152,10 @@ useSeoMeta({
             <span>{{ String(index + 1).padStart(2, '0') }} / {{ article.category }}</span>
             <h2>{{ article.title }}</h2>
             <p>{{ article.description }}</p>
+            <p class="article-row__source">
+              来源 · {{ article.sourceLabel }}
+              <small v-if="article.sourceCount > 1">等 {{ article.sourceCount }} 项</small>
+            </p>
             <div class="article-row__meta">
               <ul aria-label="文章标签">
                 <li v-for="tag in article.tags" :key="tag">{{ tag }}</li>
@@ -243,6 +269,19 @@ useSeoMeta({
   color: var(--color-brand-900);
 }
 
+.article-row--lead {
+  grid-template-columns: minmax(420px, 0.95fr) minmax(0, 1fr);
+  min-height: 400px;
+}
+
+.article-row--lead .article-row__media {
+  min-height: 400px;
+}
+
+.article-row--lead h2 {
+  font-size: 38px;
+}
+
 .article-row__media {
   position: relative;
   min-height: 300px;
@@ -292,6 +331,23 @@ useSeoMeta({
   max-width: 680px;
   color: var(--color-text-secondary);
   line-height: 1.72;
+}
+
+.article-row .article-row__source {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  align-items: center;
+  color: var(--color-brand-800);
+  font-size: 12px;
+  font-weight: 720;
+  line-height: 1.5;
+}
+
+.article-row__source small {
+  color: var(--color-text-secondary);
+  font-size: inherit;
+  font-weight: 600;
 }
 
 .article-row__meta {
@@ -367,13 +423,22 @@ useSeoMeta({
     grid-template-columns: 1fr;
   }
 
+  .article-row--lead {
+    min-height: 0;
+  }
+
+  .article-row--lead .article-row__media {
+    min-height: 360px;
+  }
+
   .category-tabs {
     justify-content: flex-start;
   }
 }
 
 @media (max-width: 620px) {
-  .article-row__media {
+  .article-row__media,
+  .article-row--lead .article-row__media {
     min-height: 0;
     aspect-ratio: 4 / 3;
   }

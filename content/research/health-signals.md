@@ -9,6 +9,19 @@ tags:
   - 连续观察
   - 健康趋势
   - 家庭照护
+sources:
+  - title: "Validity, practical utility and reliability of Actigraph accelerometry for the measurement of habitual physical activity in dogs"
+    authors: "Yam, P. S. et al."
+    publication: Journal of Small Animal Practice
+    year: 2011
+    url: https://pubmed.ncbi.nlm.nih.gov/21265847/
+    note: 该研究为使用加速度数据观察犬只日常活动提供方法依据。
+  - title: "Deep Learning Classification of Canine Behavior Using a Single Collar-Mounted Accelerometer: Real-World Validation"
+    authors: "Chambers, R. D. et al."
+    publication: Animals
+    year: 2021
+    url: https://pubmed.ncbi.nlm.nih.gov/34070579/
+    note: 该研究关注单个项圈式加速度计在真实环境中的犬只行为分类验证。
 ---
 
 ## 日常变化就是线索

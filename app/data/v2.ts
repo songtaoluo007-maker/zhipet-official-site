@@ -19,10 +19,16 @@ export interface ProductVariant {
   description: string
   status: string
   tags: string[]
+  presentation: 'featured' | 'alternative' | 'future'
+  comparison: Array<{
+    label: string
+    value: string
+  }>
 }
 
 export interface SolutionScenario {
   id: string
+  track: 'household' | 'professional'
   icon: IconName
   title: string
   audience: string
@@ -69,6 +75,50 @@ export interface HomeStoryStage {
   metrics: HomeStoryPanelMetric[]
 }
 
+export interface HomeStoryActions {
+  primaryLabel: string
+  primaryTo: string
+  secondaryLabel: string
+  secondaryTo: string
+}
+
+export type HomeStoryActionId = 'companionship' | 'safety' | 'health' | 'collaboration'
+
+export const homeStoryActions: Record<HomeStoryActionId, HomeStoryActions> = {
+  companionship: {
+    primaryLabel: '了解产品',
+    primaryTo: '/products',
+    secondaryLabel: 'App 下载',
+    secondaryTo: '/download',
+  },
+  safety: {
+    primaryLabel: '了解安全能力',
+    primaryTo: '/products/smart-collar',
+    secondaryLabel: 'App 下载',
+    secondaryTo: '/download',
+  },
+  health: {
+    primaryLabel: '查看健康研究',
+    primaryTo: '/research',
+    secondaryLabel: 'App 下载',
+    secondaryTo: '/download',
+  },
+  collaboration: {
+    primaryLabel: '了解解决方案',
+    primaryTo: '/solutions',
+    secondaryLabel: '联系知宠团队',
+    secondaryTo: '/contact',
+  },
+}
+
+export const resolveHomeStoryActions = (id: string): HomeStoryActions => {
+  if (id in homeStoryActions) {
+    return homeStoryActions[id as HomeStoryActionId]
+  }
+
+  return homeStoryActions.companionship
+}
+
 export interface FaqItem {
   id: string
   category: string
@@ -97,6 +147,27 @@ export const homeMetricCards: TextItem[] = [
     id: 'archive',
     title: '健康档案',
     description: '记录范围遵循最小必要与用户授权原则',
+  },
+]
+
+export const solutionJourneySteps: IconTextItem[] = [
+  {
+    id: 'choose',
+    icon: 'home',
+    title: '选择使用场景',
+    description: '先明确家庭日常或专业服务任务，让后续信息围绕真实照护关系展开。',
+  },
+  {
+    id: 'authorize',
+    icon: 'shield-check',
+    title: '明确授权边界',
+    description: '说明记录、查看与共享范围，敏感信息只在必要且获得授权的前提下流转。',
+  },
+  {
+    id: 'continue',
+    icon: 'chart',
+    title: '持续观察与沟通',
+    description: '用趋势和照护记录形成连续线索，同时保留不确定性与专业判断空间。',
   },
 ]
 
@@ -327,6 +398,11 @@ export const productVariants: ProductVariant[] = [
     description: '面向开箱即用和长期佩戴体验，关注舒适贴合与日常稳定性。',
     status: '核心形态',
     tags: ['长期佩戴', '完整体验', '舒适贴合'],
+    presentation: 'featured',
+    comparison: [
+      { label: '适合场景', value: '长期日常佩戴' },
+      { label: '安装方式', value: '项圈一体' },
+    ],
   },
   {
     id: 'clip-basic',
@@ -334,6 +410,11 @@ export const productVariants: ProductVariant[] = [
     description: '适配已有项圈，面向轻便日常出行和低打扰佩戴。',
     status: '基础形态',
     tags: ['轻便灵活', '适配已有项圈', '猫与小型犬友好'],
+    presentation: 'alternative',
+    comparison: [
+      { label: '适合场景', value: '轻便日常出行' },
+      { label: '安装方式', value: '夹扣已有项圈' },
+    ],
   },
   {
     id: 'clip-safe',
@@ -341,6 +422,11 @@ export const productVariants: ProductVariant[] = [
     description: '面向日常安全场景，强调稳定固定与清晰提醒。',
     status: '安全形态',
     tags: ['日常安全', '稳定固定', '异常提醒'],
+    presentation: 'alternative',
+    comparison: [
+      { label: '适合场景', value: '日常安全关注' },
+      { label: '安装方式', value: '夹扣固定' },
+    ],
   },
   {
     id: 'harness',
@@ -348,6 +434,8 @@ export const productVariants: ProductVariant[] = [
     description: '作为后续拓展形态展示，不声明已发布或量产。',
     status: '后续拓展',
     tags: ['进阶场景', '活跃宠物', '稳固佩戴'],
+    presentation: 'future',
+    comparison: [],
   },
 ]
 
@@ -383,6 +471,7 @@ export const productFeatureStrip = [
 export const solutionScenarios: SolutionScenario[] = [
   {
     id: 'family',
+    track: 'household',
     icon: 'home',
     title: '科学养宠，守护日常点滴',
     audience: '家庭养宠',
@@ -395,6 +484,7 @@ export const solutionScenarios: SolutionScenario[] = [
   },
   {
     id: 'hospital',
+    track: 'professional',
     icon: 'hospital',
     title: '让诊疗沟通更完整',
     audience: '宠物医院',
@@ -408,6 +498,7 @@ export const solutionScenarios: SolutionScenario[] = [
   },
   {
     id: 'store',
+    track: 'professional',
     icon: 'store',
     title: '服务更贴心，连接更长远',
     audience: '宠物门店 / 机构',
@@ -530,28 +621,32 @@ export const faqItems: FaqItem[] = [
     id: 'location-refresh',
     category: '连接与定位',
     question: '定位不更新或偏差大怎么办？',
-    answer: '请先检查设备电量、连接状态和网络环境。位置刷新可能受室内遮挡、网络与设备状态影响，具体能力以正式产品说明为准。',
+    answer:
+      '请先检查设备电量、连接状态和网络环境。位置刷新可能受室内遮挡、网络与设备状态影响，具体能力以正式产品说明为准。',
     keywords: ['定位', '刷新', '偏差'],
   },
   {
     id: 'health-frequency',
     category: '健康提醒',
     question: '健康数据多久更新一次？',
-    answer: '不同记录的更新节奏可能不同，页面应同时显示最近更新时间。健康提醒只用于趋势观察和风险提示，不替代专业诊疗。',
+    answer:
+      '不同记录的更新节奏可能不同，页面应同时显示最近更新时间。健康提醒只用于趋势观察和风险提示，不替代专业诊疗。',
     keywords: ['健康', '数据', '更新'],
   },
   {
     id: 'battery',
     category: '安装与佩戴',
     question: '设备续航时间是多久？',
-    answer: '续航会受到连接方式、位置刷新频率、网络、温度和使用习惯影响，具体时长以正式产品说明与设备页面为准。',
+    answer:
+      '续航会受到连接方式、位置刷新频率、网络、温度和使用习惯影响，具体时长以正式产品说明与设备页面为准。',
     keywords: ['续航', '电量', '设备'],
   },
   {
     id: 'privacy',
     category: '数据与隐私',
     question: '如何保障我的数据隐私？',
-    answer: '知宠将原始音频、家庭环境信息和宠物数据视为敏感信息，并坚持最小必要、清晰授权与用户可管理原则。官网意见反馈的处理方式可查看隐私说明。',
+    answer:
+      '知宠将原始音频、家庭环境信息和宠物数据视为敏感信息，并坚持最小必要、清晰授权与用户可管理原则。官网意见反馈的处理方式可查看隐私说明。',
     keywords: ['隐私', '数据', '音频'],
   },
 ]
