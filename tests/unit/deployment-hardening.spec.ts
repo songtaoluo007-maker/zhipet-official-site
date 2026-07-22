@@ -28,4 +28,27 @@ describe('deployment hardening', () => {
     expect(proxyConfig).toContain('proxy_set_header X-Forwarded-For $remote_addr;')
     expect(proxyConfig).not.toContain('$proxy_add_x_forwarded_for')
   })
+
+  it('uses GitHub Actions releases that run on the current hosted runtime', () => {
+    const workflow = readProjectFile('.github/workflows/pages.yml')
+
+    expect(workflow).toContain(
+      'actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1',
+    )
+    expect(workflow).toContain(
+      'pnpm/action-setup@0ebf47130e4866e96fce0953f49152a61190b271 # v6.0.9',
+    )
+    expect(workflow).toContain(
+      'actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0',
+    )
+    expect(workflow).toContain(
+      'actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d # v6.0.0',
+    )
+    expect(workflow).toContain(
+      'actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0',
+    )
+    expect(workflow).toContain(
+      'actions/deploy-pages@cd2ce8fcbc39b97be8ca5fce6e763baed58fa128 # v5.0.0',
+    )
+  })
 })
