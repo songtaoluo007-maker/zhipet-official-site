@@ -8,15 +8,27 @@ if [[ ${EUID} -ne 0 ]]; then
 fi
 
 repo_url=${1:-https://github.com/songtaoluo007-maker/zhipet-official-site.git}
-git_ref=${2:-main}
+git_ref=${2:-}
 site_url=${NUXT_PUBLIC_SITE_URL:-https://petsense-agent.com}
 release_root=/srv/zhipet/releases
 timestamp=$(date -u +%Y%m%dT%H%M%SZ)
 staging_dir="${release_root}/.staging-${timestamp}"
 current_link=/srv/zhipet/current
 health_url=http://127.0.0.1:3000/api/health
+release_lock=/run/lock/zhipet-release.lock
 repo_path=${repo_url#https://github.com/}
 repo_path=${repo_path%.git}
+
+if [[ ! ${git_ref} =~ ^[0-9a-f]{40}$ ]]; then
+  echo "A full 40-character commit SHA is required." >&2
+  exit 1
+fi
+
+exec 9>"${release_lock}"
+if ! flock --nonblock 9; then
+  echo "Another ZHIPET release is already running." >&2
+  exit 1
+fi
 
 cleanup_failed_release() {
   if [[ -d ${staging_dir} ]]; then
@@ -32,6 +44,10 @@ if runuser -u zhipet -- env HOME=/srv/zhipet \
   runuser -u zhipet -- env HOME=/srv/zhipet \
     git -C "${staging_dir}" checkout --detach "${git_ref}"
   commit_sha=$(runuser -u zhipet -- git -C "${staging_dir}" rev-parse HEAD)
+  if [[ ${commit_sha} != "${git_ref}" ]]; then
+    echo "Resolved commit does not match the requested release SHA." >&2
+    exit 1
+  fi
 else
   rm -rf --one-file-system -- "${staging_dir}"
 
@@ -39,11 +55,6 @@ else
     echo "The codeload fallback only supports validated GitHub repository URLs." >&2
     exit 1
   fi
-  if [[ ! ${git_ref} =~ ^[0-9a-f]{40}$ ]]; then
-    echo "The codeload fallback requires a full 40-character commit SHA." >&2
-    exit 1
-  fi
-
   install -d -o zhipet -g zhipet -m 0750 "${staging_dir}"
   runuser -u zhipet -- curl --fail --show-error --silent --location \
     --proto '=https' --tlsv1.2 \

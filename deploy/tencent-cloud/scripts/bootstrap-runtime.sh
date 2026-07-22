@@ -36,7 +36,7 @@ trap cleanup EXIT
 
 export DEBIAN_FRONTEND=noninteractive
 apt-get update
-apt-get install -y --no-install-recommends ca-certificates curl git nginx xz-utils
+apt-get install -y --no-install-recommends ca-certificates curl git nginx util-linux xz-utils
 
 curl --fail --show-error --silent --location --proto '=https' --tlsv1.2 \
   "${node_base_url}/${archive}" -o "${download_dir}/${archive}"
@@ -80,4 +80,3 @@ pnpm --version
 nginx -v
 stat -c '%n | owner=%U:%G | mode=%a' \
   /srv/zhipet /srv/zhipet/releases /etc/zhipet /var/log/zhipet
-

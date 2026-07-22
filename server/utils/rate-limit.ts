@@ -1,18 +1,18 @@
 import { createError, getRequestIP, setResponseHeader, type H3Event } from 'h3'
-
-interface RateLimitBucket {
-  count: number
-  resetAt: number
-}
+import {
+  FixedWindowRateLimiter,
+  isLoopbackAddress,
+} from '~~/server/domain/rate-limit'
 
 const globalForRateLimit = globalThis as unknown as {
-  rateLimitBuckets?: Map<string, RateLimitBucket>
+  rateLimiter?: FixedWindowRateLimiter
 }
 
-const buckets = globalForRateLimit.rateLimitBuckets ?? new Map<string, RateLimitBucket>()
+const rateLimiter =
+  globalForRateLimit.rateLimiter ?? new FixedWindowRateLimiter({ maxBuckets: 10_000 })
 
 if (import.meta.dev) {
-  globalForRateLimit.rateLimitBuckets = buckets
+  globalForRateLimit.rateLimiter = rateLimiter
 }
 
 export const assertRateLimit = (
@@ -20,30 +20,23 @@ export const assertRateLimit = (
   action: string,
   options: { limit: number; windowMs: number },
 ) => {
-  const now = Date.now()
-  const requestIp = getRequestIP(event, { xForwardedFor: true }) ?? 'unknown'
+  const remoteAddress = event.node.req.socket.remoteAddress
+  const requestIp =
+    getRequestIP(event, {
+      xForwardedFor: isLoopbackAddress(remoteAddress),
+    }) ?? 'unknown'
   const key = action + ':' + requestIp
-  const current = buckets.get(key)
+  const decision = rateLimiter.consume(key, options.limit, options.windowMs)
 
-  if (!current || current.resetAt <= now) {
-    buckets.set(key, { count: 1, resetAt: now + options.windowMs })
-    setResponseHeader(event, 'X-RateLimit-Limit', options.limit)
-    setResponseHeader(event, 'X-RateLimit-Remaining', options.limit - 1)
-    return
-  }
+  setResponseHeader(event, 'X-RateLimit-Limit', options.limit)
+  setResponseHeader(event, 'X-RateLimit-Remaining', decision.remaining)
+  setResponseHeader(event, 'X-RateLimit-Reset', Math.ceil(decision.resetAt / 1_000))
 
-  if (current.count >= options.limit) {
-    const retryAfterSeconds = Math.max(1, Math.ceil((current.resetAt - now) / 1000))
-    setResponseHeader(event, 'Retry-After', retryAfterSeconds)
-    setResponseHeader(event, 'X-RateLimit-Limit', options.limit)
-    setResponseHeader(event, 'X-RateLimit-Remaining', 0)
+  if (!decision.allowed) {
+    setResponseHeader(event, 'Retry-After', decision.retryAfterSeconds)
     throw createError({
       statusCode: 429,
       message: '请求过于频繁，请稍后重试',
     })
   }
-
-  current.count += 1
-  setResponseHeader(event, 'X-RateLimit-Limit', options.limit)
-  setResponseHeader(event, 'X-RateLimit-Remaining', options.limit - current.count)
 }

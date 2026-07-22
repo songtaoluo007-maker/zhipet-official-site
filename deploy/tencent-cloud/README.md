@@ -28,7 +28,7 @@
      FULL_40_CHARACTER_COMMIT_SHA
    ```
 
-   该脚本会在新目录执行安装、lint、类型检查、单元测试和生产构建。构建通过后，它会原子切换 `current`、重启 Web 服务并最多执行 20 次 `/api/health` 检查；新版本未恢复健康时自动切回上一版本，并再次核验旧版本健康状态。首次发布没有上一版本可回滚，因此仍需人工确认服务状态。当服务器无法访问 GitHub Git 端点时，脚本仅在提供完整提交哈希的情况下回退到 GitHub 官方 codeload 源码包。
+   发布参数必须是远端可追溯的完整 40 位提交哈希，脚本不接受 `main` 等可变分支名，并会拒绝并发发布。脚本会在新目录执行安装、lint、类型检查、单元测试和生产构建。构建通过后，它会原子切换 `current`、重启 Web 服务并最多执行 20 次 `/api/health` 检查；新版本未恢复健康时自动切回上一版本，并再次核验旧版本健康状态。首次发布没有上一版本可回滚，因此仍需人工确认服务状态。当服务器无法访问 GitHub Git 端点时，脚本会使用同一提交哈希回退到 GitHub 官方 codeload 源码包。
 
 ## AI 操作治理
 
@@ -89,6 +89,8 @@ sudo cp deploy/tencent-cloud/nginx/zhipet.conf.template /etc/nginx/sites-availab
 sudo nginx -t
 sudo systemctl reload nginx
 ```
+
+代理片段会覆盖外部传入的 `X-Forwarded-For`，应用仅在连接来自本机反向代理时读取该头。若未来在 Nginx 前增加 CDN 或 WAF，必须先按服务商地址段配置并验证 Nginx `real_ip` 信任边界，不能直接恢复为追加任意客户端转发链。
 
 域名尚未解析或证书尚未实际签发时，先使用
 `nginx/zhipet-http-bootstrap.conf.template`。该配置仅用于域名验证和证书签发，

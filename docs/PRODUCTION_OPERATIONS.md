@@ -39,6 +39,7 @@ NUXT_PUBLIC_FEEDBACK_ENABLED=false
 - `true`：开放 `/api/feedback` 与反馈表单。
 
 GitHub Pages 必须保持为 `false`，因为静态托管无法运行 Nuxt Server API。
+当前应用限流采用有界的单进程内存存储，并由 Nginx 对反馈入口做第二层限流。扩容为多实例或开放新的高成本接口前，必须改用集中式限流存储，并重新核验可信代理来源。
 
 ## 4. 数据保存
 
