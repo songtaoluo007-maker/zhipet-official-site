@@ -1,0 +1,27 @@
+/var/log/zhipet/web.jsonl /var/log/zhipet/web-error.log /var/log/zhipet/mail.jsonl /var/log/zhipet/mail-error.log /var/log/zhipet/purge.jsonl /var/log/zhipet/purge-error.log /var/log/zhipet/status.jsonl /var/log/zhipet/status-error.log {
+    daily
+    maxsize 20M
+    rotate 7
+    compress
+    delaycompress
+    missingok
+    notifempty
+    copytruncate
+}
+
+/var/log/zhipet/nginx-access.jsonl /var/log/zhipet/nginx-error.log {
+    daily
+    maxsize 20M
+    rotate 7
+    compress
+    delaycompress
+    missingok
+    notifempty
+    create 0640 root adm
+    sharedscripts
+    postrotate
+        if /usr/bin/systemctl is-active --quiet nginx.service; then
+            /usr/bin/systemctl kill --kill-whom=main --signal=USR1 nginx.service
+        fi
+    endscript
+}

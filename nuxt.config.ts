@@ -10,6 +10,8 @@ const isolatedBuildEvents = new Set(['build', 'generate', 'typecheck'])
 const nuxtBuildDir = isolatedBuildEvents.has(lifecycleEvent) ? `.nuxt-${lifecycleEvent}` : '.nuxt'
 const contentCacheScope = lifecycleEvent.replace(/[^a-z0-9_-]+/gi, '-')
 const contentLocalDatabase = `.data/content/contents-${contentCacheScope}.sqlite`
+const contentRuntimeDatabase =
+  nodeEnv?.NUXT_CONTENT_DATABASE_PATH?.trim() || './contents.sqlite'
 const isProduction = nodeEnv?.NODE_ENV === 'production'
 const featureFlag = (value: string | undefined, fallback: boolean) =>
   value === undefined ? fallback : value === 'true'
@@ -75,6 +77,10 @@ export default defineNuxtConfig({
     provider: 'none',
   },
   content: {
+    database: {
+      type: 'sqlite',
+      filename: contentRuntimeDatabase,
+    },
     _localDatabase: {
       type: 'sqlite',
       filename: contentLocalDatabase,

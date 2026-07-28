@@ -16,10 +16,17 @@ test('site responses include baseline browser security headers', async ({ reques
   expect(headers['content-security-policy']).toContain("form-action 'self'")
 })
 
-test('liveness probe is independent from database readiness', async ({ request }) => {
+test('liveness probe is independent from database readiness and exposes a safe release label', async ({ request }) => {
   const response = await request.get('/api/live')
 
   expect(response.status()).toBe(200)
   expect(response.headers()['cache-control']).toContain('no-store')
-  await expect(response.json()).resolves.toMatchObject({ status: 'ok' })
+  const body = await response.json()
+
+  expect(body).toMatchObject({
+    status: 'ok',
+    release: expect.any(String),
+  })
+  expect(body.checkedAt).toEqual(expect.any(String))
+  expect(body.release).not.toMatch(/^[0-9a-f]{40}$/)
 })

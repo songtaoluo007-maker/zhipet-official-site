@@ -1,5 +1,17 @@
 limit_req_zone $binary_remote_addr zone=zhipet_feedback:10m rate=6r/m;
 
+log_format zhipet_json escape=json
+    '{"timestamp":"$time_iso8601",'
+    '"level":"info",'
+    '"service":"zhipet-nginx",'
+    '"type":"http_request",'
+    '"requestId":"$request_id",'
+    '"method":"$request_method",'
+    '"path":"$uri",'
+    '"statusCode":$status,'
+    '"durationSeconds":$request_time,'
+    '"upstreamDurationSeconds":"$upstream_response_time"}';
+
 upstream zhipet_app {
     server 127.0.0.1:3000;
     keepalive 32;
@@ -10,12 +22,16 @@ server {
     listen [::]:80;
     server_name YOUR_DOMAIN www.YOUR_DOMAIN;
 
+    access_log /var/log/zhipet/nginx-access.jsonl zhipet_json;
+    error_log /var/log/zhipet/nginx-error.log error;
+    add_header X-Request-ID $request_id always;
+
     location /.well-known/acme-challenge/ {
         root /var/www/letsencrypt;
     }
 
     location / {
-        return 301 https://$host$request_uri;
+        return 301 https://$host$uri$is_args$args;
     }
 }
 
@@ -30,6 +46,9 @@ server {
     ssl_protocols TLSv1.2 TLSv1.3;
     ssl_session_cache shared:SSL:10m;
     ssl_session_timeout 1d;
+
+    access_log /var/log/zhipet/nginx-access.jsonl zhipet_json;
+    error_log /var/log/zhipet/nginx-error.log error;
 
     include /etc/nginx/snippets/zhipet-security-headers.conf;
 

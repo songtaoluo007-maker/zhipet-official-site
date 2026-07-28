@@ -13,9 +13,7 @@ const gotoReady = async (page: import('@playwright/test').Page, path: string) =>
   await page.waitForLoadState('networkidle')
 }
 
-test('home route presents the V2 brand homepage and contact entry', async ({
-  page,
-}, testInfo) => {
+test('home route presents the V2 brand homepage and contact entry', async ({ page }, testInfo) => {
   await gotoReady(page, '/')
 
   await expect(page).toHaveTitle(/更懂陪伴，更守护健康/)
@@ -30,6 +28,23 @@ test('home route presents the V2 brand homepage and contact entry', async ({
       page.getByRole('dialog', { name: '移动端导航' }).getByRole('link', { name: 'App 下载' }),
     ).toHaveAttribute('href', '/download')
     await page.getByRole('button', { name: '关闭菜单' }).click()
+    await expect(
+      page.getByRole('heading', {
+        name: /从一次佩戴，\s*走进长期陪伴/,
+      }),
+    ).toBeVisible()
+    await expect(page.getByRole('link', { name: '了解安全能力' })).toHaveAttribute(
+      'href',
+      '/products/smart-collar',
+    )
+    await expect(page.getByRole('link', { name: '走进健康研究院' })).toHaveAttribute(
+      'href',
+      '/research',
+    )
+    await expect(page.getByRole('link', { name: '了解专业协同方案' })).toHaveAttribute(
+      'href',
+      '/solutions/hospital',
+    )
   } else {
     await expect(
       page.getByRole('navigation', { name: '主导航' }).getByRole('link', { name: '产品' }),
@@ -37,21 +52,21 @@ test('home route presents the V2 brand homepage and contact entry', async ({
     await expect(
       page.locator('.app-header__actions').getByRole('link', { name: 'App 下载' }),
     ).toHaveAttribute('href', '/download')
+    await expect(page.getByRole('heading', { name: '知宠智能生态系统' })).toBeVisible()
+    await expect(page.getByRole('link', { name: /安全边界/ }).first()).toHaveAttribute(
+      'href',
+      '/products/smart-collar',
+    )
+    await expect(page.getByRole('link', { name: /健康趋势/ }).first()).toHaveAttribute(
+      'href',
+      '/research',
+    )
+    await expect(page.getByRole('link', { name: /专业协同/ }).first()).toHaveAttribute(
+      'href',
+      '/solutions',
+    )
   }
-  await expect(page.getByRole('heading', { name: '知宠智能生态系统' })).toBeVisible()
-  await expect(page.getByRole('link', { name: /安全边界/ }).first()).toHaveAttribute(
-    'href',
-    '/products/smart-collar',
-  )
-  await expect(page.getByRole('link', { name: /健康趋势/ }).first()).toHaveAttribute(
-    'href',
-    '/research',
-  )
-  await expect(page.getByRole('link', { name: /专业协同/ }).first()).toHaveAttribute(
-    'href',
-    '/solutions',
-  )
-  await expect(page.getByRole('heading', { name: '因信任而设计，为陪伴而守护' })).toBeVisible()
+  await expect(page.getByRole('heading', { name: /因信任而设计，\s*为陪伴而守护/ })).toBeVisible()
   await expect(page.locator('.hero-immersive-stage__label')).toHaveCount(3)
   await expect(page.locator('.hero-immersive-stage__label').first()).toContainText(
     'AI 概念图，仅供参考',
@@ -105,9 +120,7 @@ test('products route uses the V2 product narrative without unconfirmed claims', 
   await expect(page.getByRole('heading', { name: '胸背带进阶版' })).toBeVisible()
   await expect(page.getByRole('heading', { name: '三层价值', exact: true })).toBeVisible()
   await expect(page.getByText('不声明医疗级能力')).toBeVisible()
-  await expect(
-    page.locator('.product-hero__actions a[href="/contact"]'),
-  ).toBeVisible()
+  await expect(page.locator('.product-hero__actions a[href="/contact"]')).toBeVisible()
   await expect(page.locator('body')).not.toContainText(/医学级体温|血氧|已量产|IP 等级/)
   await expectNoHorizontalOverflow(page)
 })
@@ -116,7 +129,7 @@ test('solutions route presents three scenarios and trust boundaries', async ({ p
   await gotoReady(page, '/solutions')
 
   await expect(page.getByRole('heading', { level: 1 })).toHaveText('同一套能力，服务不同场景')
-  await expect(page.getByRole('heading', { name: '三种关系，一条照护链路' })).toBeVisible()
+  await expect(page.getByRole('heading', { name: '先选择您所在的场景' })).toBeVisible()
   const scenarioCards = page.locator('#solution-scenes')
   await expect(scenarioCards.getByText('家庭养宠').first()).toBeVisible()
   await expect(scenarioCards.getByText('宠物医院').first()).toBeVisible()
@@ -126,7 +139,9 @@ test('solutions route presents three scenarios and trust boundaries', async ({ p
   await expectNoHorizontalOverflow(page)
 })
 
-test('research route filters published articles without collecting subscriptions', async ({ page }) => {
+test('research route filters published articles without collecting subscriptions', async ({
+  page,
+}) => {
   await gotoReady(page, '/research')
 
   await expect(page.getByRole('heading', { level: 1 })).toHaveText('宠物不会说话，变化会留下线索')
