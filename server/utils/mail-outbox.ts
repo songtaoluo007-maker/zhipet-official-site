@@ -18,8 +18,6 @@ interface FeedbackNotificationInput {
   recordId: string
   recordedAt: Date
   categoryLabel: string
-  message: string
-  contact?: string
 }
 
 const cleanHeaderValue = (value: string) => value.replace(/[\r\n]+/g, ' ').trim()
@@ -55,10 +53,9 @@ export const createFeedbackNotificationMail = (input: FeedbackNotificationInput)
     `记录编号：${input.recordId}`,
     `记录时间：${input.recordedAt.toISOString()}`,
     `反馈分类：${input.categoryLabel}`,
-    `联系方式：${input.contact?.trim() || '未填写'}`,
     '',
-    '反馈内容：',
-    input.message,
+    '请使用受限反馈运维命令按记录编号查看并处理。',
+    '请勿通过邮件转发反馈正文或联系方式。',
   ].join('\n'),
 })
 

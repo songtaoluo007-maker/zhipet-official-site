@@ -1,0 +1,11 @@
+[Unit]
+Description=Sample ZHIPET operations status every five minutes
+
+[Timer]
+OnBootSec=1min
+OnUnitActiveSec=5min
+AccuracySec=30s
+Unit=zhipet-ops-status.service
+
+[Install]
+WantedBy=timers.target

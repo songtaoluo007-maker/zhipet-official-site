@@ -1,5 +1,17 @@
 limit_req_zone $binary_remote_addr zone=zhipet_feedback:10m rate=6r/m;
 
+log_format zhipet_json escape=json
+    '{"timestamp":"$time_iso8601",'
+    '"level":"info",'
+    '"service":"zhipet-nginx",'
+    '"type":"http_request",'
+    '"requestId":"$request_id",'
+    '"method":"$request_method",'
+    '"path":"$uri",'
+    '"statusCode":$status,'
+    '"durationSeconds":$request_time,'
+    '"upstreamDurationSeconds":"$upstream_response_time"}';
+
 upstream zhipet_app {
     server 127.0.0.1:3000;
     keepalive 32;
@@ -11,6 +23,10 @@ server {
     server_name YOUR_DOMAIN www.YOUR_DOMAIN;
     server_tokens off;
 
+    access_log /var/log/zhipet/nginx-access.jsonl zhipet_json;
+    error_log /var/log/zhipet/nginx-error.log error;
+
+    add_header X-Request-ID $request_id always;
     add_header X-Robots-Tag "noindex, nofollow" always;
     add_header X-Content-Type-Options "nosniff" always;
     add_header X-Frame-Options "SAMEORIGIN" always;
@@ -33,6 +49,7 @@ server {
         proxy_pass http://zhipet_app;
         include /etc/nginx/snippets/zhipet-proxy.conf;
         add_header Cache-Control "public, max-age=31536000, immutable" always;
+        add_header X-Request-ID $request_id always;
         add_header X-Robots-Tag "noindex, nofollow" always;
         add_header X-Content-Type-Options "nosniff" always;
     }
@@ -41,6 +58,7 @@ server {
         proxy_pass http://zhipet_app;
         include /etc/nginx/snippets/zhipet-proxy.conf;
         add_header Cache-Control "public, max-age=604800" always;
+        add_header X-Request-ID $request_id always;
         add_header X-Robots-Tag "noindex, nofollow" always;
         add_header X-Content-Type-Options "nosniff" always;
     }

@@ -77,8 +77,6 @@ export default defineEventHandler(async (event): Promise<FeedbackResponse> => {
       recordId: created.id,
       recordedAt: created.createdAt,
       categoryLabel: categoryLabelByInput[result.output.category],
-      message: result.output.message,
-      contact: result.output.contact,
     })
     await enqueueEmail(transaction, {
       ...email,

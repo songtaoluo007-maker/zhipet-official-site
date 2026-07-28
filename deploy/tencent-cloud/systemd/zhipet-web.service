@@ -2,6 +2,8 @@
 Description=ZHIPET Nuxt production server
 After=network-online.target
 Wants=network-online.target
+StartLimitIntervalSec=60
+StartLimitBurst=5
 
 [Service]
 Type=simple
@@ -9,8 +11,10 @@ User=zhipet
 Group=zhipet
 WorkingDirectory=/srv/zhipet/current
 EnvironmentFile=/etc/zhipet/zhipet.env
-ExecStart=/usr/local/bin/node /srv/zhipet/current/.output/server/index.mjs
-Restart=always
+ExecStart=/usr/local/bin/node /srv/zhipet/current/scripts/start-production.mjs
+StandardOutput=append:/var/log/zhipet/web.jsonl
+StandardError=append:/var/log/zhipet/web-error.log
+Restart=on-failure
 RestartSec=5
 TimeoutStopSec=20
 KillSignal=SIGTERM
