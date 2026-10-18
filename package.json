@@ -26,15 +26,15 @@
     "typecheck": "nuxt typecheck"
   },
   "dependencies": {
-    "@nuxt/content": "^3.6.3",
-    "@nuxt/fonts": "^0.11.4",
-    "@nuxt/image": "^1.11.0",
-    "@prisma/client": "^6.19.3",
-    "nodemailer": "^9.0.3",
-    "nuxt": "^4.0.0",
-    "sass": "^1.89.2",
-    "valibot": "^1.4.2",
-    "vue": "^3.5.17"
+    "@nuxt/content": "^3.16.2",
+    "@nuxt/fonts": "^1.0.1",
+    "@nuxt/image": "^2.1.0",
+    "@prisma/client": "^7.10.0",
+    "nodemailer": "^10.1.1",
+    "nuxt": "^4.6.1",
+    "sass": "^1.105.1",
+    "valibot": "^1.5.0",
+    "vue": "^3.5.44"
   },
   "devDependencies": {
     "@nuxt/eslint": "^1.7.0",
